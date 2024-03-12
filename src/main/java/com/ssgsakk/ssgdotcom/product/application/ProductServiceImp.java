@@ -16,16 +16,20 @@ public class ProductServiceImp implements ProductService{
     private ProductRepository productRepository;
 
     // 모든 상품 조회
+    @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
+
     // 상품 상세 정보 조회
+    @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
 
     // 상품 추가
+    @Override
     public Product addProduct(ProductDto productDto) {
         return productRepository.save(Product.builder()
                         .productName(productDto.getProductName())
@@ -42,5 +46,6 @@ public class ProductServiceImp implements ProductService{
 
 
     // 상품 삭제
-    public Product deleteProduct(Long id) { return productRepository.deleteById(id);}
+    @Override
+    public void deleteProduct(Long id) { productRepository.deleteById(id);}
 }
