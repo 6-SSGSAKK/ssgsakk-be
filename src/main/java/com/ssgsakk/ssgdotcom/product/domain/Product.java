@@ -1,9 +1,7 @@
 package com.ssgsakk.ssgdotcom.product.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,7 +26,7 @@ public class Product {
     private Double averageRating;
     private Integer reviewCount;
 
-
+    @Builder
     public Product(String productName, Integer productPrice, String vendor, Date createdAt,
                    String productCode, String productDescription, Double discountPercent,
                    Double averageRating, Integer reviewCount) {
