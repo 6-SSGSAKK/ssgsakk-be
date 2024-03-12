@@ -7,13 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImp implements ProductService{
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     // 모든 상품 조회
     @Override
@@ -48,4 +49,10 @@ public class ProductServiceImp implements ProductService{
     // 상품 삭제
     @Override
     public void deleteProduct(Long id) { productRepository.deleteById(id);}
+
+    // 상품 검색
+    @Override
+    public List<Product> searchProducts(String keyword) {
+        return productRepository.findByProductNameContaining(keyword);
+    }
 }
