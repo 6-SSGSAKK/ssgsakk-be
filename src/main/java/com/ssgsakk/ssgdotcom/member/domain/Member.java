@@ -58,12 +58,6 @@ public class Member implements UserDetails {
     private LocalDateTime updateAt;
 
 
-    /** 비밀번호를 바꿔주기 위한 메서드 */
-    public String hashPassword(String userPassword) {
-        this.userPassword = new BCryptPasswordEncoder().encode(userPassword);
-        return this.userPassword;
-    }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
