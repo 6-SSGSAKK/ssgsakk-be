@@ -23,9 +23,11 @@ import java.util.List;
  */
 
 @Entity
+@Builder
 @ToString
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Member implements UserDetails {
 
     @Id
@@ -55,23 +57,6 @@ public class Member implements UserDetails {
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 
-
-    // Builder 메서드
-    // 비밀번호를 BCryptPasswordEncoder 메서드를 진행해야 한다.
-    @Builder
-    public Member(Long userSeq, String userId, String userPassword, String uuid, String userName, String userEmail,
-                  String userPhoneNum ,String userMobileNum, LocalDateTime createdAt, LocalDateTime updateAt) {
-        this.userSeq = userSeq;
-        this.userId = userId;
-        this.userPassword = hashPassword(userPassword);
-        this.uuid = uuid;
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.userPhoneNum = userPhoneNum;
-        this.userMobileNum = userMobileNum;
-        this. createdAt = createdAt;
-        this.updateAt = updateAt;
-    }
 
     /** 비밀번호를 바꿔주기 위한 메서드 */
     public String hashPassword(String userPassword) {
