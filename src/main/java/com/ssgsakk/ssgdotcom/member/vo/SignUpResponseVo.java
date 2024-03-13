@@ -9,11 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpRequestVo {
-    private String userId;
-    private String userPassword;
+public class SignUpResponseVo {
     private String userName;
-    private String userEmail;
-    private String userPhoneNum;
-    private String userMobileNum;
+    private String uuid;
 }
