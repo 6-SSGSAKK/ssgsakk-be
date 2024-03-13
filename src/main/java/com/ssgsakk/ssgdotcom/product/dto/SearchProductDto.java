@@ -5,21 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDto {
-    private Long id;
+public class SearchProductDto {
+    private String productSeq;
     private String productName;
     private Integer productPrice;
     private String vendor;
-    private Date createdAt;
     private String productCode;
-    private String productDescription;
     private Double discountPercent;
-    private Double averageRating;
-    private Integer reviewCount;
+//    private String contentUrl;
+//    private String stock;
+//    private String category;
 }
