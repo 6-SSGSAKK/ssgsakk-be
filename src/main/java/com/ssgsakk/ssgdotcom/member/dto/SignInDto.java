@@ -13,6 +13,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class SignInDto {
     private String userId;
     private String userPassword;

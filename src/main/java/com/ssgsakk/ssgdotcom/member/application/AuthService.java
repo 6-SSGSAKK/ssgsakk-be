@@ -2,8 +2,6 @@ package com.ssgsakk.ssgdotcom.member.application;
 
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
-import com.ssgsakk.ssgdotcom.member.vo.SignInRequestVo;
-import com.ssgsakk.ssgdotcom.member.vo.SignUpRequestVo;
 
 /**
  * Auth 관련 서비스
