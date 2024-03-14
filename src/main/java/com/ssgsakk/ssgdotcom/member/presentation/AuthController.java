@@ -3,6 +3,8 @@ package com.ssgsakk.ssgdotcom.member.presentation;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
+import com.ssgsakk.ssgdotcom.member.error.CustomException;
+import com.ssgsakk.ssgdotcom.member.error.ErrorCode;
 import com.ssgsakk.ssgdotcom.member.vo.SignInRequestVo;
 import com.ssgsakk.ssgdotcom.member.vo.SignInResponseVo;
 import com.ssgsakk.ssgdotcom.member.vo.SignUpRequestVo;
@@ -34,24 +36,19 @@ public class AuthController {
                 .userPassword(signInRequestVo.getUserPassword())
                 .build();
 
-        System.out.println("signInDto >>> " + signInDto.toString());
         signInDto = authService.signIn(signInDto);
 
-        System.out.println(signInDto.toString());
-
-        // 로그인 계정이 있는 경우
         // uuid를 통해 계정 유무 확인
-        if (!(signInDto.getUuid() == null || signInDto.getUuid().isEmpty())) {
-            SignInResponseVo signInResponseVo = SignInResponseVo.builder()
-                    .userName(signInDto.getUserName())
-                    .uuid(signInDto.getUuid())
-                    .build();
-            return ResponseEntity.status(HttpStatus.OK).body(signInResponseVo);
+        if (signInDto.getUuid() == null || signInDto.getUuid().isEmpty()) {
+            throw new CustomException(ErrorCode.UUID_NOT_FOUND);
         }
-        // 계정이 없는 경우
-        System.out.println("account not found!!!!");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(SignInResponseVo.builder()
-                .build());
+
+        SignInResponseVo signInResponseVo = SignInResponseVo.builder()
+                .userName(signInDto.getUserName())
+                .uuid(signInDto.getUuid())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(signInResponseVo);
     }
 
     @Operation(summary = "회원가입", description = "회원가입", tags = {"User SignUp"})

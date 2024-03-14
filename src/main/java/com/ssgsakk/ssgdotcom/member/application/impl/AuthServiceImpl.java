@@ -30,16 +30,15 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND_WITH_USER_ID));
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        System.out.println("Byc >>> " + encoder.matches(signInDto.getUserPassword(), member.getPassword()));
 
         // 비밀번호 매칭 확인
         if (!(encoder.matches(signInDto.getUserPassword(), member.getPassword()))) {
-            new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
+            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
         }
 
         return SignInDto.builder()
                 .uuid(member.getUuid())
-                .userName(member.getUsername())
+                .userName(member.getName())
                 .build();
     }
 
@@ -59,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
         Member member = Member.builder()
                 .userId(signUpDto.getUserId())
                 .userPassword(signUpDto.getUserPassword())
-                .userName(signUpDto.getUserName())
+                .name(signUpDto.getUserName())
                 .userEmail(signUpDto.getUserEmail())
                 .userPhoneNum(signUpDto.getUserPhoneNum())
                 .userMobileNum(signUpDto.getUserMobileNum())
@@ -67,15 +66,18 @@ public class AuthServiceImpl implements AuthService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        // 저장여부 try-catch
-        try {
-            Member savedMember = memberRepository.save(member);
-//            signUpDto.setDone(true);
-            return signUpDto;
+        // 회원가입 데이터 DB에 저장
+        Member savedMember = memberRepository.save(member);
 
-        } catch (Exception e) {
-            return signUpDto;
+        // 저장 여부 확인
+        if(savedMember == null) {
+            throw new CustomException(ErrorCode.SAVE_FAIL);
         }
+
+        return SignUpDto.builder()
+                .uuid(savedMember.getUuid())
+                .userName(savedMember.getName())
+                .build();
     }
 
     /**

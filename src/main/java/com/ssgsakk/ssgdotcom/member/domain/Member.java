@@ -46,7 +46,7 @@ public class Member implements UserDetails {
     private String uuid;
 
     @Column(nullable = false)
-    private String userName;
+    private String name;
 
     private String userEmail;
 
