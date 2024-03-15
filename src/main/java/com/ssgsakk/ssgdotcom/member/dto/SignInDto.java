@@ -19,4 +19,5 @@ public class SignInDto {
     private String userPassword;
     private String userName;
     private String uuid;
+    private String token;
 }
