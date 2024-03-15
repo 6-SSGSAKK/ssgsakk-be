@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        // 비밀번호 매칭 확인
+        // 비밀번호 매칭 확인하세요
         if (!(encoder.matches(signInDto.getUserPassword(), member.getPassword()))) {
             throw new BusinessException(ErrorCode.FAILED_TO_LOGIN);
         }
