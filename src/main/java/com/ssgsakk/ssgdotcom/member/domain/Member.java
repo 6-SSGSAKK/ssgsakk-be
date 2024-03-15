@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.member.domain;
 
+import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +29,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member implements UserDetails {
+public class Member extends BaseTimeEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,8 +55,8 @@ public class Member implements UserDetails {
 
     private String userMobileNum;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
+//    private LocalDateTime createdAt;
+//    private LocalDateTime updateAt;
 
 
 

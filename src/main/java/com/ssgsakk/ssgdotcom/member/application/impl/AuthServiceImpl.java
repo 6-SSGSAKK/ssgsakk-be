@@ -1,18 +1,17 @@
 package com.ssgsakk.ssgdotcom.member.application.impl;
 
+import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
+import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.domain.Member;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
-import com.ssgsakk.ssgdotcom.member.error.CustomException;
-import com.ssgsakk.ssgdotcom.member.error.ErrorCode;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -27,13 +26,13 @@ public class AuthServiceImpl implements AuthService {
         // 아이디를 통해 Member 객체 생성
         // 없으면 바로 에러 코드 보냄
         Member member = memberRepository.findByUserId(signInDto.getUserId())
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND_WITH_USER_ID));
+                .orElseThrow(() -> new BusinessException(ErrorCode.FAILED_TO_LOGIN));
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         // 비밀번호 매칭 확인
         if (!(encoder.matches(signInDto.getUserPassword(), member.getPassword()))) {
-            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
+            throw new BusinessException(ErrorCode.FAILED_TO_LOGIN);
         }
 
         return SignInDto.builder()
@@ -63,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
                 .userPhoneNum(signUpDto.getUserPhoneNum())
                 .userMobileNum(signUpDto.getUserMobileNum())
                 .uuid(signUpDto.getUuid())
-                .createdAt(LocalDateTime.now())
+//                .createdAt(LocalDateTime.now())
                 .build();
 
         // 회원가입 데이터 DB에 저장
@@ -71,7 +70,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 저장 여부 확인
         if(savedMember == null) {
-            throw new CustomException(ErrorCode.SAVE_FAIL);
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         return SignUpDto.builder()

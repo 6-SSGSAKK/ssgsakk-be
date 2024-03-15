@@ -1,10 +1,13 @@
 package com.ssgsakk.ssgdotcom.member.presentation;
 
+import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
+import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
+import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
-import com.ssgsakk.ssgdotcom.member.error.CustomException;
-import com.ssgsakk.ssgdotcom.member.error.ErrorCode;
+//import com.ssgsakk.ssgdotcom.member.error.CustomException;
+//import com.ssgsakk.ssgdotcom.member.error.ErrorCode;
 import com.ssgsakk.ssgdotcom.member.vo.SignInRequestVo;
 import com.ssgsakk.ssgdotcom.member.vo.SignInResponseVo;
 import com.ssgsakk.ssgdotcom.member.vo.SignUpRequestVo;
@@ -29,7 +32,7 @@ public class AuthController {
 
     @Operation(summary = "로그인", description = "로그인", tags = {"User SignIn"})
     @PostMapping("signin")
-    public ResponseEntity<SignInResponseVo> signIn(@RequestBody SignInRequestVo signInRequestVo) {
+    public BaseResponse<SignInResponseVo> signIn(@RequestBody SignInRequestVo signInRequestVo) {
 
         SignInDto signInDto = SignInDto.builder()
                 .userId(signInRequestVo.getUserId())
@@ -40,7 +43,7 @@ public class AuthController {
 
         // uuid를 통해 계정 유무 확인
         if (signInDto.getUuid() == null || signInDto.getUuid().isEmpty()) {
-            throw new CustomException(ErrorCode.UUID_NOT_FOUND);
+            throw new BusinessException(ErrorCode.TEST_ERROR_CODE);
         }
 
         SignInResponseVo signInResponseVo = SignInResponseVo.builder()
@@ -48,12 +51,12 @@ public class AuthController {
                 .uuid(signInDto.getUuid())
                 .build();
 
-        return ResponseEntity.status(HttpStatus.OK).body(signInResponseVo);
+        return new BaseResponse<>(signInResponseVo);
     }
 
     @Operation(summary = "회원가입", description = "회원가입", tags = {"User SignUp"})
     @PostMapping("signup")
-    public ResponseEntity<?> signUp(@RequestBody SignUpRequestVo signUpRequestVo) {
+    public BaseResponse<SignUpResponseVo> signUp(@RequestBody SignUpRequestVo signUpRequestVo) {
 
         SignUpDto signUpDto = SignUpDto.builder()
                 .userId(signUpRequestVo.getUserId())
@@ -70,7 +73,7 @@ public class AuthController {
                 .userName(signUpDto.getUserName())
                 .uuid(signUpDto.getUuid())
                 .build();
-        return ResponseEntity.status(HttpStatus.OK).body(signUpResponseVo);
+        return new BaseResponse<>(signUpResponseVo);
 
     }
 }
