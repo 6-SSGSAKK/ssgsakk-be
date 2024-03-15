@@ -6,9 +6,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -54,10 +52,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private String userPhoneNum;
 
     private String userMobileNum;
-
-//    private LocalDateTime createdAt;
-//    private LocalDateTime updateAt;
-
 
 
     @Override

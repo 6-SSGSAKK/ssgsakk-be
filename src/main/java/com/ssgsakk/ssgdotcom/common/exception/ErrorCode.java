@@ -1,7 +1,6 @@
 package com.ssgsakk.ssgdotcom.common.exception;
 
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {

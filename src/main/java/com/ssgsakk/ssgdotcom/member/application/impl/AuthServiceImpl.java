@@ -54,7 +54,6 @@ public class AuthServiceImpl implements AuthService {
         String uuidToStr = uuid.toString();
         signUpDto.setUuid(uuidToStr);
 
-        // member 엔티티를 넘겨도 되나? DTO로 변환해서 넘겨야하나?
         Member member = Member.builder()
                 .userId(signUpDto.getUserId())
                 .userPassword(signUpDto.getUserPassword())
