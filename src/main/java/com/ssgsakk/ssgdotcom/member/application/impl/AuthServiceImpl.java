@@ -62,7 +62,6 @@ public class AuthServiceImpl implements AuthService {
                 .userPhoneNum(signUpDto.getUserPhoneNum())
                 .userMobileNum(signUpDto.getUserMobileNum())
                 .uuid(signUpDto.getUuid())
-//                .createdAt(LocalDateTime.now())
                 .build();
 
         // 회원가입 데이터 DB에 저장
