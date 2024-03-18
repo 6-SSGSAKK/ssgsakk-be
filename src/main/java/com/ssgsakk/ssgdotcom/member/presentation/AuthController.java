@@ -36,7 +36,7 @@ public class AuthController {
 
         SignInDto servicedSignInDto = authService.signIn(signInDto);
 
-        return new BaseResponse<>(SignInResponseVo.builder()
+        return new BaseResponse<>("SignIn Success", SignInResponseVo.builder()
                 .userName(servicedSignInDto.getUserName())
                 .uuid(servicedSignInDto.getUuid())
                 .token(servicedSignInDto.getToken())
@@ -58,10 +58,9 @@ public class AuthController {
 
         SignUpDto servicedSignUpDto = authService.signUp(signUpDto);
 
-        return new BaseResponse<>(SignUpResponseVo.builder()
+        return new BaseResponse<>("SignUp Success", SignUpResponseVo.builder()
                 .userName(servicedSignUpDto.getUserName())
                 .uuid(servicedSignUpDto.getUuid())
                 .build());
-
     }
 }
