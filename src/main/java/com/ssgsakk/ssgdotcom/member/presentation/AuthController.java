@@ -26,7 +26,7 @@ public class AuthController {
     private final AuthService authService;
 
     @Operation(summary = "로그인", description = "로그인", tags = {"User SignIn"})
-    @PostMapping("signin")
+    @PostMapping("/signin")
     public BaseResponse<SignInResponseVo> signIn(@RequestBody SignInRequestVo signInRequestVo) {
 
         SignInDto signInDto = SignInDto.builder()
@@ -36,14 +36,15 @@ public class AuthController {
 
         SignInDto servicedSignInDto = authService.signIn(signInDto);
 
-        return new BaseResponse<>(SignInResponseVo.builder()
+        return new BaseResponse<>("SignIn Success", SignInResponseVo.builder()
                 .userName(servicedSignInDto.getUserName())
                 .uuid(servicedSignInDto.getUuid())
+                .token(servicedSignInDto.getToken())
                 .build());
     }
 
     @Operation(summary = "회원가입", description = "회원가입", tags = {"User SignUp"})
-    @PostMapping("signup")
+    @PostMapping("/signup")
     public BaseResponse<SignUpResponseVo> signUp(@RequestBody SignUpRequestVo signUpRequestVo) {
 
         SignUpDto signUpDto = SignUpDto.builder()
@@ -57,10 +58,9 @@ public class AuthController {
 
         SignUpDto servicedSignUpDto = authService.signUp(signUpDto);
 
-        return new BaseResponse<>(SignUpResponseVo.builder()
+        return new BaseResponse<>("SignUp Success", SignUpResponseVo.builder()
                 .userName(servicedSignUpDto.getUserName())
                 .uuid(servicedSignUpDto.getUuid())
                 .build());
-
     }
 }

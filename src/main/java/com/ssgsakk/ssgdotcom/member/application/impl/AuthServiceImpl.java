@@ -8,7 +8,11 @@ import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 
+import com.ssgsakk.ssgdotcom.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,29 +21,51 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
     private final MemberRepository memberRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authenticationManager;
+
 
     @Override
     public SignInDto signIn(SignInDto signInDto) {
 
         // 아이디를 통해 Member 객체 생성
-        // 없으면 바로 에러 코드 보냄
         Member member = memberRepository.findByUserId(signInDto.getUserId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.FAILED_TO_LOGIN));
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        // 비밀번호 매칭 확인하세요
+        // 비밀번호 매칭
         if (!(encoder.matches(signInDto.getUserPassword(), member.getPassword()))) {
             throw new BusinessException(ErrorCode.FAILED_TO_LOGIN);
         }
 
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+
+                        member.getUsername(),
+                        // 입력 비밀번호? 아니면 암호화된 비밀번호?
+                        signInDto.getUserPassword()
+
+                )
+        );
+
+        // 토큰 값 발행
+        String token = createToken(member);
+        log.info("token: {}", token);
         return SignInDto.builder()
                 .uuid(member.getUuid())
                 .userName(member.getName())
+                .token(token)
                 .build();
+    }
+
+    private String createToken(Member member) {
+        String jwt = jwtTokenProvider.generateToken(member);
+        return jwt;
     }
 
     @Override
