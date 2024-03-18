@@ -1,4 +1,4 @@
-package config;
+package com.ssgsakk.ssgdotcom.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
