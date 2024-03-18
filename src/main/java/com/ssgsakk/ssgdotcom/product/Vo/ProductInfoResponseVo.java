@@ -1,23 +1,19 @@
-package com.ssgsakk.ssgdotcom.product.dto;
+package com.ssgsakk.ssgdotcom.product.Vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
+@Getter
 @Builder
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class UpdateProductDto {
+@NoArgsConstructor
+public class ProductInfoResponseVo {
     private String productName;
     private Integer productPrice;
     private String vendor;
     private String productCode;
     private String productDescription;
     private Double discountPercent;
-//    private String contentUrl;
-//    private Option option;
-//    private Category category;
 }

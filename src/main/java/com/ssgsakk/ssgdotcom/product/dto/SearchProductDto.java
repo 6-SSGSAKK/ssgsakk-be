@@ -5,18 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchProductDto {
-    private String productSeq;
+    private Long productSeq;
     private String productName;
     private Integer productPrice;
-    private String vendor;
-    private String productCode;
-    private Double discountPercent;
-//    private String contentUrl;
-//    private String stock;
-//    private String category;
+
 }

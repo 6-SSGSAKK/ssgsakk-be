@@ -5,19 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateProductDto {
+public class ProductDto {
+    private Long productSeq;
     private String productName;
     private Integer productPrice;
     private String vendor;
     private String productCode;
     private String productDescription;
     private Double discountPercent;
-//    private String contentUrl;
-//    private Option option;
-//    private Category category;
 }

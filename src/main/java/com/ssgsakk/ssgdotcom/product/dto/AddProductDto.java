@@ -16,7 +16,4 @@ public class AddProductDto {
     private String productCode;
     private String productDescription;
     private Double discountPercent;
-//    private String contentUrl;
-//    private String stock;
-//    private String category;
 }
