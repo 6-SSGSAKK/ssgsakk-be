@@ -1,20 +1,17 @@
 package com.ssgsakk.ssgdotcom.category.infrastructure;
-
 import com.ssgsakk.ssgdotcom.category.domain.Category;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
-public class CategoryRepository {
-    private final EntityManager em;
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    public List<Category> findAll(){
-        return em.createQuery("select c from Category  c where  " +
-                "c.parentCategorySeq is Null", Category.class).getResultList();
-    }
+    @Query("select c from Category c where c.parentCategorySeq IS null ")
+    List<Category> findByParentCategorySeq();
+
 }
+
 
