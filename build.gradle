@@ -40,9 +40,10 @@ dependencies {
 	// 부트페이
 	implementation 'io.github.bootpay:backend:+'
 
-	//jwt
+	// jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5','io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 }
 
 tasks.named('bootBuildImage') {
