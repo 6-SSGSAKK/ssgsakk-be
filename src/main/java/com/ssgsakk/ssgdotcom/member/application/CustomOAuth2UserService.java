@@ -56,10 +56,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // 간편 로그인 테이블 처리는 추후에 진행
 
         if (existData == null) {
-            User member = new User();
+//            User member = new User();
             String uuid = UUID.randomUUID().toString();
 
-            member.builder()
+            System.out.println("name >>> " + oAuth2Response.getName());
+            System.out.println("user_email >>> " + oAuth2Response.getEmail());
+            User member = User.builder()
                     .name(oAuth2Response.getName())
                     .userEmail(oAuth2Response.getEmail())
                     .uuid(uuid)
