@@ -41,4 +41,9 @@ public class CustomOAuth2User implements OAuth2User {
     public String getEmail() {
         return oAuthDto.getEmail();
     }
+
+    // JWT에 사용할 uuid가 필요하다.
+    public String getUuid() {
+        return oAuthDto.getUuid();
+    }
 }
