@@ -3,7 +3,7 @@ package com.ssgsakk.ssgdotcom.member.application.impl;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
-import com.ssgsakk.ssgdotcom.member.domain.Member;
+import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
@@ -16,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
     public SignInDto signIn(SignInDto signInDto) {
 
         // 아이디를 통해 Member 객체 생성
-        Member member = memberRepository.findByUserId(signInDto.getUserId())
+        User member = memberRepository.findByUserId(signInDto.getUserId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.FAILED_TO_LOGIN));
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -63,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
-    private String createToken(Member member) {
+    private String createToken(User member) {
         String jwt = jwtTokenProvider.generateToken(member);
         return jwt;
     }
@@ -80,7 +79,7 @@ public class AuthServiceImpl implements AuthService {
         String uuidToStr = uuid.toString();
         signUpDto.setUuid(uuidToStr);
 
-        Member member = Member.builder()
+        User member = User.builder()
                 .userId(signUpDto.getUserId())
                 .userPassword(signUpDto.getUserPassword())
                 .name(signUpDto.getUserName())
@@ -91,7 +90,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         // 회원가입 데이터 DB에 저장
-        Member savedMember = memberRepository.save(member);
+        User savedMember = memberRepository.save(member);
 
         // 저장 여부 확인
         if(savedMember == null) {

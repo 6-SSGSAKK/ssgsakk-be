@@ -1,16 +1,16 @@
 package com.ssgsakk.ssgdotcom.member.infrastructure;
 
-import com.ssgsakk.ssgdotcom.member.domain.Member;
+import com.ssgsakk.ssgdotcom.member.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
-   Optional<Member> findByUserIdAndUserPassword(String userId, String userPassword);
-   Optional<Member> findByUserId(String userId);
-   Optional<Member> findByUuid(String uuid);
+public interface MemberRepository extends JpaRepository<User, Long> {
+   Optional<User> findByUserIdAndUserPassword(String userId, String userPassword);
+   Optional<User> findByUserId(String userId);
+   Optional<User> findByUuid(String uuid);
 
    // OAuth2
-   Member findByUserEmail(String userEmail);
+   User findByUserEmail(String userEmail);
 }

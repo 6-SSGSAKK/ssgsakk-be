@@ -1,13 +1,14 @@
 package com.ssgsakk.ssgdotcom.oauth2;
 
 import com.ssgsakk.ssgdotcom.member.dto.CustomOAuth2User;
-import com.ssgsakk.ssgdotcom.security.JwtTokenProvider;
+import com.ssgsakk.ssgdotcom.security.JWTUtil;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -17,37 +18,35 @@ import java.util.Iterator;
 
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    private final JWTUtil jwtUtil;
 
-    private final JwtTokenProvider jwtTokenProvider;
-    public CustomSuccessHandler(JwtTokenProvider jwtTokenProvider){
-        this.jwtTokenProvider = jwtTokenProvider;
+    public CustomSuccessHandler(JWTUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
     }
+
 
     // 로그인 성공 시, 작동할 핸들러
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         // OAuth2User
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-        // JWT에 사용할 uuid
         String uuid = customUserDetails.getUuid();
 
-        // ROLE 얻기
-        // 본 프로젝트에선 ROLE에 따른 차이점이 없어서 주석 처리
+        //todo
+        // role에 관련된 인가설정이 필요한 경우 아래를 실행
 //        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 //        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
 //        GrantedAuthority auth = iterator.next();
 //        String role = auth.getAuthority();
 
-        // token 제작
-        // 맞는지 모르겠다...
-        String token = jwtTokenProvider.generateToken((UserDetails) customUserDetails);
-
-        System.out.println("UUID >>> " + uuid);
+        String token = jwtUtil.createJwt(uuid, 60*60*60L);
         System.out.println("token >>> " + token);
 
-        // 발급 방법
+        response.addHeader("Authorization", "Bearer " + token);
 
+        // 프론트엔드로 response 반환
+        response.sendRedirect("http://localhost:3000/");
     }
 }
