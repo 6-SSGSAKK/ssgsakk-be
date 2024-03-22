@@ -1,9 +1,7 @@
-package com.ssgsakk.ssgdotcom.product.Vo;
+package com.ssgsakk.ssgdotcom.product.vo;
 
-import com.ssgsakk.ssgdotcom.product.dto.ProductDto;
 import lombok.Builder;
 import lombok.Getter;
-import java.util.List;
 
 @Getter
 @Builder

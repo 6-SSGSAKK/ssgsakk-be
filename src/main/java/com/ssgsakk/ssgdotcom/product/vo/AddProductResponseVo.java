@@ -1,4 +1,4 @@
-package com.ssgsakk.ssgdotcom.product.Vo;
+package com.ssgsakk.ssgdotcom.product.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

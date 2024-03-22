@@ -1,4 +1,4 @@
-package com.ssgsakk.ssgdotcom.cart.domain;
+package com.ssgsakk.ssgdotcom.cart;
 
 import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;

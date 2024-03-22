@@ -1,6 +1,8 @@
 package com.ssgsakk.ssgdotcom.product.domain;
 
 import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
+import com.ssgsakk.ssgdotcom.contents.domain.Contents;
+import com.ssgsakk.ssgdotcom.option.domain.OptionAndStock;
 import jakarta.persistence.*;
 import lombok.Builder;
 
@@ -10,6 +12,9 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @DynamicInsert
@@ -46,10 +51,13 @@ public class Product extends BaseTimeEntity {
     @ColumnDefault("0")
     private Integer reviewCount;
 
+    private String deliverytype;
+
+
     @Builder
     public Product(Long productSeq, String productName, Integer productPrice, String vendor,
-                   String productCode, String productDescription, Double discountPercent,
-                   Double averageRating, Integer reviewCount) {
+                   String productCode, String productDescription, String contentUrl,
+                   Double discountPercent, Double averageRating, Integer reviewCount) {
         this.productSeq = productSeq;
         this.productName = productName;
         this.productPrice = productPrice;

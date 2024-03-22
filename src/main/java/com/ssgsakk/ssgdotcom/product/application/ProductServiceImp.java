@@ -1,11 +1,13 @@
 package com.ssgsakk.ssgdotcom.product.application;
 
+import com.ssgsakk.ssgdotcom.option.dto.OptionAndStockDto;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
 import com.ssgsakk.ssgdotcom.product.dto.AddProductDto;
 import com.ssgsakk.ssgdotcom.product.dto.ProductDto;
 import com.ssgsakk.ssgdotcom.product.dto.SearchProductDto;
 import com.ssgsakk.ssgdotcom.product.dto.UpdateProductDto;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ public class ProductServiceImp implements ProductService{
 
 
     // 상품 등록
+    @Transactional
     @Override
     public AddProductDto addProduct(AddProductDto addProductDto) {
 
@@ -53,6 +56,7 @@ public class ProductServiceImp implements ProductService{
     }
 
     // 상품 수정
+    @Transactional
     @Override
     public void updateProduct(Long id, UpdateProductDto updateProductDto) {
         Product existingProduct = productRepository.findById(id)
@@ -65,10 +69,13 @@ public class ProductServiceImp implements ProductService{
         existingProduct.setProductDescription(updateProductDto.getProductDescription());
         existingProduct.setDiscountPercent(updateProductDto.getDiscountPercent());
 
+        productRepository.save(existingProduct);
+
     }
 
 
     // 상품 삭제
+    @Transactional
     @Override
     public void deleteProduct(Long id) { productRepository.deleteById(id);}
 

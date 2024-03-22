@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 @Builder
 @Data
@@ -17,7 +19,4 @@ public class UpdateProductDto {
     private String productCode;
     private String productDescription;
     private Double discountPercent;
-//    private String contentUrl;
-//    private Option option;
-//    private Category category;
 }
