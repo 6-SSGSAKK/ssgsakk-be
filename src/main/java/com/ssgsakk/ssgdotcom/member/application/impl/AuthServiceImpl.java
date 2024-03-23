@@ -8,7 +8,7 @@ import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 
-import com.ssgsakk.ssgdotcom.security.JwtTokenProvider;
+import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,8 +24,8 @@ import java.util.UUID;
 public class AuthServiceImpl implements AuthService {
 
     private final MemberRepository memberRepository;
-    private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
+    private final JWTUtil jwtUtil;
 
 
     @Override
@@ -64,8 +64,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private String createToken(User member) {
-        String jwt = jwtTokenProvider.generateToken(member);
-        return jwt;
+        return jwtUtil.createJwt(member.getUuid(), 60*60*10L);
     }
 
     @Override
