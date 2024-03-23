@@ -4,10 +4,11 @@ import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 
 @Entity
 @Builder
-@ToString
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class OAuth extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long oauthSeq;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_seq")
     private User user;
 

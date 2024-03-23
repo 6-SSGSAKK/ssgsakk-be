@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,7 +24,6 @@ import java.util.List;
 
 @Entity
 @Builder
-@ToString
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,19 +34,12 @@ public class User extends BaseTimeEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userSeq;
 
-    // id는 null 불가, 프론트엔드 쪽에서 중복 검사를 진행하므로 unique 설정은 안함
-    // null 불가였으나, 소셜 로그인으로 인해 잠시동안 null 상태가 된다.
-//    @Column(nullable = true)
     private String userId;
 
-//    @Column(nullable = true)
     private String userPassword;
 
-    // uuid
-//    @Column(nullable = false)
     private String uuid;
 
-//    @Column(nullable = false)
     private String name;
 
     private String userEmail;
@@ -55,7 +48,7 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     private String userMobileNum;
 
-    // 0이면 일반 회원가입 유저, 1이면 소셜 로그인 유저, 2면 모든 일반 회원가입, 소셜 로그인 공통 유저
+    // 0이면 일반 회원가입 유저, 1이면 소셜 로그인 유저
     private int state;
 
     @OneToMany(mappedBy = "user")

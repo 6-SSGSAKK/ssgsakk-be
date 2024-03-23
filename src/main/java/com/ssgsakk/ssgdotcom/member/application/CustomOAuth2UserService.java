@@ -5,6 +5,7 @@ import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.dto.*;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.member.infrastructure.OAuthRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -24,6 +25,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         this.oAuthRepository = oAuthRepository;
     }
 
+    @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         System.out.println("oAuth2User >>> " + oAuth2User);
@@ -32,7 +34,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
         // 응답을 저장한 바구니 미리 생성
-        OAuth2Response oAuth2Response = null;
+        OAuth2Response oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
 
         // 각 제공 회사별 처리
         if (registrationId.equals("naver")) {
@@ -45,21 +47,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return null;
         }
 
+
+
         // providerId 를 통해 OAuth 엔티티에 존재하는 계정인지 확인
         String providerId = oAuth2Response.getProviderId();
         String email = oAuth2Response.getEmail();
         String name = oAuth2Response.getName();
 
-        OAuth existData = null;
-        existData = oAuthRepository.findByOauthId(providerId);
+        OAuth existData = oAuthRepository.findByOauthId(providerId);
 
-        // 존재하지 않는 경우
-        // User 테이블에 이메일과 일치하는 데이터 확인(userExistData)
 
         if (existData == null) {
 
-            User userExistData = null;
-            userExistData = memberRepository.findByUserEmail(email);
+            User userExistData = memberRepository.findByUserEmail(email);
 
             // 동일 이메일이 회원 테이블에 없으면 oAuth2Response에서 뽑은 이름과 이메일, UUID를 저장한다.
             if(userExistData == null) {
@@ -73,21 +73,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
                 // 저장
                 memberRepository.save(user);
-                System.out.println("user save >>> " + user.toString());
+
                 // user 데이터의 user_seq, providerId, oauthType를 oauth 테이블에 저장
                 // user_seq 추출
                 long userSeq = memberRepository.findByEmail(email);
-                System.out.println("userseq >>>> " + userSeq);
+
                 // OAuth 테이블에 저장
                 OAuth oAuth = OAuth.builder()
                         .user(user)
-                        .oauthId(providerId)
+                        .oauthId(oAuth2Response.getProviderId())
                         .oauthType(registrationId)
                         .build();
 
                 oAuthRepository.save(oAuth);
-                System.out.println("oauth save >>>> " + oAuth.toString());
-
 
                 // 바구니 생성
                 OAuthDto oAuthDto = new OAuthDto();
@@ -120,84 +118,23 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
                 return new CustomOAuth2User(oAuthDto);
             }
-
-
-            // userExistData 있으면 일반 회원가입 후, 소셜 로그인을 했다는 의미
-            // userExistData의 state 1로 수정
-            // userExistData의 user_seq, 이름 추출하고 providerId, oauthType를 oauth 엔티티로 만들어서 oauth 테이블에 저장
-
-
-
-
-
-
-//            User member = new User();
-//            String uuid = UUID.randomUUID().toString();
-//
-//            System.out.println("name >>> " + oAuth2Response.getName());
-//            System.out.println("user_email >>> " + oAuth2Response.getEmail());
-//            User member = User.builder()
-//                    .name(oAuth2Response.getName())
-//                    .userEmail(oAuth2Response.getEmail())
-//                    .uuid(uuid)
-//                    .state(1)
-//                    .build();
-
-            // 이름과 이메일 데이터를 가진 회원 엔티티를 저장
-//            memberRepository.save(member);
-//            System.out.println("member save!");
-//
-//            // OAuth 테이블에 데이터 저장
-//            OAuth oAuth = OAuth.builder()
-//                    // 이러면 user_seq는 자동으로 들어가나?
-//                    .user(member)
-//                    .oauthType(registrationId)
-//                    .oauthId(providerId)
-//                    .build();
-//
-//            oAuthRepository.save(oAuth);
-//            System.out.println("oAuth save!");
-//
-//
-//            // CustomOAuth2User로 전달할 DTO 생성
-//            OAuthDto oAuthDto = new OAuthDto();
-//            oAuthDto.setEmail(oAuth2Response.getEmail());
-//            oAuthDto.setRole("OAUTH2USER");
-//            oAuthDto.setUuid(uuid);
-//            oAuthDto.setName(oAuth2Response.getName());
-
-//            return new CustomOAuth2User(oAuthDto);
         }
 
-        // 존재하는 경우
-        // 간편 로그인 테이블에 연결을 진행한다.
+        // providerId에 관련된 OAuth 객체 존재하는 경우
+        // 바로 JWT 생성 쪽으로 넘어간다.
         else {
 
-            //TODO
-            // 간편 로그인 테이블 연결 로직
+            // 회원 정보를 얻어오기 위해 User 객체를 추출
+            User user = existData.getUser();
 
+            // 바구니 생성
+            OAuthDto oAuthDto = new OAuthDto();
+            oAuthDto.setEmail(user.getUserEmail());
+            oAuthDto.setName(user.getName());
+            oAuthDto.setUuid(user.getUuid());
+            oAuthDto.setRole("OAUTH2USER");
 
-            // state 갱싱
-            User member = new User();
-//            member.builder()
-//                    .name(existData.getName())
-//                    .userEmail(existData.getUserEmail())
-//                    .uuid(existData.getUuid())
-//                    .
-//                    .state(1)
-//                    .build();
-
-            // uuid 가져오기
-//            String uuid = existData.getUuid();
-//
-//            OAuthDto oAuthDto = new OAuthDto();
-//            oAuthDto.setEmail(existData.getUserEmail());
-//            oAuthDto.setRole("ALLUSER");
-//            oAuthDto.setUuid(uuid);
-//            oAuthDto.setName(existData.getName());
-//
-//            return new CustomOAuth2User(oAuthDto);
+            return new CustomOAuth2User(oAuthDto);
         }
-        return null;
     }
 }
