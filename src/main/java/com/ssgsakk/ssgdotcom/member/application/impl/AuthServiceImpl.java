@@ -84,7 +84,6 @@ public class AuthServiceImpl implements AuthService {
                 .userPassword(signUpDto.getUserPassword())
                 .name(signUpDto.getUserName())
                 .userEmail(signUpDto.getUserEmail())
-                .userPhoneNum(signUpDto.getUserPhoneNum())
                 .userMobileNum(signUpDto.getUserMobileNum())
                 .uuid(signUpDto.getUuid())
                 .build();
@@ -101,6 +100,12 @@ public class AuthServiceImpl implements AuthService {
                 .uuid(savedMember.getUuid())
                 .userName(savedMember.getName())
                 .build();
+    }
+
+    @Override
+    // 이메일 중복 확인
+    public boolean duplicateChecked(String email) {
+        return memberRepository.existsByUserEmail(email);
     }
 
     /**

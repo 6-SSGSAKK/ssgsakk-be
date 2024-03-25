@@ -23,10 +23,10 @@ import java.util.List;
  */
 
 @Entity
-@Builder
+//@Builder
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 @Table(name = "user")
 public class User extends BaseTimeEntity implements UserDetails {
 
@@ -50,6 +50,20 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     // 0이면 일반 회원가입 유저, 1이면 소셜 로그인 유저
     private int state;
+
+    @Builder
+    public User(Long userSeq, String userId, String userPassword, String uuid, String name, String userEmail, String userPhoneNum, String userMobileNum, int state) {
+        this.userSeq = userSeq;
+        this.userId = userId;
+        this.userPassword = userPassword;
+        this.uuid = uuid;
+        this.name = name;
+        this.userEmail = userEmail;
+        this.userPhoneNum = userPhoneNum;
+        this.userMobileNum = userMobileNum;
+        this.state = state;
+    }
+
 
     @OneToMany(mappedBy = "user")
     private List<OAuth> oAuths;
