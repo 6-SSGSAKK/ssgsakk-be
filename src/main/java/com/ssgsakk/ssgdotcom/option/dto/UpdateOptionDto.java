@@ -1,8 +1,5 @@
 package com.ssgsakk.ssgdotcom.option.dto;
 
-import com.ssgsakk.ssgdotcom.option.domain.Color;
-import com.ssgsakk.ssgdotcom.option.domain.CustomizationOption;
-import com.ssgsakk.ssgdotcom.option.domain.Size;
 import lombok.Builder;
 import lombok.Getter;
 

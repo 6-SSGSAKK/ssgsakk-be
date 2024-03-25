@@ -9,7 +9,6 @@ import com.ssgsakk.ssgdotcom.product.application.ProductService;
 import com.ssgsakk.ssgdotcom.product.dto.ProductDto;
 import com.ssgsakk.ssgdotcom.product.dto.SearchProductDto;
 
-//import com.ssgsakk.ssgdotcom.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 
 import lombok.RequiredArgsConstructor;

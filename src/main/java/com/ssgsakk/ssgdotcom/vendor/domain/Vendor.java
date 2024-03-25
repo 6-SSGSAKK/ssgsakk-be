@@ -1,6 +1,5 @@
 package com.ssgsakk.ssgdotcom.vendor.domain;
 
-import com.ssgsakk.ssgdotcom.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

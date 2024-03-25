@@ -5,7 +5,6 @@ import com.ssgsakk.ssgdotcom.product.domain.Product;
 import com.ssgsakk.ssgdotcom.product.dto.ProductDto;
 import com.ssgsakk.ssgdotcom.product.dto.SearchProductDto;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
-import com.ssgsakk.ssgdotcom.vendor.domain.Vendor;
 import com.ssgsakk.ssgdotcom.vendor.infrastructure.VendorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

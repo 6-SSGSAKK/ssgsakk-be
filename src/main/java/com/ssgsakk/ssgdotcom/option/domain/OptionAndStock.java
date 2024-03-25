@@ -1,7 +1,7 @@
 package com.ssgsakk.ssgdotcom.option.domain;
 
 import com.ssgsakk.ssgdotcom.common.entity.BaseCreateTimeEntity;
-import com.ssgsakk.ssgdotcom.product.domain.Product;
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

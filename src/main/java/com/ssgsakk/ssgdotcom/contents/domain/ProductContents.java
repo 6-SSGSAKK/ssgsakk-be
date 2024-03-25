@@ -1,6 +1,5 @@
 package com.ssgsakk.ssgdotcom.contents.domain;
 
-import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
