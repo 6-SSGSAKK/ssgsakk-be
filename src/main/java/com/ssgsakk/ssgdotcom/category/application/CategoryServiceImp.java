@@ -29,22 +29,22 @@ public class CategoryServiceImp implements CategoryService {
         categoryRepository.save(category);
     }
 
+
     @Override
-    public void updateCategory(Long categorySeq, UpdateCategoryDTO updateCategoryDTO) {
-        Category category = categoryRepository.findById(categorySeq)
-                .orElseThrow(() -> new NotFoundException("해당 카테고리를 찾을 수 없습니다."));
+    public void updateCategory(UpdateCategoryDTO updateCategoryDTO){
+        Category category = categoryRepository.findById(updateCategoryDTO.getCategorySeq())
+                .orElseThrow(()->new NotFoundException("해당 카테고리를 찾을 수 없습니다."));
 
-        // 업데이트 메서드를 사용하여 필드를 설정
-        category.updateCategory(
-                updateCategoryDTO.getCategoryName(),
-                updateCategoryDTO.getLevel(),
-                updateCategoryDTO.getParentCategorySeq()
-                        == null ? null : categoryRepository
-                        .findById(updateCategoryDTO.getParentCategorySeq()).orElse(null)
-        );
+        Category updatedCategory = Category.builder()
+                .categorySeq(category.getCategorySeq()) //바뀌지 않는값은 category에서 꺼내쓰고, 바뀌는값은 DTO에서 꺼내쓰면된다.
+                .categoryName(updateCategoryDTO.getCategoryName())
+                .level(updateCategoryDTO.getLevel())
+                .parentCategorySeq(updateCategoryDTO.getParentCategorySeq() == null ? null : categoryRepository.findById(updateCategoryDTO.getParentCategorySeq()).get())
+                .build();
 
-        categoryRepository.save(category);
+        categoryRepository.save(updatedCategory);
     }
+
     @Override
     public void deleteCategory(Long categorySeq) {
         Category category = categoryRepository.findById(categorySeq) //카테고리를 찾아옴

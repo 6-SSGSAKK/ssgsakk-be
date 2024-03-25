@@ -3,6 +3,7 @@ import com.ssgsakk.ssgdotcom.category.application.CategoryService;
 import com.ssgsakk.ssgdotcom.category.domain.Category;
 import com.ssgsakk.ssgdotcom.category.dto.CategoryDTO;
 import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDTO;
+import com.ssgsakk.ssgdotcom.category.vo.UpdateCategoryRequestVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,15 @@ public class CategoryController {
 
     @PutMapping("update/{categorySeq}") // categorySeq 를 기준으로 수정한다.
     public void updatecategory(@PathVariable Long categorySeq,
-                               @RequestBody UpdateCategoryDTO updateCategoryDTO){
-        categoryService.updateCategory(categorySeq, updateCategoryDTO);
+                               @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo){
+
+
+        categoryService.updateCategory(UpdateCategoryDTO.builder()
+                .categorySeq(categorySeq)
+                .categoryName(updateCategoryRequestVo.getCategoryName())
+                .level(updateCategoryRequestVo.getLevel())
+                .parentCategorySeq(updateCategoryRequestVo.getParentCategorySeq())
+                .build());
     }
 
     @DeleteMapping("delete/{categorySeq}") //delete Category Controller

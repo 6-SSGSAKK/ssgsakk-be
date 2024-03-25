@@ -30,22 +30,16 @@ public class Category {
 
 
     @OneToMany(mappedBy = "parentCategorySeq",fetch = FetchType.LAZY)
-    private List<Category> Child = new ArrayList<>(); //참조된 내역을 저장하는 리스트
+    private List<Category> child = new ArrayList<>(); //참조된 내역을 저장하는 리스트
 
     @Builder
-    public Category(String categoryName, int level,Category parentCategorySeq){
+    public Category(Long categorySeq, String categoryName, int level,Category parentCategorySeq){
+        this.categorySeq = categorySeq;
         this.categoryName = categoryName;
         this.level = level;
         this.parentCategorySeq = parentCategorySeq;
 
     }
-
-    public void updateCategory(String categoryName, int level, Category parentCategorySeq) {
-        this.categoryName = categoryName;
-        this.level = level;
-        this.parentCategorySeq = parentCategorySeq;
-    }
-
 
 }
 

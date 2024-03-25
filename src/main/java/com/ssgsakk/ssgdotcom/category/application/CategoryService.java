@@ -8,9 +8,10 @@ import java.util.List;
 
 public interface CategoryService {
     void createCategory(CategoryDTO categoryDTO);
-    void updateCategory(Long categorySeq, UpdateCategoryDTO updateCategoryDTO);
+    void updateCategory(UpdateCategoryDTO updateCategoryDTO);
     void deleteCategory(Long categorySeq);
     List<Category> findCategoryParentNull();
+
 
 
 
