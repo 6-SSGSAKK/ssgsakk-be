@@ -1,96 +1,64 @@
 package com.ssgsakk.ssgdotcom.product.domain;
 
-import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
-import com.ssgsakk.ssgdotcom.contents.domain.Contents;
-import com.ssgsakk.ssgdotcom.option.domain.OptionAndStock;
+import com.ssgsakk.ssgdotcom.common.utils.DeliveryType;
+import com.ssgsakk.ssgdotcom.vendor.domain.Vendor;
 import jakarta.persistence.*;
-import lombok.Builder;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
-@DynamicInsert
 @Entity
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Product extends BaseTimeEntity {
-
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productSeq;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String productName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 15)
     private Integer productPrice;
 
-    @Column(nullable = false)
-    private String vendor;
+    @ManyToOne
+    @JoinColumn(name = "vendor_seq")
+    private Vendor vendor;
 
-    @Column(nullable = false)
-    private String productCode;
-
-    @Column(nullable = false)
+    @Column(length = 200)
     private String productDescription;
 
-    @ColumnDefault("0")
-    private Double discountPercent;
+    @Column(nullable = false, length = 3)
+    private Integer discountPercent;
 
-    @ColumnDefault("0")
+    @Column(nullable = false, length = 15)
     private Double averageRating;
 
-    @ColumnDefault("0")
+    @Column(nullable = false, length = 7)
     private Integer reviewCount;
 
-    private String deliverytype;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(nullable = false)
+    private DeliveryType deliveryType;
 
 
     @Builder
-    public Product(Long productSeq, String productName, Integer productPrice, String vendor,
-                   String productCode, String productDescription, String contentUrl,
-                   Double discountPercent, Double averageRating, Integer reviewCount) {
+    public Product(Long productSeq, String productName, Integer productPrice, Vendor vendor,
+                   String productDescription, Integer discountPercent,
+                   Double averageRating, Integer reviewCount, DeliveryType deliveryType) {
         this.productSeq = productSeq;
         this.productName = productName;
         this.productPrice = productPrice;
         this.vendor = vendor;
-        this.productCode = productCode;
         this.productDescription = productDescription;
         this.discountPercent = discountPercent;
         this.averageRating = averageRating;
         this.reviewCount = reviewCount;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void setProductPrice(Integer productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
-    }
-
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
-    }
-
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
-    }
-
-    public void setDiscountPercent(Double discountPercent) {
-        this.discountPercent = discountPercent;
+        this.deliveryType = deliveryType;
     }
 
 }

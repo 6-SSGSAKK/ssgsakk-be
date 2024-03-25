@@ -7,7 +7,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class OptionAndStockVo {
-    private Long optionAndStockSeq;
+    private Long productSeq;
     private String size;
     private String color;
     private CustomizationOption customizationOption;

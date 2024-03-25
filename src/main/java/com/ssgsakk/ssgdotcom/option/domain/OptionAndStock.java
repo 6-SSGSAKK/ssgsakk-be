@@ -33,10 +33,10 @@ public class OptionAndStock extends BaseCreateTimeEntity {
     @JoinColumn(name = "customization_seq")
     private CustomizationOption customizationOption;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 7)
     private Integer stock;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 7)
     private Integer minimumStock;
 
     @Builder

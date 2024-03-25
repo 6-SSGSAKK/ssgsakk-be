@@ -7,6 +7,4 @@ import lombok.Getter;
 @Builder
 public class SearchProductResponseVo {
     private Long productSeq;
-    private String productName;
-    private Integer productPrice;
 }

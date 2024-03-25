@@ -13,7 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 public class SearchProductDto {
     private Long productSeq;
-    private String productName;
-    private Integer productPrice;
 
 }

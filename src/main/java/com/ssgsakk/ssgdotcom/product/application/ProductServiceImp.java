@@ -1,13 +1,12 @@
 package com.ssgsakk.ssgdotcom.product.application;
 
-import com.ssgsakk.ssgdotcom.option.dto.OptionAndStockDto;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
-import com.ssgsakk.ssgdotcom.product.dto.AddProductDto;
 import com.ssgsakk.ssgdotcom.product.dto.ProductDto;
 import com.ssgsakk.ssgdotcom.product.dto.SearchProductDto;
-import com.ssgsakk.ssgdotcom.product.dto.UpdateProductDto;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
-import jakarta.transaction.Transactional;
+import com.ssgsakk.ssgdotcom.vendor.domain.Vendor;
+import com.ssgsakk.ssgdotcom.vendor.infrastructure.VendorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,8 @@ import java.util.stream.Collectors;
 public class ProductServiceImp implements ProductService{
 
     private final ProductRepository productRepository;
-
+    private final VendorRepository vendorRepository;
+    private final JPAQueryFactory jpaQueryFactory;
     // 상품 상세 정보 조회
     @Override
     public ProductDto productInfo(Long id) {
@@ -31,53 +31,14 @@ public class ProductServiceImp implements ProductService{
         return ProductDto.builder()
                 .productName(product.getProductName())
                 .productPrice(product.getProductPrice())
-                .vendor(product.getVendor())
-                .productCode(product.getProductCode())
+                .vendor(product.getVendor().getVendorName())
                 .productDescription(product.getProductDescription())
                 .discountPercent(product.getDiscountPercent())
+                .averageRating(product.getAverageRating())
+                .deliveryType(product.getDeliveryType())
+                .reviewCount(product.getReviewCount())
                 .build();
     }
-
-
-    // 상품 등록
-    @Transactional
-    @Override
-    public AddProductDto addProduct(AddProductDto addProductDto) {
-
-        productRepository.save(Product.builder()
-                .productName(addProductDto.getProductName())
-                .productPrice(addProductDto.getProductPrice())
-                .vendor(addProductDto.getVendor())
-                .productCode(addProductDto.getProductCode())
-                .productDescription(addProductDto.getProductDescription())
-                .discountPercent(addProductDto.getDiscountPercent())
-                .build());
-        return addProductDto;
-    }
-
-    // 상품 수정
-    @Transactional
-    @Override
-    public void updateProduct(Long id, UpdateProductDto updateProductDto) {
-        Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("찾으시는 상품이 없습니다."));
-
-        existingProduct.setProductName(updateProductDto.getProductName());
-        existingProduct.setProductPrice(updateProductDto.getProductPrice());
-        existingProduct.setVendor(updateProductDto.getVendor());
-        existingProduct.setProductCode(updateProductDto.getProductCode());
-        existingProduct.setProductDescription(updateProductDto.getProductDescription());
-        existingProduct.setDiscountPercent(updateProductDto.getDiscountPercent());
-
-        productRepository.save(existingProduct);
-
-    }
-
-
-    // 상품 삭제
-    @Transactional
-    @Override
-    public void deleteProduct(Long id) { productRepository.deleteById(id);}
 
     // 상품 검색
     // entity 전체로 받아서 dto에서 처리 JPA에선 그렇게 자주 함.
@@ -88,8 +49,6 @@ public class ProductServiceImp implements ProductService{
         return products.stream()
                 .map(product -> SearchProductDto.builder()
                         .productSeq(product.getProductSeq())
-                        .productName(product.getProductName())
-                        .productPrice(product.getProductPrice())
                         .build())
                 .collect(Collectors.toList());
         }

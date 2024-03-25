@@ -1,20 +1,19 @@
 package com.ssgsakk.ssgdotcom.product.presentation;
 
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
-import com.ssgsakk.ssgdotcom.contents.application.S3UploadService;
+import com.ssgsakk.ssgdotcom.contents.application.ContentsService;
+import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
+import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
 import com.ssgsakk.ssgdotcom.product.vo.*;
 import com.ssgsakk.ssgdotcom.product.application.ProductService;
-import com.ssgsakk.ssgdotcom.product.dto.AddProductDto;
 import com.ssgsakk.ssgdotcom.product.dto.ProductDto;
 import com.ssgsakk.ssgdotcom.product.dto.SearchProductDto;
-import com.ssgsakk.ssgdotcom.product.dto.UpdateProductDto;
 
 //import com.ssgsakk.ssgdotcom.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,88 +25,52 @@ import java.util.stream.Collectors;
 public class ProductController {
 
     private final ProductService productService;
-    private final S3UploadService s3UploadService;
+    private final ContentsService contentsService;
 
     // 상품 검색
     @GetMapping("/search")
+    @Operation(summary = "상품 검색", description = "상품이름으로 검색", tags = { "Product Search" })
     public BaseResponse<?> searchProducts(@RequestParam("keyword") String keyword) {
         List<SearchProductDto> searchProductDto = productService.searchProducts(keyword);
 
         return new BaseResponse<>("searchProduct Success", searchProductDto.stream()
                 .map(productDto -> SearchProductResponseVo.builder()
                         .productSeq(productDto.getProductSeq())
-                        .productName(productDto.getProductName())
-                        .productPrice(productDto.getProductPrice())
                         .build())
 
               .collect(Collectors.toList()));
     }
-
 
     // 상품 상세 정보 조회
     @GetMapping("/{id}")
     @Operation(summary = "상품 상세 정보 조회", description = "상품의 상세 정보를 조회", tags = { "Product Info" })
     public BaseResponse<?> productInfo(@PathVariable("id") Long productSeq) {
         ProductDto productDto = productService.productInfo(productSeq);
+        List<ProductContents> contents = contentsService.productContentsList(productSeq);
+
+        List<ProductContentsVo> contentVos = new ArrayList<>();
+        if (contents != null) {
+            for (ProductContents content : contents) {
+                ProductContentsVo contentVo = ProductContentsVo.builder()
+                        .priority(content.getPriority())
+                        .contentUrl(content.getContents() != null ? content.getContents().getContentUrl() : null)
+                        .contentDescription(content.getContents().getContentDescription())
+                        .build();
+                contentVos.add(contentVo);
+            }
+        }
 
         return new BaseResponse<>("productInfo Success", ProductInfoResponseVo.builder()
                 .productName(productDto.getProductName())
                 .productPrice(productDto.getProductPrice())
                 .vendor(productDto.getVendor())
-                .productCode(productDto.getProductCode())
                 .productDescription(productDto.getProductDescription())
                 .discountPercent(productDto.getDiscountPercent())
+                .deliveryType(productDto.getDeliveryType())
+                .averageRating(productDto.getAverageRating())
+                .reviewCount(productDto.getReviewCount())
+                .contents(contentVos)
                 .build());
     }
 
-    // 상품 등록
-    @PostMapping()
-    @Operation(summary = "상품 등록", description = "새로운 상품을 등록", tags = { "Add product" })
-    public BaseResponse<AddProductResponseVo> addProduct(@RequestParam("files") List<MultipartFile> files,
-                                                         @RequestBody AddProductRequestVo addProductRequestVo) {
-        List<String> contentUrls = new ArrayList<>();
-        for (MultipartFile file : files) {
-            String contentUrl = s3UploadService.s3_upload(file);
-            contentUrls.add(contentUrl);
-        }
-        AddProductDto addProductRequestDto = AddProductDto.builder()
-                .productName(addProductRequestVo.getProductName())
-                .productPrice(addProductRequestVo.getProductPrice())
-                .vendor(addProductRequestVo.getVendor())
-                .productCode(addProductRequestVo.getProductCode())
-                .productDescription(addProductRequestVo.getProductDescription())
-                .discountPercent(addProductRequestVo.getDiscountPercent())
-                .build();
-        AddProductDto addProductResponseDto = productService.addProduct(addProductRequestDto);
-
-        return new BaseResponse<>("addProduct Success", AddProductResponseVo.builder()
-                .productName(addProductResponseDto.getProductName()).build());
-    }
-
-    // 상품 수정
-    @PutMapping("/{id}")
-    @Operation(summary = "상품 수정", description = "기존 상품을 수정", tags = { "Update product" })
-    public BaseResponse<?> updateProduct(
-            @PathVariable("id") Long id,
-            @RequestBody UpdateProductRequestVo updateProductRequestVo) {
-        UpdateProductDto updateProductDto = UpdateProductDto.builder()
-                .productName(updateProductRequestVo.getProductName())
-                .productPrice(updateProductRequestVo.getProductPrice())
-                .vendor(updateProductRequestVo.getVendor())
-                .productCode(updateProductRequestVo.getProductCode())
-                .productDescription(updateProductRequestVo.getProductDescription())
-                .discountPercent(updateProductRequestVo.getDiscountPercent())
-                .build();
-        productService.updateProduct(id, updateProductDto);
-        return new BaseResponse<>("updateProduct Success", "");
-    }
-
-
-    // 상품 삭제
-    @DeleteMapping("/delete/{id}")
-    @Operation(summary = "상품 삭제", description = "상품 삭제", tags = { "Delete product" })
-    public BaseResponse<?> deleteProduct(@PathVariable("id") Long id) {
-        productService.deleteProduct(id);
-        return new BaseResponse<>("deleteProduct Success", "");
-    }
 }

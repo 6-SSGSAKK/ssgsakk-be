@@ -24,7 +24,7 @@ public class OptionAndStockController {
 
         return new BaseResponse<>("Get Options Success", optionAndStockDtoList.stream()
                 .map(optionAndStockDto -> OptionAndStockVo.builder()
-                        .optionAndStockSeq(optionAndStockDto.getOptionAndStockSeq())
+                        .productSeq(productId)
                         .size(optionAndStockDto.getSize())
                         .color(optionAndStockDto.getColor())
                         .customizationOption(optionAndStockDto.getCustomizationOption())

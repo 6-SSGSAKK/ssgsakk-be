@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ContentsServiceImpl implements ContentsService {
-    ProductContentsRepository productContentsRepository;
+    private final ProductContentsRepository productContentsRepository;
     @Override
     @Transactional
     public List<ProductContents> productContentsList(Long ProductSeq){

@@ -4,6 +4,7 @@ import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductContents extends BaseTimeEntity {
+@Builder
+public class ProductContents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productContentsSeq;
@@ -24,8 +26,6 @@ public class ProductContents extends BaseTimeEntity {
     @JoinColumn(name = "contents_seq")
     private Contents contents;
 
-    private String productContentsType;
-
-    private String productContentsIdx;
+    private Integer priority;
 
 }

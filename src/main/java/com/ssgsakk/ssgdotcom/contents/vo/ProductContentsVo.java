@@ -6,8 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ProductContentsVo {
-    private String productContentsType;
-    private String productContentsIdx;
+    private Integer priority;
     private String contentUrl;
     private String contentDescription;
 }
