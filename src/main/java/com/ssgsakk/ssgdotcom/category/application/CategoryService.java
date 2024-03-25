@@ -11,4 +11,7 @@ public interface CategoryService {
     void updateCategory(Long categorySeq, UpdateCategoryDTO updateCategoryDTO);
     void deleteCategory(Long categorySeq);
     List<Category> findCategoryParentNull();
+
+
+
 }

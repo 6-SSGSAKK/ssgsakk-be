@@ -13,6 +13,6 @@ public class UpdateCategoryDTO {
 
     private String categoryName;
     private Long parentCategorySeq;
-    private Long level;
+    private int level;
 
 }

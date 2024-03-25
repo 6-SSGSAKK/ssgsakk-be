@@ -16,7 +16,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping()
+    @PostMapping() //create category
     public void createcategory(@RequestBody CategoryDTO category){
         categoryService.createCategory(category);
 
@@ -33,12 +33,11 @@ public class CategoryController {
         categoryService.deleteCategory(categorySeq);
     }
 
-    @GetMapping("/bigcategory")  //(대)카테고리 조회 컨트롤러
+    @GetMapping("/allcategories")  //전체 카테고리 조회
     public ResponseEntity<List<Category>> findcategoryparentnull(){
         List<Category> categories = categoryService.findCategoryParentNull();
         return ResponseEntity.ok(categories);
     }
-
 
 
 
