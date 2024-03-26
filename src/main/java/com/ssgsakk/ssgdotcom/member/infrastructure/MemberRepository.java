@@ -11,19 +11,24 @@ import java.util.Optional;
 
 
 public interface MemberRepository extends JpaRepository<User, Long> {
-   Optional<User> findByUserIdAndUserPassword(String userId, String userPassword);
-   Optional<User> findByUserId(String userId);
-   Optional<User> findByUuid(String uuid);
+    Optional<User> findByUserIdAndUserPassword(String userId, String userPassword);
 
-   // OAuth2
-   User findByUserEmail(String userEmail);
-   @Query("SELECT u.userSeq FROM User u WHERE u.userEmail = :userEmail")
-   long findByEmail(String userEmail);
+    Optional<User> findByUserId(String userId);
 
-   @Transactional
-   @Modifying
-   @Query("UPDATE User u SET u.state = :stateValue WHERE userEmail = :email")
-   void updateState(@Param("stateValue") int stateValue, @Param("email") String email);
+    Optional<User> findByUuid(String uuid);
+
+    // OAuth2
+    User findByUserEmail(String userEmail);
+
+    @Query("SELECT u.userSeq FROM User u WHERE u.userEmail = :userEmail")
+    long findByEmail(String userEmail);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE User u SET u.state = :stateValue WHERE userEmail = :email")
+    void updateState(@Param("stateValue") int stateValue, @Param("email") String email);
 
     boolean existsByUserEmail(String email);
+
+    boolean existsByUserId(String userId);
 }

@@ -5,6 +5,7 @@ import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.domain.User;
+import com.ssgsakk.ssgdotcom.member.dto.IdDuplicateCheckDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
@@ -105,6 +106,11 @@ public class AuthServiceImpl implements AuthService {
     // 이메일 중복 확인
     public boolean duplicateChecked(String email) {
         return memberRepository.existsByUserEmail(email);
+    }
+
+    @Override
+    public boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto) {
+        return memberRepository.existsByUserId(idDuplicateCheckDto.getInputId());
     }
 
     /**
