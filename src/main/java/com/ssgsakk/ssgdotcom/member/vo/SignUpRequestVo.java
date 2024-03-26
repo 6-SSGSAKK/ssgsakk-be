@@ -14,6 +14,5 @@ public class SignUpRequestVo {
     private String userPassword;
     private String userName;
     private String userEmail;
-    private String userPhoneNum;
     private String userMobileNum;
 }
