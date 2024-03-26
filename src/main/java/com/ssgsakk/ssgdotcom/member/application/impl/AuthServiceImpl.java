@@ -1,3 +1,4 @@
+
 package com.ssgsakk.ssgdotcom.member.application.impl;
 
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;

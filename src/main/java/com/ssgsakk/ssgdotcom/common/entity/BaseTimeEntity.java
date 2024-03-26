@@ -10,16 +10,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@EntityListeners(AuditingEntityListener.class)
 @Getter
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)  // Auditing 기능 포함
 public abstract class BaseTimeEntity {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
-    private LocalDateTime updateAt;
-
+    private LocalDateTime modifiedDate;
 }
