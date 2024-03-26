@@ -23,6 +23,8 @@ public class OAuth extends BaseTimeEntity {
     @JoinColumn(name = "user_seq")
     private User user;
 
+    @Column(nullable = false, length = 20)
     private String oauthType;
+    @Column(nullable = false, length = 255)
     private String oauthId;
 }

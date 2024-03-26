@@ -49,7 +49,11 @@ public class MailSendService {
         mailSend(setFrom, toMail, title, content);
 
         // redis 저장
-        redisUtil.setData(email, authNum);
+        try {
+            redisUtil.setData(email, authNum);
+        } catch (BusinessException e){
+            throw new BusinessException(ErrorCode.REDIS_SERVER_ERROR);
+        }
         return authNum;
     }
 

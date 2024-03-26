@@ -17,7 +17,7 @@ public class GoogleResponse implements OAuth2Response {
 
     @Override
     public String getProviderId() {
-        return "google" + attribute.get("sub").toString();
+        return attribute.get("sub").toString();
     }
 
     @Override
