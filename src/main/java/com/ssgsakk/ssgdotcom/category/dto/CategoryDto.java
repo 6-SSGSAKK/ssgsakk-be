@@ -1,6 +1,6 @@
 package com.ssgsakk.ssgdotcom.category.dto;
 import lombok.*;
-@Data
+@Getter
 @NoArgsConstructor
 public class CategoryDto {
 
