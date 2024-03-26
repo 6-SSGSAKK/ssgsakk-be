@@ -30,7 +30,7 @@ public class OptionAndStockController {
     @PostMapping("/stock/{productId}")
     public BaseResponse<?> getStocks(@PathVariable("productId") Long productId,
                                      @RequestBody OptionAndStockVo optionAndStockVo){
-
+        return
     }
 
     @PutMapping("/add")
