@@ -1,15 +1,13 @@
-package com.ssgsakk.ssgdotcom.option.vo;
+package com.ssgsakk.ssgdotcom.option.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.AbstractMap;
 import java.util.List;
 
 @Builder
 @Getter
-public class OptionAndStockVo {
-    private Long productSeq;
+public class OptionDto {
     private List<AbstractMap.SimpleEntry<Long, String>> size;
     private List<AbstractMap.SimpleEntry<Long, String>> color;
     private List<AbstractMap.SimpleEntry<Long, String>> customizationOption;

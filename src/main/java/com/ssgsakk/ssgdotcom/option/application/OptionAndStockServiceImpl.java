@@ -2,17 +2,17 @@ package com.ssgsakk.ssgdotcom.option.application;
 
 import com.ssgsakk.ssgdotcom.option.domain.*;
 import com.ssgsakk.ssgdotcom.option.dto.AddOptionDto;
-import com.ssgsakk.ssgdotcom.option.dto.OptionAndStockDto;
-import com.ssgsakk.ssgdotcom.option.infrastructure.ColorRepository;
-import com.ssgsakk.ssgdotcom.option.infrastructure.CustomizationRepository;
-import com.ssgsakk.ssgdotcom.option.infrastructure.OptionAndStockRepository;
-import com.ssgsakk.ssgdotcom.option.infrastructure.SizeRepository;
+import com.ssgsakk.ssgdotcom.option.dto.OptionDto;
+import com.ssgsakk.ssgdotcom.option.dto.StockDto;
+import com.ssgsakk.ssgdotcom.option.infrastructure.*;
 
+import com.ssgsakk.ssgdotcom.product.dto.SearchProductDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,19 +25,52 @@ public class OptionAndStockServiceImpl implements OptionAndStockService {
     private final SizeRepository sizeRepository;
     private final ColorRepository colorRepository;
     private final CustomizationRepository customizationRepository;
+    private final OptionAndStockImpl optionAndStockImpl;
 
 
     @Override
-    public List<OptionAndStockDto> findOptionsByProductId(Long productId) {
-        return optionAndStockRepository.findByProductSeq(productId).stream()
-                .map(optionAndStock -> OptionAndStockDto.builder()
+    public OptionDto findOptionsByProductId(Long productId) {
+        List<OptionAndStock> options = optionAndStockRepository.findByProductSeq(productId);
+
+        List<AbstractMap.SimpleEntry<Long, String>> colorList = options.stream()
+                .map(optionAndStock -> optionAndStock.getColor() != null ?
+                        new AbstractMap.SimpleEntry<>(optionAndStock.getColor().getColorSeq(),
+                                optionAndStock.getColor().getColorData())
+                        : null)
+                .collect(Collectors.toList());
+
+        List<AbstractMap.SimpleEntry<Long, String>> sizeList = options.stream()
+                .map(optionAndStock -> optionAndStock.getSize() != null ?
+                        new AbstractMap.SimpleEntry<>(optionAndStock.getSize().getSizeSeq(),
+                                optionAndStock.getSize().getSizeData())
+                        : null)
+                .collect(Collectors.toList());
+
+        List<AbstractMap.SimpleEntry<Long, String>> customizationList = options.stream()
+                .map(optionAndStock -> optionAndStock.getCustomizationOption() != null ?
+                        new AbstractMap.SimpleEntry<>(optionAndStock.getCustomizationOption().getCustomizationOptionSeq(),
+                                optionAndStock.getCustomizationOption().getCustomizationData())
+                        : null)
+                .collect(Collectors.toList());
+
+        return OptionDto.builder()
+                .color(colorList)
+                .size(sizeList)
+                .customizationOption(customizationList)
+                .build();
+    }
+
+    @Override
+    public List<StockDto> getStocks(StockDto stockDto) {
+        List<OptionAndStock> optionAndStocks =  optionAndStockImpl.getOptionInfoByProduct(
+                stockDto.getProductSeq(), stockDto.getColorSeq(),
+                stockDto.getSizeSeq(), stockDto.getCustomizationOptionSeq()
+        );
+        return optionAndStocks.stream()
+                .map(optionAndStock -> StockDto.builder()
                         .optionAndStockSeq(optionAndStock.getOptionAndStockSeq())
+                        .productSeq(optionAndStock.getProductSeq())
                         .stock(optionAndStock.getStock())
-                        .minimumStock(optionAndStock.getMinimumStock())
-                        .color(optionAndStock.getColor() != null ? optionAndStock.getColor().getColorData() : null)
-                        .size(optionAndStock.getSize() != null ? optionAndStock.getSize().getSizeData() : null)
-                        .customizationOption(optionAndStock.getCustomizationOption() != null
-                                ? optionAndStock.getCustomizationOption() : null)
                         .build())
                 .collect(Collectors.toList());
     }
