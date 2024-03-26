@@ -1,3 +1,4 @@
+
 package com.ssgsakk.ssgdotcom.member.application.impl;
 
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
@@ -30,12 +31,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public SignInDto signIn(SignInDto signInDto) {
-        System.out.println("로그인 접근 >>>> " + signInDto);
         // 아이디를 통해 Member 객체 생성
         User member = memberRepository.findByUserId(signInDto.getUserId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.FAILED_TO_LOGIN));
 
-        System.out.println("member >>> " + member.toString());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         // 비밀번호 매칭
@@ -54,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
         );
 
         // 토큰 값 발행
-        String token = createToken(member);
+        String token = "Bearer " + createToken(member);
         log.info("token: {}", token);
         return SignInDto.builder()
                 .uuid(member.getUuid())
@@ -84,7 +83,6 @@ public class AuthServiceImpl implements AuthService {
                 .userPassword(signUpDto.getUserPassword())
                 .name(signUpDto.getUserName())
                 .userEmail(signUpDto.getUserEmail())
-                .userPhoneNum(signUpDto.getUserPhoneNum())
                 .userMobileNum(signUpDto.getUserMobileNum())
                 .uuid(signUpDto.getUuid())
                 .build();
@@ -101,6 +99,12 @@ public class AuthServiceImpl implements AuthService {
                 .uuid(savedMember.getUuid())
                 .userName(savedMember.getName())
                 .build();
+    }
+
+    @Override
+    // 이메일 중복 확인
+    public boolean duplicateChecked(String email) {
+        return memberRepository.existsByUserEmail(email);
     }
 
     /**

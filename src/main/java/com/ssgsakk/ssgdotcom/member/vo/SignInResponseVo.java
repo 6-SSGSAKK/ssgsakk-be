@@ -6,11 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class SignInResponseVo {
     private String userName;
     private String uuid;
     private String token;
+
+    @Builder
+    public SignInResponseVo(String userName, String uuid, String token) {
+        this.userName = userName;
+        this.uuid = uuid;
+        this.token = token;
+    }
 }

@@ -13,4 +13,7 @@ import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 public interface AuthService {
     SignInDto signIn(SignInDto signInDto);
     SignUpDto signUp(SignUpDto signUpDto);
+
+    // 이메일 중복 확인
+    public boolean duplicateChecked(String email);
 }

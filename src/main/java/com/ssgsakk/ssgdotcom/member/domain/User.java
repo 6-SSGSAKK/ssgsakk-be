@@ -7,26 +7,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * [회원]의 컬럼은 다음과 같다.
- *  user_seq, user_id, user_password, user_name, user_email, user_phone_num, user_mobile_num, created_at
- *
- *  컬럼을 전부 엔티티 객체로 제작하며 UserDetails 인터페이스를 구현하여 인증과 권한 부여를 커스터마이징 진행
- *
- *  현재는 관계를 고려하지 않고 진행
- *
- *  [회원] 테이블에는 없지만 uuid, update_at 추가해고 진행
- */
-
 @Entity
-@Builder
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "user")
 public class User extends BaseTimeEntity implements UserDetails {
 
@@ -34,22 +20,40 @@ public class User extends BaseTimeEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userSeq;
 
+    @Column(nullable = false, length = 20)
     private String userId;
 
+    @Column(nullable = false, length = 255)
     private String userPassword;
 
+    @Column(nullable = false, length = 255)
     private String uuid;
 
+    @Column(nullable = false, length = 20)
     private String name;
 
+    @Column(nullable = false, length = 255)
     private String userEmail;
 
-    private String userPhoneNum;
-
+    @Column(nullable = true, length = 20)
     private String userMobileNum;
 
     // 0이면 일반 회원가입 유저, 1이면 소셜 로그인 유저
+    @Column(nullable = false, length = 1)
     private int state;
+
+    @Builder
+    public User(Long userSeq, String userId, String userPassword, String uuid, String name, String userEmail, String userPhoneNum, String userMobileNum, int state) {
+        this.userSeq = userSeq;
+        this.userId = userId == null ? " " : userId ;
+        this.userPassword = userPassword == null ? " " : userPassword;
+        this.uuid = uuid;
+        this.name = name == null ? " " : name;
+        this.userEmail = userEmail == null ? " " : userEmail;
+        this.userMobileNum = userMobileNum;
+        this.state = state;
+    }
+
 
     @OneToMany(mappedBy = "user")
     private List<OAuth> oAuths;

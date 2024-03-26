@@ -1,15 +1,16 @@
 package com.ssgsakk.ssgdotcom.member.presentation;
 
+import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
+import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
+import com.ssgsakk.ssgdotcom.member.application.MailSendService;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 
-import com.ssgsakk.ssgdotcom.member.vo.SignInRequestVo;
-import com.ssgsakk.ssgdotcom.member.vo.SignInResponseVo;
-import com.ssgsakk.ssgdotcom.member.vo.SignUpRequestVo;
-import com.ssgsakk.ssgdotcom.member.vo.SignUpResponseVo;
+import com.ssgsakk.ssgdotcom.member.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final MailSendService mailSendService;
 
     @Operation(summary = "로그인", description = "로그인", tags = {"User SignIn"})
     @PostMapping("/signin")
@@ -52,7 +54,6 @@ public class AuthController {
                 .userPassword(signUpRequestVo.getUserPassword())
                 .userName(signUpRequestVo.getUserName())
                 .userEmail(signUpRequestVo.getUserEmail())
-                .userPhoneNum(signUpRequestVo.getUserPhoneNum())
                 .userMobileNum(signUpRequestVo.getUserMobileNum())
                 .build();
 
@@ -62,5 +63,30 @@ public class AuthController {
                 .userName(servicedSignUpDto.getUserName())
                 .uuid(servicedSignUpDto.getUuid())
                 .build());
+    }
+
+    @Operation(summary = "이메일 전송", description = "이메일 전송", tags = {"Email Send"})
+    @PostMapping("/mail-send")
+    public BaseResponse<Object> mailSend(@RequestBody @Valid EmailSendRequestVo emailSendRequestVo) {
+        // 이메일 중복 확인
+        if(authService.duplicateChecked(emailSendRequestVo.getEmail())){
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+        }
+
+        // 이메일 인증 문자열 전송
+        String authNum = mailSendService.joinEmail(emailSendRequestVo.getEmail());
+        return new BaseResponse<>("이메일 발송", null);
+    }
+
+    @Operation(summary = "이메일 인증", description = "이메일 인증", tags = {"Email Certification"})
+    @PostMapping("/mail-check")
+    public BaseResponse<Object> mailCheck(@RequestBody @Valid EmailCheckRequestVo emailCheckRequestVo) {
+        boolean checked = mailSendService.checkAuthNum(emailCheckRequestVo.getEmail(), emailCheckRequestVo.getAuthNum());
+        if(checked){
+            return new BaseResponse<>("인증 성공", null);
+        }
+        else{
+            throw new BusinessException(ErrorCode.MASSAGE_VALID_FAILED);
+        }
     }
 }

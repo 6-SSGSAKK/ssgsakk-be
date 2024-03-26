@@ -24,4 +24,6 @@ public interface MemberRepository extends JpaRepository<User, Long> {
    @Modifying
    @Query("UPDATE User u SET u.state = :stateValue WHERE userEmail = :email")
    void updateState(@Param("stateValue") int stateValue, @Param("email") String email);
+
+    boolean existsByUserEmail(String email);
 }

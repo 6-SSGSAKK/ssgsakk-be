@@ -10,8 +10,6 @@ import lombok.*;
  */
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class SignInDto {
@@ -20,4 +18,13 @@ public class SignInDto {
     private String userName;
     private String uuid;
     private String token;
+
+    @Builder
+    public SignInDto(String userId, String userPassword, String userName, String uuid, String token) {
+        this.userId = userId;
+        this.userPassword = userPassword;
+        this.userName = userName;
+        this.uuid = uuid;
+        this.token = token;
+    }
 }

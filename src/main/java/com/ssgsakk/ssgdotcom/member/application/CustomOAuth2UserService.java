@@ -1,10 +1,13 @@
 package com.ssgsakk.ssgdotcom.member.application;
 
+import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
+import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.member.domain.OAuth;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.dto.*;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.member.infrastructure.OAuthRepository;
+import com.ssgsakk.ssgdotcom.oauth2.ProviderName;
 import jakarta.transaction.Transactional;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -28,7 +31,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println("oAuth2User >>> " + oAuth2User);
 
         // 제공 회사 판별
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
@@ -36,11 +38,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // 응답을 저장한 바구니 미리 생성
         OAuth2Response oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
 
+
         // 각 제공 회사별 처리
-        if (registrationId.equals("naver")) {
+        String providerName;
+        if (registrationId.contains("naver")) {
+            providerName = ProviderName.NAVER.getProviderName();
             oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
         }
-        else if (registrationId.equals("google")) {
+        else if (registrationId.contains("google")) {
+            providerName = ProviderName.GOOGLE.getProviderName();
             oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
         }
         else {
@@ -48,13 +54,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
 
-
         // providerId 를 통해 OAuth 엔티티에 존재하는 계정인지 확인
         String providerId = oAuth2Response.getProviderId();
         String email = oAuth2Response.getEmail();
         String name = oAuth2Response.getName();
 
-        OAuth existData = oAuthRepository.findByOauthId(providerId);
+        OAuth existData = oAuthRepository.findByOauthIdAndOauthType(providerId, registrationId);
 
 
         if (existData == null) {
@@ -82,7 +87,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 OAuth oAuth = OAuth.builder()
                         .user(user)
                         .oauthId(oAuth2Response.getProviderId())
-                        .oauthType(registrationId)
+                        .oauthType(providerName)
                         .build();
 
                 oAuthRepository.save(oAuth);
@@ -101,9 +106,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             else {
                 // state 1로 수정
                 memberRepository.updateState(1, email);
+
                 OAuth oAuth = OAuth.builder()
                         .oauthId(providerId)
-                        .oauthType(registrationId)
+                        .oauthType(providerName)
                         .user(userExistData)
                         .build();
 
