@@ -7,7 +7,6 @@ import com.ssgsakk.ssgdotcom.common.util.RedisUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -18,19 +17,18 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class MailSendService {
-    @Autowired
-    private JavaMailSender mailSender;
-    private int authNumber;
+
+    private final JavaMailSender mailSender;
     private final RedisUtil redisUtil;
 
     //임의의 6자리 양수를 반환합니다.
     public static String makeRandomNumber() {
         Random r = new Random();
-        String randomNumber = "";
+        StringBuilder randomNumber = new StringBuilder();
         for(int i = 0; i < 6; i++) {
-            randomNumber += Integer.toString(r.nextInt(10));
+            randomNumber.append(Integer.toString(r.nextInt(10)));
         }
-        return randomNumber;
+        return randomNumber.toString();
     }
 
 
@@ -77,6 +75,7 @@ public class MailSendService {
 
     // 이메일 코드 인증
     public boolean checkAuthNum(String email, String authNum) {
+
         if(redisUtil.getData(email).equals(authNum)){
             return true;
         }

@@ -31,9 +31,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println("oAuth2User >>> " + oAuth2User);
-
-
 
         // 제공 회사 판별
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
@@ -86,7 +83,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 // user_seq 추출
                 long userSeq = memberRepository.findByEmail(email);
 
-                System.out.println("provider name >> " + providerName);
                 // OAuth 테이블에 저장
                 OAuth oAuth = OAuth.builder()
                         .user(user)
@@ -110,7 +106,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             else {
                 // state 1로 수정
                 memberRepository.updateState(1, email);
-                System.out.println("provider name >> " + providerName);
 
                 OAuth oAuth = OAuth.builder()
                         .oauthId(providerId)

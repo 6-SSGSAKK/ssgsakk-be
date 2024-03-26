@@ -8,11 +8,8 @@ import java.io.Serializable;
 
 
 @Entity
-@Builder
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "oauth")
 public class OAuth extends BaseTimeEntity {
 
     @Id
@@ -27,4 +24,12 @@ public class OAuth extends BaseTimeEntity {
     private String oauthType;
     @Column(nullable = false, length = 255)
     private String oauthId;
+
+    @Builder
+    public OAuth(long oauthSeq, User user, String oauthType, String oauthId) {
+        this.oauthSeq = oauthSeq;
+        this.user = user;
+        this.oauthType = oauthType;
+        this.oauthId = oauthId;
+    }
 }

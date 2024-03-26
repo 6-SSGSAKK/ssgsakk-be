@@ -39,7 +39,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        String role = auth.getAuthority();
 
         String token = jwtUtil.createJwt(uuid, 60*60*60L);
-        System.out.println("token >>> " + token);
 
         response.addHeader("Authorization", "Bearer " + token);
 
