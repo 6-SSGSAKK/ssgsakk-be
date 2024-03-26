@@ -1,7 +1,7 @@
 package com.ssgsakk.ssgdotcom.category.application;
 import com.ssgsakk.ssgdotcom.category.domain.Category;
-import com.ssgsakk.ssgdotcom.category.dto.CategoryDTO;
-import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDTO;
+import com.ssgsakk.ssgdotcom.category.dto.CategoryDto;
+import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDto;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ public class CategoryServiceImp implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public void createCategory(CategoryDTO categoryDTO) {
+    public void createCategory(CategoryDto categoryDTO) {
         log.info("============" + categoryDTO.getParentCategorySeq());
         Category category = Category.builder()
                 .categoryName(categoryDTO.getCategoryName())
@@ -31,7 +31,7 @@ public class CategoryServiceImp implements CategoryService {
 
 
     @Override
-    public void updateCategory(UpdateCategoryDTO updateCategoryDTO){
+    public void updateCategory(UpdateCategoryDto updateCategoryDTO){
         Category category = categoryRepository.findById(updateCategoryDTO.getCategorySeq())
                 .orElseThrow(()->new NotFoundException("해당 카테고리를 찾을 수 없습니다."));
 

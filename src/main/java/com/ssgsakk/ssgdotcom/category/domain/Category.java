@@ -1,6 +1,7 @@
 package com.ssgsakk.ssgdotcom.category.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categorySeq;
 
-    @Column(nullable = false)
+    @Column(nullable = false,length = 10)
     private String categoryName;
 
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1)
     private int level; //카테고리 depth
 
     @ManyToOne(fetch = FetchType.LAZY)

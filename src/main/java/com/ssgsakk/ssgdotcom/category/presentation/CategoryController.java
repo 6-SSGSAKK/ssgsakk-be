@@ -1,8 +1,9 @@
 package com.ssgsakk.ssgdotcom.category.presentation;
 import com.ssgsakk.ssgdotcom.category.application.CategoryService;
 import com.ssgsakk.ssgdotcom.category.domain.Category;
-import com.ssgsakk.ssgdotcom.category.dto.CategoryDTO;
-import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDTO;
+import com.ssgsakk.ssgdotcom.category.dto.CategoryDto;
+import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDto;
+import com.ssgsakk.ssgdotcom.category.vo.CreateCategoryRequestVo;
 import com.ssgsakk.ssgdotcom.category.vo.UpdateCategoryRequestVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,13 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping() //create category
-    public void createcategory(@RequestBody CategoryDTO category){
-        categoryService.createCategory(category);
+    public void createcategory(@RequestBody CreateCategoryRequestVo createCategoryRequestVo){
+
+        categoryService.createCategory(CategoryDto.builder()
+                .categoryName(createCategoryRequestVo.getCategoryName())
+                .parentCategorySeq(createCategoryRequestVo.getParentCategorySeq())
+                .level(createCategoryRequestVo.getLevel())
+                .build());
 
     }
 
@@ -28,7 +34,7 @@ public class CategoryController {
                                @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo){
 
 
-        categoryService.updateCategory(UpdateCategoryDTO.builder()
+        categoryService.updateCategory(UpdateCategoryDto.builder()
                 .categorySeq(categorySeq)
                 .categoryName(updateCategoryRequestVo.getCategoryName())
                 .level(updateCategoryRequestVo.getLevel())
