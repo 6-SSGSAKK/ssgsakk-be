@@ -1,6 +1,6 @@
 package com.ssgsakk.ssgdotcom.product.domain;
 
-import com.ssgsakk.ssgdotcom.common.utils.DeliveryType;
+import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.vendor.domain.Vendor;
 import jakarta.persistence.*;
 
