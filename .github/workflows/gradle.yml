@@ -67,7 +67,7 @@ jobs:
       with:
         host: ${{ secrets.3.37.103.203}} # EC2 퍼블릭 IPv4 DNS #ec2ip주소 
         username: ubuntu
-        key: ${{ secrets.ec2PEMKEY }}
+        key: ${{ secrets.ec2IPADDRESS }}
         envs: GITHUB_SHA
         script: |
           sudo docker ps
