@@ -1,6 +1,5 @@
 package com.ssgsakk.ssgdotcom.order.domain;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -42,8 +41,6 @@ public class Order {
     private String finalDetailAddress; //최종배송지상세주소
 
     private String deliverymessage; //배송메시지
-
-
 
 
 }
