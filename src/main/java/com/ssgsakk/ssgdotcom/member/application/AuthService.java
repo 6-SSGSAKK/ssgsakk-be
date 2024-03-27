@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.member.application;
 
+import com.ssgsakk.ssgdotcom.member.dto.IdDuplicateCheckDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 
@@ -16,4 +17,7 @@ public interface AuthService {
 
     // 이메일 중복 확인
     public boolean duplicateChecked(String email);
+
+    // ID 중복 확인
+    boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto);
 }

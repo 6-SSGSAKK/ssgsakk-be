@@ -5,6 +5,7 @@ import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.application.MailSendService;
+import com.ssgsakk.ssgdotcom.member.dto.IdDuplicateCheckDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 
@@ -87,6 +88,21 @@ public class AuthController {
         }
         else{
             throw new BusinessException(ErrorCode.MASSAGE_VALID_FAILED);
+        }
+    }
+
+    @Operation(summary = "아이디 중복 확인", description = "아이디 중복 확인", tags = {"Id Duplicate Check"})
+    @PostMapping("/id-duplicate-check")
+    public BaseResponse<Object> idDuplicateCheck(@RequestBody IdDuplicateCheckRequestVo idDuplicateCheckRequestVo) {
+        IdDuplicateCheckDto idDuplicateCheckDto = IdDuplicateCheckDto.builder()
+                .inputId(idDuplicateCheckRequestVo.getInputId())
+                .build();
+        boolean checked = authService.idDuplicateCheck(idDuplicateCheckDto);
+        if(!checked){
+            return new BaseResponse<>("중복된 ID가 없습니다.", null);
+        }
+        else{
+            throw new BusinessException(ErrorCode.DUPLICATE_ID);
         }
     }
 }
