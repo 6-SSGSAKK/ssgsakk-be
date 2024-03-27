@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface OptionAndStockService {
     OptionDto findOptionsByProductId(Long productId);
-    List<StockDto> getStocks(StockDto stockDto);
+    //StockDto getStocks(Long productSeq, StockDto stockDto);
     void addOptions(AddOptionDto addOptionDto);
     void deleteOption(Long optionId);
+
+    List<Integer> getStocks(Long productId, StockDto build);
 }

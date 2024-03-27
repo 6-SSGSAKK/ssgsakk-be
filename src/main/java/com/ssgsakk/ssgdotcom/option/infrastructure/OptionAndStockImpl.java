@@ -19,9 +19,9 @@ public class OptionAndStockImpl extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public List<OptionAndStock> getOptionInfoByProduct(Long productSeq, Long sizeSeq,
-                                                               Long colorSeq, Long customizationSeq) {
-        return jpaQueryFactory.select(qOptionAndStock)
+    public List<Integer> getOptionInfoByProduct(Long productSeq, Long sizeSeq,
+                                                Long colorSeq, Long customizationSeq) {
+        return jpaQueryFactory.select(qOptionAndStock.stock)
                 .from(qOptionAndStock)
                 .where(eqProduct(productSeq), eqSize(sizeSeq),
                         eqColor(colorSeq), eqCustomizationOption(customizationSeq))

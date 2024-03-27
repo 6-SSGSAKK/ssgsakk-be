@@ -6,14 +6,12 @@ import com.ssgsakk.ssgdotcom.option.dto.OptionDto;
 import com.ssgsakk.ssgdotcom.option.dto.StockDto;
 import com.ssgsakk.ssgdotcom.option.infrastructure.*;
 
-import com.ssgsakk.ssgdotcom.product.dto.SearchProductDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.AbstractMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -32,47 +30,38 @@ public class OptionAndStockServiceImpl implements OptionAndStockService {
     public OptionDto findOptionsByProductId(Long productId) {
         List<OptionAndStock> options = optionAndStockRepository.findByProductSeq(productId);
 
-        List<AbstractMap.SimpleEntry<Long, String>> colorList = options.stream()
+        List<HashMap.Entry<Long, String>> colorList = options.stream()
                 .map(optionAndStock -> optionAndStock.getColor() != null ?
-                        new AbstractMap.SimpleEntry<>(optionAndStock.getColor().getColorSeq(),
+                        new HashMap.SimpleEntry<>(optionAndStock.getColor().getColorSeq(),
                                 optionAndStock.getColor().getColorData())
                         : null)
                 .collect(Collectors.toList());
 
-        List<AbstractMap.SimpleEntry<Long, String>> sizeList = options.stream()
+        List<HashMap.Entry<Long, String>> sizeList = options.stream()
                 .map(optionAndStock -> optionAndStock.getSize() != null ?
-                        new AbstractMap.SimpleEntry<>(optionAndStock.getSize().getSizeSeq(),
+                        new HashMap.SimpleEntry<>(optionAndStock.getSize().getSizeSeq(),
                                 optionAndStock.getSize().getSizeData())
                         : null)
                 .collect(Collectors.toList());
 
-        List<AbstractMap.SimpleEntry<Long, String>> customizationList = options.stream()
+        List<HashMap.Entry<Long, String>> customizationList = options.stream()
                 .map(optionAndStock -> optionAndStock.getCustomizationOption() != null ?
-                        new AbstractMap.SimpleEntry<>(optionAndStock.getCustomizationOption().getCustomizationOptionSeq(),
+                        new HashMap.SimpleEntry<>(optionAndStock.getCustomizationOption().getCustomizationOptionSeq(),
                                 optionAndStock.getCustomizationOption().getCustomizationData())
                         : null)
                 .collect(Collectors.toList());
 
         return OptionDto.builder()
-                .color(colorList)
-                .size(sizeList)
-                .customizationOption(customizationList)
+                .color(colorList.stream().distinct().collect(Collectors.toList()))
+                .size(sizeList.stream().distinct().collect(Collectors.toList()))
+                .customizationOption(customizationList.stream().distinct().collect(Collectors.toList()))
                 .build();
     }
-
-    @Override
-    public List<StockDto> getStocks(StockDto stockDto) {
-        List<OptionAndStock> optionAndStocks =  optionAndStockImpl.getOptionInfoByProduct(
-                stockDto.getProductSeq(), stockDto.getColorSeq(),
+    public List<Integer> getStocks(Long productSeq, StockDto stockDto) {
+        return optionAndStockImpl.getOptionInfoByProduct(
+                productSeq, stockDto.getColorSeq(),
                 stockDto.getSizeSeq(), stockDto.getCustomizationOptionSeq()
         );
-        return optionAndStocks.stream()
-                .map(optionAndStock -> StockDto.builder()
-                        .optionAndStockSeq(optionAndStock.getOptionAndStockSeq())
-                        .productSeq(optionAndStock.getProductSeq())
-                        .stock(optionAndStock.getStock())
-                        .build())
-                .collect(Collectors.toList());
     }
 
     @Transactional

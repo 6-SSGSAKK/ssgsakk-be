@@ -12,7 +12,7 @@ public class Vendor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vendorSeq;
 
-    @Column(length = 10)
+    @Column(length = 30)
     private String vendorName;
 
 }

@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
@@ -19,7 +20,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productSeq;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String productName;
 
     @Column(nullable = false, length = 15)
@@ -29,20 +30,23 @@ public class Product {
     @JoinColumn(name = "vendor_seq")
     private Vendor vendor;
 
-    @Column(length = 200)
+    @Column(columnDefinition = "text")
     private String productDescription;
 
     @Column(nullable = false, length = 3)
+    @ColumnDefault("0")
     private Integer discountPercent;
 
     @Column(nullable = false, length = 15)
+    @ColumnDefault("0")
     private Double averageRating;
 
     @Column(nullable = false, length = 7)
+    @ColumnDefault("0")
     private Integer reviewCount;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(nullable = false)
+    @Column(length = 10)
     private DeliveryType deliveryType;
 
 
