@@ -57,7 +57,7 @@ jobs:
     - name: Docker build & push to prod
       run: |
           docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
-          docker build -f Dockerfile-prod -t ${{ secrets.DOCKERHUB }}/ssgssak .
+          docker build -f Dockerfile -t ${{ secrets.DOCKERHUB }}/ssgssak .
           docker push ${{ secrets.DOCKERHUB }}/ssgssak
           
     ## deploy to production
