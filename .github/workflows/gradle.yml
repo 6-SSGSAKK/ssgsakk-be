@@ -65,9 +65,9 @@ jobs:
       uses: appleboy/ssh-action@master
       id: deploy-prod
       with:
-        host: ${{ secrets.ec2IPADDRESS}} # EC2 퍼블릭 IPv4 DNS #ec2ip주소 
+        host: ${{ secrets.EC2IPADDRESS}} # EC2 퍼블릭 IPv4 DNS #ec2ip주소 
         username: ubuntu
-        key: ${{ secrets.ec2PEMKEY }}
+        key: ${{ secrets.EC2PEMKEY }}
         envs: GITHUB_SHA
         script: |
           sudo docker ps
