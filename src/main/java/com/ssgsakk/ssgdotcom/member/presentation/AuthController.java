@@ -12,11 +12,15 @@ import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 
 import com.ssgsakk.ssgdotcom.member.vo.*;
 import com.ssgsakk.ssgdotcom.security.JWTFilter;
+import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.SignatureException;
 
 @Slf4j
 @RestController
@@ -27,6 +31,7 @@ public class AuthController {
     private final AuthService authService;
     private final MailSendService mailSendService;
     private final JWTFilter jwtFilter;
+    private final JWTUtil jwtUtil;
 
     @Operation(summary = "로그인", description = "로그인", tags = {"User SignIn"})
     @PostMapping("/signin")
@@ -119,6 +124,8 @@ public class AuthController {
             , @RequestHeader("Authorization") String accessToken) {
 
         String uuid = getUuid(accessToken);
+        log.info("token {}", accessToken);
+        log.info("uuid {}", uuid);
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
                 .password(passwordChangeRequestVo.getPassword())
@@ -132,15 +139,40 @@ public class AuthController {
         }
     }
 
+//    @Operation(summary = "회원 정보 조회", description = "회원 정보 조회", tags = {"Look Up Member Information"})
+//    @PostMapping("/")
+//    public BaseResponse<Object> passwordChange(@RequestBody passwordChangeRequestVo passwordChangeRequestVo
+//            , @RequestHeader("Authorization") String accessToken) {
+//
+//        String uuid = getUuid(accessToken);
+//
+//        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
+//                .password(passwordChangeRequestVo.getPassword())
+//                .uuid(uuid)
+//                .build();
+//        int checkd = authService.passwordChange(passwordChangeDto);
+//        if (checkd != 0) {
+//            return new BaseResponse<>("비밀번호가 변경되었습니다.", null);
+//        } else {
+//            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
 
     // JWT에서 UUID 추출 메서드
     public String getUuid(String jwt) {
         String uuid;
-        try {
-            uuid = jwtFilter.getUuid();
-        } catch (Exception e) {
+        uuid = jwtUtil.getUuid(jwt.split(" ")[1]);
+        checkUuid(uuid);
+        log.info("uuid >>>>>>>> {}", uuid);
+        return uuid;
+    }
+
+    // UUID 확인
+    // 정상이면 true 반환
+    public void checkUuid(String uuid) {
+        if(uuid == null) {
             throw new BusinessException(ErrorCode.TOKEN_NOT_VALID);
         }
-        return uuid;
     }
 }
