@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -56,6 +56,10 @@ public class AuthController {
                 .userName(signUpRequestVo.getUserName())
                 .userEmail(signUpRequestVo.getUserEmail())
                 .userMobileNum(signUpRequestVo.getUserMobileNum())
+                .detailAddress(signUpRequestVo.getDetailAddress())
+                .jibunAddress(signUpRequestVo.getJibunAddress())
+                .roadAddress(signUpRequestVo.getRoadAddress())
+                .zipCode(signUpRequestVo.getZipCode())
                 .build();
 
         SignUpDto servicedSignUpDto = authService.signUp(signUpDto);

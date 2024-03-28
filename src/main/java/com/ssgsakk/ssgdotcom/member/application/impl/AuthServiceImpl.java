@@ -11,6 +11,8 @@ import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
+import com.ssgsakk.ssgdotcom.shippingAddress.domain.ShippingAddress;
+import com.ssgsakk.ssgdotcom.shippingAddress.infrastructure.ShippingAddressRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +28,7 @@ import java.util.UUID;
 public class AuthServiceImpl implements AuthService {
 
     private final MemberRepository memberRepository;
+    private final ShippingAddressRepository shippingAddressRepository;
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
@@ -91,8 +94,18 @@ public class AuthServiceImpl implements AuthService {
         // 회원가입 데이터 DB에 저장
         User savedMember = memberRepository.save(member);
 
+        ShippingAddress shippingAddress = ShippingAddress.builder()
+                .user(member)
+                .detailAddress(signUpDto.getDetailAddress())
+                .jibunAddress(signUpDto.getJibunAddress())
+                .roadAddress(signUpDto.getRoadAddress())
+                .zipCode(signUpDto.getZipCode())
+                .build();
+
+        ShippingAddress savedShippingAddress = shippingAddressRepository.save(shippingAddress);
+
         // 저장 여부 확인
-        if(savedMember == null) {
+        if(savedMember == null || savedShippingAddress == null) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
