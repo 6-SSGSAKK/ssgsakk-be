@@ -19,9 +19,18 @@ public class CategoryRepositoryImp extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public List<Category> getCategoryList(){
-        return jpaQueryFactory.selectFrom(qCategory).fetch(); //전체카테고리 조회
+    public List<Category> getCategoryList(){ //전체카테고리 조회
+        return jpaQueryFactory.selectFrom(qCategory).fetch();
     }
+
+    public List<Category> getMiddleCategory(){ //중카테고리만조회
+        return jpaQueryFactory.selectFrom(qCategory)
+                .from(qCategory)
+                .where(qCategory.level.eq(2))
+                .fetch();
+    }
+
+
 
 //    public List<Purchase> getPurchaseByProductCategoryId(Integer categoryId, Long memberId) {
 //        return jpaQueryFactory.select(qPurchase)

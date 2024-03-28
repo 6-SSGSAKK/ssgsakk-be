@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.*;
 import java.util.List;
 
 @RestController
@@ -56,6 +57,12 @@ public class CategoryController {
     @GetMapping("/allcategories")  //전체 카테고리 조회
     public ResponseEntity<List<Category>> getcategoryllist(){
         List<Category> categories = categoryService.getCategoryList();
+        return ResponseEntity.ok(categories);
+    }
+
+    @GetMapping("/middlecategories") //중 카테고리만 조회
+    public ResponseEntity<List<Category>> getmiddlecategorylist(){
+        List<Category> categories = categoryService.getMiddleCategoryList();
         return ResponseEntity.ok(categories);
     }
 

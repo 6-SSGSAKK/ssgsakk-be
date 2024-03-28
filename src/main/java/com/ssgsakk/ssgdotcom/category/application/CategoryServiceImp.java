@@ -54,16 +54,17 @@ public class CategoryServiceImp implements CategoryService{
         categoryRepository.delete(category); //찾고 카테고리를 삭제함.
     }
 
-//    @Override
-//    public List<Category> findCategoryParentNull() {   //카테고리전체조회
-//        return categoryRepository.findByParentCategorySeq();
-//    } //전체카테고리조회
-//
-
     @Override
     public List<Category> getCategoryList(){
-       return categoryRepositoryImp.getCategoryList();
+       return categoryRepositoryImp.getCategoryList(); //전체카테고리조회
     }
+
+    @Override
+    public List<Category> getMiddleCategoryList(){
+        return categoryRepositoryImp.getMiddleCategory(); //중카테고리만조회
+    }
+
+
 
 }
 
