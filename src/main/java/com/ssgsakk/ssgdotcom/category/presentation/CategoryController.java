@@ -46,12 +46,20 @@ public class CategoryController {
     public void deletecategory(@PathVariable Long categorySeq){
         categoryService.deleteCategory(categorySeq);
     }
+//
+//    @GetMapping("/allcategories")  //전체 카테고리 조회
+//    public ResponseEntity<List<Category>> findcategoryparentnull(){
+//        List<Category> categories = categoryService.findCategoryParentNull();
+//        return ResponseEntity.ok(categories);
+//    }
 
     @GetMapping("/allcategories")  //전체 카테고리 조회
-    public ResponseEntity<List<Category>> findcategoryparentnull(){
-        List<Category> categories = categoryService.findCategoryParentNull();
+    public ResponseEntity<List<Category>> getcategoryllist(){
+        List<Category> categories = categoryService.getCategoryList();
         return ResponseEntity.ok(categories);
     }
+
+
 
 
 

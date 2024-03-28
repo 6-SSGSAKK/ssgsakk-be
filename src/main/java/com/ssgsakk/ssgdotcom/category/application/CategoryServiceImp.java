@@ -3,6 +3,7 @@ import com.ssgsakk.ssgdotcom.category.domain.Category;
 import com.ssgsakk.ssgdotcom.category.dto.CategoryDto;
 import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDto;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepository;
+import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepositoryImp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CategoryServiceImp implements CategoryService {
+public class CategoryServiceImp implements CategoryService{
 
     private final CategoryRepository categoryRepository;
+    private final CategoryRepositoryImp categoryRepositoryImp;
 
     @Override
     public void createCategory(CategoryDto categoryDTO) {
@@ -52,9 +54,16 @@ public class CategoryServiceImp implements CategoryService {
         categoryRepository.delete(category); //찾고 카테고리를 삭제함.
     }
 
+//    @Override
+//    public List<Category> findCategoryParentNull() {   //카테고리전체조회
+//        return categoryRepository.findByParentCategorySeq();
+//    } //전체카테고리조회
+//
+
     @Override
-    public List<Category> findCategoryParentNull() {   //카테고리전체조회
-        return categoryRepository.findByParentCategorySeq();
-    } //전체카테고리조회
+    public List<Category> getCategoryList(){
+       return categoryRepositoryImp.getCategoryList();
+    }
+
 }
 

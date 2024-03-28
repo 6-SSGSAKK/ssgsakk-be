@@ -10,7 +10,9 @@ public interface CategoryService {
     void createCategory(CategoryDto categoryDTO);
     void updateCategory(UpdateCategoryDto updateCategoryDTO);
     void deleteCategory(Long categorySeq);
-    List<Category> findCategoryParentNull();
+//    List<Category> findCategoryParentNull();
+    List<Category> getCategoryList();
+
 
 
 
