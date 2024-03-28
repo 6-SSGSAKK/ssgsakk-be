@@ -10,23 +10,22 @@ import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 
 import com.ssgsakk.ssgdotcom.member.vo.*;
+import com.ssgsakk.ssgdotcom.security.JWTFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
     private final MailSendService mailSendService;
+    private final JWTFilter jwtFilter;
 
     @Operation(summary = "로그인", description = "로그인", tags = {"User SignIn"})
     @PostMapping("/signin")
@@ -68,14 +67,28 @@ public class AuthController {
 
     @Operation(summary = "이메일 전송", description = "이메일 전송", tags = {"Email Send"})
     @PostMapping("/mail-send")
-    public BaseResponse<Object> mailSend(@RequestBody @Valid EmailSendRequestVo emailSendRequestVo) {
-        // 이메일 중복 확인
-        if(authService.duplicateChecked(emailSendRequestVo.getEmail())){
-            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+    public BaseResponse<Object> mailSend(@RequestBody @Valid EmailSendRequestVo emailSendRequestVo, @RequestHeader("Authorization") String accessToken) {
+        String uuid;
+        try {
+            uuid = jwtFilter.getUuid();
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.TOKEN_NOT_VALID);
         }
 
-        // 이메일 인증 문자열 전송
-        String authNum = mailSendService.joinEmail(emailSendRequestVo.getEmail());
+        // 로그인이 되어있지 않은 경우에는 이메일 중복 체크, 이메일 전송 진행
+        if (uuid == null) {
+            // 이메일 중복 확인
+            if (authService.duplicateChecked(emailSendRequestVo.getEmail())) {
+                throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+            }
+            // 이메일 인증 문자열 전송
+            mailSendService.joinEmail(emailSendRequestVo.getEmail());
+        }
+        // 로그인이 되어 비밀번호 변경을 하는 경우, 이메일 전송 진행
+        else {
+            mailSendService.joinEmail(emailSendRequestVo.getEmail());
+        }
+
         return new BaseResponse<>("이메일 발송", null);
     }
 
@@ -83,10 +96,9 @@ public class AuthController {
     @PostMapping("/mail-check")
     public BaseResponse<Object> mailCheck(@RequestBody @Valid EmailCheckRequestVo emailCheckRequestVo) {
         boolean checked = mailSendService.checkAuthNum(emailCheckRequestVo.getEmail(), emailCheckRequestVo.getAuthNum());
-        if(checked){
+        if (checked) {
             return new BaseResponse<>("인증 성공", null);
-        }
-        else{
+        } else {
             throw new BusinessException(ErrorCode.MASSAGE_VALID_FAILED);
         }
     }
@@ -98,10 +110,9 @@ public class AuthController {
                 .inputId(idDuplicateCheckRequestVo.getInputId())
                 .build();
         boolean checked = authService.idDuplicateCheck(idDuplicateCheckDto);
-        if(!checked){
+        if (!checked) {
             return new BaseResponse<>("중복된 ID가 없습니다.", null);
-        }
-        else{
+        } else {
             throw new BusinessException(ErrorCode.DUPLICATE_ID);
         }
     }

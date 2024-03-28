@@ -90,7 +90,17 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/api/v1/auth/signin"
+                                , "/api/v1/auth/signup"
+                                , "/api/v1/auth/mail-send"
+                                , "/api/v1/auth/mail-check"
+                                , "/api/v1/auth/id-duplicate-check"
+                                , "/swagger-ui/**"
+                                , "/swagger-resources/**"
+                                , "/api-docs/**")
+                        .permitAll()
+//                        .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**").permitAll()
+//                        .requestMatchers("/api/v1/auth/signup", "/api/v1/auth/signin", "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**").permitAll()
                         .anyRequest().authenticated());
 
         //세션 설정 : STATELESS

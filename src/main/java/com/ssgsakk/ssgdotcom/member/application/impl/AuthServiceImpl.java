@@ -55,7 +55,6 @@ public class AuthServiceImpl implements AuthService {
 
         // 토큰 값 발행
         String token = "Bearer " + createToken(member);
-        log.info("token: {}", token);
         return SignInDto.builder()
                 .uuid(member.getUuid())
                 .userName(member.getName())
@@ -64,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private String createToken(User member) {
-        return jwtUtil.createJwt(member.getUuid(), 60*60*10L);
+        return jwtUtil.createJwt(member.getUuid(), 864000000L);
     }
 
     @Override
@@ -111,6 +110,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto) {
         return memberRepository.existsByUserId(idDuplicateCheckDto.getInputId());
+    }
+
+    @Override
+    public String findByUserEmail(String uuid) {
+        return memberRepository.findByUserEmail(uuid).getUserEmail();
     }
 
     /**

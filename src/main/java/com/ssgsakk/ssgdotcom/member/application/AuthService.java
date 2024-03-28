@@ -20,4 +20,6 @@ public interface AuthService {
 
     // ID 중복 확인
     boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto);
+
+    String findByUserEmail(String uuid);
 }

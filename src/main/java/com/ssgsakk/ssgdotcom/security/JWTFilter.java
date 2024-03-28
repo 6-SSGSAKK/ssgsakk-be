@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,8 +16,10 @@ import java.io.IOException;
 
 @Slf4j
 @Component
+@Getter
 public class JWTFilter extends OncePerRequestFilter {
 
+    public String uuid;
     // JWT 검증을 위해 사용
     private final JWTUtil jwtUtil;
     public JWTFilter(JWTUtil jwtUtil) {
@@ -49,8 +52,7 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // 토큰에서 uuid 추출
-        String uuid = jwtUtil.getUuid(token);
-
+        uuid = jwtUtil.getUuid(token);
         // 스프링 시큐리티 인증 토큰 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(uuid, null);
 
