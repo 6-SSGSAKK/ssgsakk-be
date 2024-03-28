@@ -1,6 +1,7 @@
 package com.ssgsakk.ssgdotcom.member.application;
 
 import com.ssgsakk.ssgdotcom.member.dto.IdDuplicateCheckDto;
+import com.ssgsakk.ssgdotcom.member.dto.PasswordChangeDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 
@@ -22,4 +23,6 @@ public interface AuthService {
     boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto);
 
     String findByUserEmail(String uuid);
+
+    int passwordChange(PasswordChangeDto passwordChangeDto);
 }

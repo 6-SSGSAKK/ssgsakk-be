@@ -6,6 +6,7 @@ import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.application.MailSendService;
 import com.ssgsakk.ssgdotcom.member.dto.IdDuplicateCheckDto;
+import com.ssgsakk.ssgdotcom.member.dto.PasswordChangeDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 
@@ -68,12 +69,7 @@ public class AuthController {
     @Operation(summary = "이메일 전송", description = "이메일 전송", tags = {"Email Send"})
     @PostMapping("/mail-send")
     public BaseResponse<Object> mailSend(@RequestBody @Valid EmailSendRequestVo emailSendRequestVo, @RequestHeader("Authorization") String accessToken) {
-        String uuid;
-        try {
-            uuid = jwtFilter.getUuid();
-        } catch (Exception e) {
-            throw new BusinessException(ErrorCode.TOKEN_NOT_VALID);
-        }
+        String uuid = getUuid(accessToken);
 
         // 로그인이 되어있지 않은 경우에는 이메일 중복 체크, 이메일 전송 진행
         if (uuid == null) {
@@ -115,5 +111,36 @@ public class AuthController {
         } else {
             throw new BusinessException(ErrorCode.DUPLICATE_ID);
         }
+    }
+
+    @Operation(summary = "비밀번호 변경", description = "비밀번호 변경", tags = {"Password Change"})
+    @PostMapping("/password-change")
+    public BaseResponse<Object> passwordChange(@RequestBody passwordChangeRequestVo passwordChangeRequestVo
+            , @RequestHeader("Authorization") String accessToken) {
+
+        String uuid = getUuid(accessToken);
+
+        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
+                .password(passwordChangeRequestVo.getPassword())
+                .uuid(uuid)
+                .build();
+        int checkd = authService.passwordChange(passwordChangeDto);
+        if (checkd != 0) {
+            return new BaseResponse<>("비밀번호가 변경되었습니다.", null);
+        } else {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    // JWT에서 UUID 추출 메서드
+    public String getUuid(String jwt) {
+        String uuid;
+        try {
+            uuid = jwtFilter.getUuid();
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.TOKEN_NOT_VALID);
+        }
+        return uuid;
     }
 }
