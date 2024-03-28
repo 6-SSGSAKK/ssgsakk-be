@@ -9,10 +9,10 @@ import lombok.ToString;
 
 import java.sql.Timestamp;
 
-@ToString
-@Getter
-@Entity
-@NoArgsConstructor
+//@ToString
+//@Getter
+//@Entity
+//@NoArgsConstructor
 public class Order {
 
     @Id

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ProductContents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +25,12 @@ public class ProductContents {
     private Contents contents;
 
     private Integer priority;
+
+    @Builder
+    public ProductContents(Product product, Contents contents, Integer priority){
+        this.product = product;
+        this.contents = contents;
+        this.priority = priority;
+    }
 
 }
