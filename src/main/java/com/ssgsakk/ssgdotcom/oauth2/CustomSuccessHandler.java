@@ -43,6 +43,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addHeader("Authorization", "Bearer " + token);
 
         // 프론트엔드로 response 반환
-        response.sendRedirect("http://localhost:3000/");
+//        response.sendRedirect("http://localhost:3000/");
+        response.sendRedirect("https://www.ssgssak.shop");
     }
 }
