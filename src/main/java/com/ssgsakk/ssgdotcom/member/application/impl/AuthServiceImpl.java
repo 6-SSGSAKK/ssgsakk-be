@@ -5,10 +5,7 @@ import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.domain.User;
-import com.ssgsakk.ssgdotcom.member.dto.IdDuplicateCheckDto;
-import com.ssgsakk.ssgdotcom.member.dto.PasswordChangeDto;
-import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
-import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
+import com.ssgsakk.ssgdotcom.member.dto.*;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
@@ -139,6 +136,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String findByUuid(String uuid) {
         return memberRepository.findByUuid(uuid).get().getUserEmail();
+    }
+
+    @Override
+    public void mobileNumChange(MobileNumChangeDto mobileNumChangeDto) {
+        memberRepository.mobileNumChange(mobileNumChangeDto.getUuid(), mobileNumChangeDto.getMobileNum());
     }
 
     /**

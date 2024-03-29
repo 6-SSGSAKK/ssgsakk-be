@@ -5,22 +5,16 @@ import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.application.MailSendService;
-import com.ssgsakk.ssgdotcom.member.dto.IdDuplicateCheckDto;
-import com.ssgsakk.ssgdotcom.member.dto.PasswordChangeDto;
-import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
-import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
+import com.ssgsakk.ssgdotcom.member.dto.*;
 
 import com.ssgsakk.ssgdotcom.member.vo.*;
 import com.ssgsakk.ssgdotcom.security.JWTFilter;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.SignatureException;
 
 @Slf4j
 @RestController
@@ -117,7 +111,7 @@ public class AuthController {
 
         // 로그인이 되어 비밀번호 변경을 하는 경우, 이메일 전송 진행
         String email = authService.findByUuid(uuid);
-        log.info("email >>>>> {} " ,email);
+        log.info("email >>>>> {} ", email);
         mailSendService.joinEmail(email);
 
         return new BaseResponse<>("이메일 발송", null);
@@ -125,7 +119,7 @@ public class AuthController {
 
     @Operation(summary = "비밀번호 변경", description = "비밀번호 변경", tags = {"Password Change"})
     @PostMapping("/password-change")
-    public BaseResponse<Object> passwordChange(@RequestBody passwordChangeRequestVo passwordChangeRequestVo
+    public BaseResponse<Object> passwordChange(@RequestBody PasswordChangeRequestVo passwordChangeRequestVo
             , @RequestHeader("Authorization") String accessToken) {
 
         String uuid = getUuid(accessToken);
@@ -161,6 +155,23 @@ public class AuthController {
 //        }
 //    }
 
+    @Operation(summary = "전화번호 변경", description = "전화번호 변경", tags = {"Mobile Number Update"})
+    @PatchMapping("/mobile-change")
+    public BaseResponse<Object> mobileNumChange(@RequestBody MobileNumChangeRequestVo mobileNumChangeRequestVo, @RequestHeader("Authorization") String accessToken) {
+        String uuid = getUuid(accessToken);
+
+        try {
+            authService.mobileNumChange(MobileNumChangeDto.builder()
+                    .mobileNum(mobileNumChangeRequestVo.getMobileNum())
+                    .uuid(uuid)
+                    .build());
+
+            return new BaseResponse<>("전화번호 변경", null);
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.DUPLICATE_MOBILE_NUM);
+        }
+    }
+
 
     // JWT에서 UUID 추출 메서드
     public String getUuid(String jwt) {
@@ -173,7 +184,7 @@ public class AuthController {
     // UUID 확인
     // 정상이면 true 반환
     public void checkUuid(String uuid) {
-        if(uuid == null) {
+        if (uuid == null) {
             throw new BusinessException(ErrorCode.TOKEN_NOT_VALID);
         }
     }
