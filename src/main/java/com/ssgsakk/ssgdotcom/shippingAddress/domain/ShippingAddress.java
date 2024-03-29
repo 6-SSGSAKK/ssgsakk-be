@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.shippingAddress.domain;
 
+import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class ShippingAddress {
+public class ShippingAddress extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long shippingAddressSeq;

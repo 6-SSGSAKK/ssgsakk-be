@@ -58,7 +58,6 @@ public class AuthServiceImpl implements AuthService {
 
         // 토큰 값 발행
         String token = "Bearer " + createToken(member);
-        log.info("token: {}", token);
         return SignInDto.builder()
                 .uuid(member.getUuid())
                 .userName(member.getName())
