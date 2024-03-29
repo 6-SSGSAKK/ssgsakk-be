@@ -6,6 +6,7 @@ import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.dto.IdDuplicateCheckDto;
+import com.ssgsakk.ssgdotcom.member.dto.PasswordChangeDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
@@ -66,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private String createToken(User member) {
-        return jwtUtil.createJwt(member.getUuid(), 60*60*10L);
+        return jwtUtil.createJwt(member.getUuid(), 864000000L);
     }
 
     @Override
@@ -123,6 +124,16 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto) {
         return memberRepository.existsByUserId(idDuplicateCheckDto.getInputId());
+    }
+
+    @Override
+    public String findByUserEmail(String uuid) {
+        return memberRepository.findByUserEmail(uuid).getUserEmail();
+    }
+
+    @Override
+    public int passwordChange(PasswordChangeDto passwordChangeDto) {
+        return memberRepository.passwordChange(passwordChangeDto.getUuid(), hashPassword(passwordChangeDto.getPassword()));
     }
 
     /**

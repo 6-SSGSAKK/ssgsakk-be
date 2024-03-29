@@ -38,7 +38,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        GrantedAuthority auth = iterator.next();
 //        String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(uuid, 60*60*60L);
+        String token = jwtUtil.createJwt(uuid, 864000000L);
 
         response.addHeader("Authorization", "Bearer " + token);
 
