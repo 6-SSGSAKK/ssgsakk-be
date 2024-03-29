@@ -6,27 +6,32 @@ import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.application.MailSendService;
 import com.ssgsakk.ssgdotcom.member.dto.IdDuplicateCheckDto;
+import com.ssgsakk.ssgdotcom.member.dto.PasswordChangeDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
 import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
 
 import com.ssgsakk.ssgdotcom.member.vo.*;
+import com.ssgsakk.ssgdotcom.security.JWTFilter;
+import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.SignatureException;
 
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
     private final MailSendService mailSendService;
+    private final JWTFilter jwtFilter;
+    private final JWTUtil jwtUtil;
 
     @Operation(summary = "로그인", description = "로그인", tags = {"User SignIn"})
     @PostMapping("/signin")
@@ -68,14 +73,23 @@ public class AuthController {
 
     @Operation(summary = "이메일 전송", description = "이메일 전송", tags = {"Email Send"})
     @PostMapping("/mail-send")
-    public BaseResponse<Object> mailSend(@RequestBody @Valid EmailSendRequestVo emailSendRequestVo) {
-        // 이메일 중복 확인
-        if(authService.duplicateChecked(emailSendRequestVo.getEmail())){
-            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+    public BaseResponse<Object> mailSend(@RequestBody @Valid EmailSendRequestVo emailSendRequestVo, @RequestHeader("Authorization") String accessToken) {
+        String uuid = getUuid(accessToken);
+
+        // 로그인이 되어있지 않은 경우에는 이메일 중복 체크, 이메일 전송 진행
+        if (uuid == null) {
+            // 이메일 중복 확인
+            if (authService.duplicateChecked(emailSendRequestVo.getEmail())) {
+                throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+            }
+            // 이메일 인증 문자열 전송
+            mailSendService.joinEmail(emailSendRequestVo.getEmail());
+        }
+        // 로그인이 되어 비밀번호 변경을 하는 경우, 이메일 전송 진행
+        else {
+            mailSendService.joinEmail(emailSendRequestVo.getEmail());
         }
 
-        // 이메일 인증 문자열 전송
-        String authNum = mailSendService.joinEmail(emailSendRequestVo.getEmail());
         return new BaseResponse<>("이메일 발송", null);
     }
 
@@ -83,10 +97,9 @@ public class AuthController {
     @PostMapping("/mail-check")
     public BaseResponse<Object> mailCheck(@RequestBody @Valid EmailCheckRequestVo emailCheckRequestVo) {
         boolean checked = mailSendService.checkAuthNum(emailCheckRequestVo.getEmail(), emailCheckRequestVo.getAuthNum());
-        if(checked){
+        if (checked) {
             return new BaseResponse<>("인증 성공", null);
-        }
-        else{
+        } else {
             throw new BusinessException(ErrorCode.MASSAGE_VALID_FAILED);
         }
     }
@@ -98,11 +111,65 @@ public class AuthController {
                 .inputId(idDuplicateCheckRequestVo.getInputId())
                 .build();
         boolean checked = authService.idDuplicateCheck(idDuplicateCheckDto);
-        if(!checked){
+        if (!checked) {
             return new BaseResponse<>("중복된 ID가 없습니다.", null);
-        }
-        else{
+        } else {
             throw new BusinessException(ErrorCode.DUPLICATE_ID);
+        }
+    }
+
+    @Operation(summary = "비밀번호 변경", description = "비밀번호 변경", tags = {"Password Change"})
+    @PostMapping("/password-change")
+    public BaseResponse<Object> passwordChange(@RequestBody passwordChangeRequestVo passwordChangeRequestVo
+            , @RequestHeader("Authorization") String accessToken) {
+
+        String uuid = getUuid(accessToken);
+
+        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
+                .password(passwordChangeRequestVo.getPassword())
+                .uuid(uuid)
+                .build();
+        int checkd = authService.passwordChange(passwordChangeDto);
+        if (checkd != 0) {
+            return new BaseResponse<>("비밀번호가 변경되었습니다.", null);
+        } else {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+//    @Operation(summary = "회원 정보 조회", description = "회원 정보 조회", tags = {"Look Up Member Information"})
+//    @PostMapping("/")
+//    public BaseResponse<Object> passwordChange(@RequestBody passwordChangeRequestVo passwordChangeRequestVo
+//            , @RequestHeader("Authorization") String accessToken) {
+//
+//        String uuid = getUuid(accessToken);
+//
+//        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
+//                .password(passwordChangeRequestVo.getPassword())
+//                .uuid(uuid)
+//                .build();
+//        int checkd = authService.passwordChange(passwordChangeDto);
+//        if (checkd != 0) {
+//            return new BaseResponse<>("비밀번호가 변경되었습니다.", null);
+//        } else {
+//            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+
+    // JWT에서 UUID 추출 메서드
+    public String getUuid(String jwt) {
+        String uuid;
+        uuid = jwtUtil.getUuid(jwt.split(" ")[1]);
+        checkUuid(uuid);
+        return uuid;
+    }
+
+    // UUID 확인
+    // 정상이면 true 반환
+    public void checkUuid(String uuid) {
+        if(uuid == null) {
+            throw new BusinessException(ErrorCode.TOKEN_NOT_VALID);
         }
     }
 }

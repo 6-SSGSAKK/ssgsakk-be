@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.security.Key;
 import java.util.Date;
 
 @Component
+@Slf4j
 public class JWTUtil {
 
     private Key key;
@@ -24,12 +26,10 @@ public class JWTUtil {
     }
 
     public String getUuid(String token) {
-
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("uuid", String.class);
     }
 
     public Boolean isExpired(String token) {
-
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getExpiration().before(new Date());
     }
 
