@@ -24,7 +24,7 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final NumberPath<Double> averageRating = createNumber("averageRating", Double.class);
 
-    public final EnumPath<com.ssgsakk.ssgdotcom.common.utils.DeliveryType> deliveryType = createEnum("deliveryType", com.ssgsakk.ssgdotcom.common.utils.DeliveryType.class);
+    public final EnumPath<com.ssgsakk.ssgdotcom.common.util.DeliveryType> deliveryType = createEnum("deliveryType", com.ssgsakk.ssgdotcom.common.util.DeliveryType.class);
 
     public final NumberPath<Integer> discountPercent = createNumber("discountPercent", Integer.class);
 

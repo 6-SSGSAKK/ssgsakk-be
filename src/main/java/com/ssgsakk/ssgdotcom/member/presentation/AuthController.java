@@ -61,6 +61,10 @@ public class AuthController {
                 .userName(signUpRequestVo.getUserName())
                 .userEmail(signUpRequestVo.getUserEmail())
                 .userMobileNum(signUpRequestVo.getUserMobileNum())
+                .detailAddress(signUpRequestVo.getDetailAddress())
+                .jibunAddress(signUpRequestVo.getJibunAddress())
+                .roadAddress(signUpRequestVo.getRoadAddress())
+                .zipCode(signUpRequestVo.getZipCode())
                 .build();
 
         SignUpDto servicedSignUpDto = authService.signUp(signUpDto);

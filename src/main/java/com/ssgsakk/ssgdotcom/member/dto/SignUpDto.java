@@ -21,4 +21,9 @@ public class SignUpDto {
     private String userEmail;
     private String userMobileNum;
     private String uuid;
+
+    private String zipCode;
+    private String roadAddress;
+    private String jibunAddress;
+    private String detailAddress;
 }
