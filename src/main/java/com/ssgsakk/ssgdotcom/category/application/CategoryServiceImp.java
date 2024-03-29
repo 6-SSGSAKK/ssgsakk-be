@@ -19,7 +19,6 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public void createCategory(CategoryDto categoryDTO) {
-        log.info("============" + categoryDTO.getParentCategorySeq());
         Category category = Category.builder()
                 .categoryName(categoryDTO.getCategoryName())
                 .level(categoryDTO.getLevel())
