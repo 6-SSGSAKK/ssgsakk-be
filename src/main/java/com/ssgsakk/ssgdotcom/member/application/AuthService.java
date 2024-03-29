@@ -25,4 +25,6 @@ public interface AuthService {
     String findByUserEmail(String uuid);
 
     int passwordChange(PasswordChangeDto passwordChangeDto);
+
+    String findByUuid(String uuid);
 }

@@ -77,22 +77,10 @@ public class AuthController {
 
     @Operation(summary = "이메일 전송", description = "이메일 전송", tags = {"Email Send"})
     @PostMapping("/mail-send")
-    public BaseResponse<Object> mailSend(@RequestBody @Valid EmailSendRequestVo emailSendRequestVo, @RequestHeader("Authorization") String accessToken) {
-        String uuid = getUuid(accessToken);
+    public BaseResponse<Object> mailSend(@RequestBody @Valid EmailSendRequestVo emailSendRequestVo) {
 
-        // 로그인이 되어있지 않은 경우에는 이메일 중복 체크, 이메일 전송 진행
-        if (uuid == null) {
-            // 이메일 중복 확인
-            if (authService.duplicateChecked(emailSendRequestVo.getEmail())) {
-                throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
-            }
-            // 이메일 인증 문자열 전송
-            mailSendService.joinEmail(emailSendRequestVo.getEmail());
-        }
         // 로그인이 되어 비밀번호 변경을 하는 경우, 이메일 전송 진행
-        else {
-            mailSendService.joinEmail(emailSendRequestVo.getEmail());
-        }
+        mailSendService.joinEmail(emailSendRequestVo.getEmail());
 
         return new BaseResponse<>("이메일 발송", null);
     }
@@ -120,6 +108,19 @@ public class AuthController {
         } else {
             throw new BusinessException(ErrorCode.DUPLICATE_ID);
         }
+    }
+
+    @Operation(summary = "비밀번호 확인에 사용되는 이메일 전송", description = "비밀번호 확인에 사용되는 이메일 전송", tags = {"Email Send For Password Change"})
+    @GetMapping("/mail-send-password-change")
+    public BaseResponse<Object> mailSendForPasswordChange(@RequestHeader("Authorization") String accessToken) {
+        String uuid = getUuid(accessToken);
+
+        // 로그인이 되어 비밀번호 변경을 하는 경우, 이메일 전송 진행
+        String email = authService.findByUuid(uuid);
+        log.info("email >>>>> {} " ,email);
+        mailSendService.joinEmail(email);
+
+        return new BaseResponse<>("이메일 발송", null);
     }
 
     @Operation(summary = "비밀번호 변경", description = "비밀번호 변경", tags = {"Password Change"})

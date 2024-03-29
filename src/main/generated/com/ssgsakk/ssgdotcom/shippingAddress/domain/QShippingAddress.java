@@ -22,13 +22,21 @@ public class QShippingAddress extends EntityPathBase<ShippingAddress> {
 
     public static final QShippingAddress shippingAddress = new QShippingAddress("shippingAddress");
 
+    public final com.ssgsakk.ssgdotcom.common.entity.QBaseTimeEntity _super = new com.ssgsakk.ssgdotcom.common.entity.QBaseTimeEntity(this);
+
     public final StringPath addressNickname = createString("addressNickname");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
     public final NumberPath<Integer> defaultAddressCheck = createNumber("defaultAddressCheck", Integer.class);
 
     public final StringPath detailAddress = createString("detailAddress");
 
     public final StringPath jibunAddress = createString("jibunAddress");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final StringPath receiverMobileNum = createString("receiverMobileNum");
 

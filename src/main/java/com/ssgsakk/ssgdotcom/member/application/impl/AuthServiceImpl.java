@@ -136,6 +136,11 @@ public class AuthServiceImpl implements AuthService {
         return memberRepository.passwordChange(passwordChangeDto.getUuid(), hashPassword(passwordChangeDto.getPassword()));
     }
 
+    @Override
+    public String findByUuid(String uuid) {
+        return memberRepository.findByUuid(uuid).get().getUserEmail();
+    }
+
     /**
      * 비밀번호를 바꿔주기 위한 메서드
      */

@@ -96,6 +96,9 @@ public class SecurityConfig {
                                 , "/api/v1/auth/mail-check"
                                 , "/api/v1/auth/id-duplicate-check"
                                 , "/api/v1/auth/password-change"
+                                , "/api/v1/auth/mail-send-password-change"
+                                , "/api/v1/auth/password-change"
+
 
                                 , "/swagger-ui/**"
                                 , "/swagger-resources/**"
