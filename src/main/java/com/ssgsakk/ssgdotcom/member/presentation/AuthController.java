@@ -124,8 +124,6 @@ public class AuthController {
             , @RequestHeader("Authorization") String accessToken) {
 
         String uuid = getUuid(accessToken);
-        log.info("token {}", accessToken);
-        log.info("uuid {}", uuid);
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
                 .password(passwordChangeRequestVo.getPassword())
@@ -164,7 +162,6 @@ public class AuthController {
         String uuid;
         uuid = jwtUtil.getUuid(jwt.split(" ")[1]);
         checkUuid(uuid);
-        log.info("uuid >>>>>>>> {}", uuid);
         return uuid;
     }
 
