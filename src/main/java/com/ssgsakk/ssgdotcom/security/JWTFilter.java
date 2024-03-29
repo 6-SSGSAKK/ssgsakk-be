@@ -93,5 +93,4 @@ public class JWTFilter extends OncePerRequestFilter {
         private final String code;
         private final String message;
     }
-
 }

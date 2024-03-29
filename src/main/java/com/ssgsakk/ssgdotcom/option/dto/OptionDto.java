@@ -1,16 +1,13 @@
-package com.ssgsakk.ssgdotcom.option.vo;
+package com.ssgsakk.ssgdotcom.option.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.HashMap;
 import java.util.List;
 
-
 @Builder
 @Getter
-public class OptionAndStockVo {
-    private Long productSeq;
+public class OptionDto {
     private List<HashMap.Entry<Long, String>> size;
     private List<HashMap.Entry<Long, String>> color;
     private List<HashMap.Entry<Long, String>> customizationOption;

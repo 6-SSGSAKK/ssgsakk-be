@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Contents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,5 +21,13 @@ public class Contents {
 
     @Column(nullable = false)
     private String contentDescription;
+
+    @Builder
+    public Contents(Long contentSeq, String contentUrl, String contentDescription)
+    {
+        this.contentSeq = contentSeq;
+        this.contentUrl = contentUrl;
+        this.contentDescription = contentDescription;
+    }
 
 }
