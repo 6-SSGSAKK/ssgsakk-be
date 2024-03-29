@@ -5,10 +5,7 @@ import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.application.MailSendService;
-import com.ssgsakk.ssgdotcom.member.dto.IdDuplicateCheckDto;
-import com.ssgsakk.ssgdotcom.member.dto.PasswordChangeDto;
-import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
-import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
+import com.ssgsakk.ssgdotcom.member.dto.*;
 
 import com.ssgsakk.ssgdotcom.member.vo.*;
 import com.ssgsakk.ssgdotcom.security.JWTFilter;
@@ -142,24 +139,19 @@ public class AuthController {
         }
     }
 
-//    @Operation(summary = "회원 정보 조회", description = "회원 정보 조회", tags = {"Look Up Member Information"})
-//    @PostMapping("/")
-//    public BaseResponse<Object> passwordChange(@RequestBody passwordChangeRequestVo passwordChangeRequestVo
-//            , @RequestHeader("Authorization") String accessToken) {
-//
-//        String uuid = getUuid(accessToken);
-//
-//        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
-//                .password(passwordChangeRequestVo.getPassword())
-//                .uuid(uuid)
-//                .build();
-//        int checkd = authService.passwordChange(passwordChangeDto);
-//        if (checkd != 0) {
-//            return new BaseResponse<>("비밀번호가 변경되었습니다.", null);
-//        } else {
-//            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @Operation(summary = "회원 정보 조회", description = "회원 정보 조회", tags = {"Look Up Member Information"})
+    @GetMapping("/user-infor")
+    public BaseResponse<Object> userInfor(@RequestHeader("Authorization") String accessToken) {
+        String uuid = getUuid(accessToken);
+        UserInforDto userInforDto = authService.userInfor(uuid);
+
+        return new BaseResponse<>("회원 정보 조회", UserInforResponseVo.builder()
+                .userName(userInforDto.getUserName())
+                .userId(userInforDto.getUserId())
+                .userEmail(userInforDto.getUserEmail())
+                .userMobileNum(userInforDto.getUserMobileNum())
+                .build());
+    }
 
 
     // JWT에서 UUID 추출 메서드
