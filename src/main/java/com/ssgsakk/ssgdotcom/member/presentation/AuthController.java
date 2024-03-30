@@ -24,7 +24,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final MailSendService mailSendService;
-    private final JWTFilter jwtFilter;
+//    private final JWTFilter jwtFilter;
     private final JWTUtil jwtUtil;
 
     @Operation(summary = "로그인", description = "로그인", tags = {"User SignIn"})
