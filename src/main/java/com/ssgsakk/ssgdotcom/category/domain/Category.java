@@ -1,7 +1,6 @@
 package com.ssgsakk.ssgdotcom.category.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
