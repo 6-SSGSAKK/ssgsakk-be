@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class passwordChangeRequestVo {
-    private String password;
+public class MobileNumChangeRequestVo {
+    private String mobileNum;
 
     @Builder
-    public passwordChangeRequestVo(String password) {
-        this.password = password;
+    public MobileNumChangeRequestVo(String mobileNum) {
+        this.mobileNum = mobileNum;
     }
 }

@@ -139,6 +139,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public void mobileNumChange(MobileNumChangeDto mobileNumChangeDto) {
+        memberRepository.mobileNumChange(mobileNumChangeDto.getUuid(), mobileNumChangeDto.getMobileNum());
+      
     public UserInforDto userInfor(String uuid) {
         return UserInforDto.builder()
                 .userId(memberRepository.findByUuid(uuid).get().getUserId())
