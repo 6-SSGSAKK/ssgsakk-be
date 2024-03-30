@@ -92,15 +92,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(
                                 "/api/v1/**"
-                                ,"/api/v1/auth/**"
-                                ,"/api/v1/auth/signin"
-                                , "/api/v1/auth/signup"
-                                , "/api/v1/auth/mail-send"
-                                , "/api/v1/auth/mail-check"
-                                , "/api/v1/auth/id-duplicate-check"
-                                , "/api/v1/auth/password-change"
-                                , "/api/v1/auth/mail-send-password-change"
-                                , "/api/v1/auth/password-change"
+//                                ,"/api/v1/auth/**"
+//                                ,"/api/v1/auth/signin"
+//                                , "/api/v1/auth/signup"
+//                                , "/api/v1/auth/mail-send"
+//                                , "/api/v1/auth/mail-check"
+//                                , "/api/v1/auth/id-duplicate-check"
+//                                , "/api/v1/auth/password-change"
+//                                , "/api/v1/auth/mail-send-password-change"
+//                                , "/api/v1/auth/password-change"
 
 
                                 , "/swagger-ui/**"
