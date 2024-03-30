@@ -26,4 +26,6 @@ public interface AuthService {
     String findByUuid(String uuid);
 
     void mobileNumChange(MobileNumChangeDto mobileNumChangeDto);
+  
+    UserInforDto userInfor(String uuid);
 }
