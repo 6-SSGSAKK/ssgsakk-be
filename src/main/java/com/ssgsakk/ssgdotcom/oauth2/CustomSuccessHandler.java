@@ -40,6 +40,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String token = jwtUtil.createJwt(uuid, 864000000L);
 
+        // uuid를 통해 포인트 테이블이 없으면 만들어주기
+
+
         response.addHeader("Authorization", "Bearer " + token);
 
         // 프론트엔드로 response 반환

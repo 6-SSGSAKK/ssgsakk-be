@@ -8,9 +8,12 @@ import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.dto.*;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 
+import com.ssgsakk.ssgdotcom.point.domain.Point;
+import com.ssgsakk.ssgdotcom.point.infrastructure.PointRepository;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import com.ssgsakk.ssgdotcom.shippingAddress.domain.ShippingAddress;
 import com.ssgsakk.ssgdotcom.shippingAddress.infrastructure.ShippingAddressRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
     private final ShippingAddressRepository shippingAddressRepository;
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
-
+    private final PointRepository pointRepository;
 
     @Override
     public SignInDto signIn(SignInDto signInDto) {
@@ -67,6 +70,7 @@ public class AuthServiceImpl implements AuthService {
         return jwtUtil.createJwt(member.getUuid(), 864000000L);
     }
 
+    @Transactional
     @Override
     public SignUpDto signUp(SignUpDto signUpDto) {
 
@@ -102,15 +106,22 @@ public class AuthServiceImpl implements AuthService {
         ShippingAddress savedShippingAddress = shippingAddressRepository.save(shippingAddress);
 
         // 저장 여부 확인
-        if(savedMember == null || savedShippingAddress == null) {
+        if (savedMember == null || savedShippingAddress == null) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
+        // 포인트 테이블 생성
+        try {
+            buildPointEntity(uuidToStr);
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
         return SignUpDto.builder()
                 .uuid(savedMember.getUuid())
                 .userName(savedMember.getName())
                 .build();
     }
+
 
     @Override
     // 이메일 중복 확인
@@ -158,5 +169,12 @@ public class AuthServiceImpl implements AuthService {
     public String hashPassword(String userPassword) {
         userPassword = new BCryptPasswordEncoder().encode(userPassword);
         return userPassword;
+    }
+
+    private void buildPointEntity(String uuid) {
+        pointRepository.save(Point.builder()
+                .point(0)
+                .uuid(uuid)
+                .build());
     }
 }

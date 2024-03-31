@@ -11,6 +11,6 @@ public interface PointRepository extends JpaRepository<Point, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Point p SET p.point = p.point :state * :pointChange WHERE p.uuid = :uuid")
+    @Query("UPDATE Point p SET p.point = p.point + (:state * :pointChange) WHERE p.uuid = :uuid")
     void pointUpdate(@Param("uuid") String uuid, @Param("pointChange") int pointChange, @Param("state") int state);
 }
