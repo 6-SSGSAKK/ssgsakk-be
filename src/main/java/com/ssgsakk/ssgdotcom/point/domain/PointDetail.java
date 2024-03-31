@@ -28,13 +28,17 @@ public class PointDetail extends BaseCreateTimeEntity {
     @Column(nullable = false)
     private LocalDateTime pointExpired;
 
+    @Column(nullable = false)       // 주문번호, 추후에 주문 취소나 환불에 사용된다.
+    private long orderSeq;
+
     @Builder
-    public PointDetail(Long pointDetailSeq, String uuid, int pointChange, int pointState) {
+    public PointDetail(Long pointDetailSeq, String uuid, int pointChange, int pointState, long orderSeq) {
         this.pointDetailSeq = pointDetailSeq;
         this.uuid = uuid;
         this.pointChange = pointChange;
         this.pointState = pointState;
         this.pointExpired = getCreatedDate().plusYears(1);      // 만료일 생성일 기준으로 자동 설정
+        this.orderSeq = orderSeq;
     }
 
     @PrePersist
