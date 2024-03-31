@@ -1,11 +1,15 @@
 package com.ssgsakk.ssgdotcom.oauth2;
 
 import com.ssgsakk.ssgdotcom.member.dto.CustomOAuth2User;
+import com.ssgsakk.ssgdotcom.point.domain.Point;
+import com.ssgsakk.ssgdotcom.point.infrastructure.PointRepository;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -14,13 +18,10 @@ import java.io.IOException;
 
 
 @Component
+@RequiredArgsConstructor
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JWTUtil jwtUtil;
-
-    public CustomSuccessHandler(JWTUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
-
+    private final PointRepository pointRepository;
 
     // 로그인 성공 시, 작동할 핸들러
     @Override
@@ -41,7 +42,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String token = jwtUtil.createJwt(uuid, 864000000L);
 
         // uuid를 통해 포인트 테이블이 없으면 만들어주기
-
+        try {
+            pointRepository.save(Point.builder()
+                    .point(0)
+                    .uuid(uuid)
+                    .build());
+        } catch (Exception e) {
+            // 이미 있는 uuid라서 만들어지지 않음
+        }
 
         response.addHeader("Authorization", "Bearer " + token);
 

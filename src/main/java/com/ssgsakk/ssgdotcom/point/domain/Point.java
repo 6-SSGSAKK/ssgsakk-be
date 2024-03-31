@@ -13,7 +13,7 @@ public class Point {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pointSeq;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String uuid;
 
     @Column(nullable = false)
