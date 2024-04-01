@@ -1,17 +1,15 @@
 package com.ssgsakk.ssgdotcom.category.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
-
-
 @ToString
 @Getter
 @Entity
 @NoArgsConstructor
-public class Category {
+public class Category extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
