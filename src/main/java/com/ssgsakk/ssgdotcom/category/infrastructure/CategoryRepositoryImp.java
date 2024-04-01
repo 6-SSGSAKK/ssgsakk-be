@@ -18,16 +18,11 @@ public class CategoryRepositoryImp extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public List<Category> getCategoryList() { //전체카테고리 조회
-
-        return jpaQueryFactory.selectFrom(qCategory).fetch();
-    }
-
     public List<Tuple> getBigCategory() { //대카테고리조회
         return jpaQueryFactory
                 .select(qCategory.categorySeq, qCategory.level, qCategory.categoryName)
                 .from(qCategory)
-                .where(qCategory.level.eq(0))
+                .where(qCategory.level.eq(1))
                 .fetch();
     }
 
@@ -35,16 +30,17 @@ public class CategoryRepositoryImp extends QuerydslRepositorySupport {
         return jpaQueryFactory
                 .select(qCategory.categorySeq, qCategory.categoryName, qCategory.level)
                 .from(qCategory)
-                .where(qCategory.parentCategorySeq.categorySeq.eq(parentCategoryId).and(qCategory.level.eq(1)))
+                .where(qCategory.parentCategorySeq.categorySeq.eq(parentCategoryId).and(qCategory.level.eq(2)))
                 .fetch();
     }
 
-    public List<Category> getSmallCategoryByMid(Long parentCategorySeq){ //중카테고리별 소 카테고리조회
-        return jpaQueryFactory.selectFrom(qCategory)
-                .leftJoin(qCategory.parentCategorySeq)
-                .where(qCategory.level.eq(2)
-                        .and(qCategory.parentCategorySeq.categorySeq.eq(parentCategorySeq)))
+    public List<Tuple> getSmallCategoryByMid(Long parentCategoryId) { //중카테고리별 소카테고리 조회
+        return jpaQueryFactory
+                .select(qCategory.categorySeq, qCategory.categoryName, qCategory.level)
+                .from(qCategory)
+                .where(qCategory.parentCategorySeq.categorySeq.eq(parentCategoryId).and(qCategory.level.eq(3)))
                 .fetch();
     }
+
 
 }

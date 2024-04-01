@@ -67,12 +67,6 @@ public class CategoryServiceImp implements CategoryService{
     }
 
     @Override
-    public List<Category> getCategoryList(){
-
-        return categoryRepositoryImp.getCategoryList(); //전체카테고리조회
-    }
-
-    @Override
     public List<CategoryCustomDto> getBigCategory() { //대카테고리조회
         List<com.querydsl.core.Tuple> tuples = categoryRepositoryImp.getBigCategory();
         List<CategoryCustomDto> customDto = tuples.stream()
@@ -88,10 +82,13 @@ public class CategoryServiceImp implements CategoryService{
                 .collect(Collectors.toList());
         return customDto;
     }
-
     @Override
-    public List<Category> getSmallCategoryByParent(Long parentCategoryId){ //중카테고리별 소카테고리조회
-        return categoryRepositoryImp.getSmallCategoryByMid(parentCategoryId);
+    public List<CategoryCustomDto> getSmallCategoryByMid(Long parentCategoryId) { //중카테고리별 소카테고리 조회
+        List<com.querydsl.core.Tuple> tuples = categoryRepositoryImp.getSmallCategoryByMid(parentCategoryId);
+        List<CategoryCustomDto> customDto = tuples.stream()
+                .map(this::mapTupleToDTO)
+                .collect(Collectors.toList());
+        return customDto;
     }
 
 }

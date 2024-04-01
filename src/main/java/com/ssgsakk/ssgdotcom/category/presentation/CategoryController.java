@@ -48,12 +48,6 @@ public class CategoryController {
         categoryService.deleteCategory(categorySeq);
     }
 
-    @GetMapping("/allcategories")  //전체 카테고리 조회
-    public ResponseEntity<List<Category>> getcategoryllist() {
-        List<Category> categories = categoryService.getCategoryList();
-        return ResponseEntity.ok(categories);
-    }
-
     @GetMapping("/bigcategories") //대카테고리만 조회
     public ResponseEntity<List<CategoryCustomDto>> getBigCategories() {
         List<CategoryCustomDto> bigCategories = categoryService.getBigCategory();
@@ -64,12 +58,10 @@ public class CategoryController {
         List<CategoryCustomDto> middleCategories = categoryService.getMiddleCategoryByBig(parentCategoryId);
         return ResponseEntity.ok(middleCategories);
     }
-
-
-    @GetMapping("/smallcategorybymid/{parentcategoryid}") //중카테고리별 소카테고리조회
-    public ResponseEntity<List<Category>> getsmallcategorybyparent(@RequestParam Long parentCategoryId){
-        List<Category> categories = categoryService.getSmallCategoryByParent(parentCategoryId);
-        return ResponseEntity.ok(categories);
+    @GetMapping("/smallbymid/{parentcategoryid}/") //중카테고리별 소카테고리 조회
+    public ResponseEntity<List<CategoryCustomDto>> getSmallCategoryByMid(@RequestParam Long parentCategoryId) {
+        List<CategoryCustomDto> smallCategories = categoryService.getSmallCategoryByMid(parentCategoryId);
+        return ResponseEntity.ok(smallCategories);
     }
 }
 

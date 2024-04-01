@@ -1,7 +1,6 @@
 package com.ssgsakk.ssgdotcom.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
