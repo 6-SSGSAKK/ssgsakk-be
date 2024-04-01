@@ -1,8 +1,6 @@
 package com.ssgsakk.ssgdotcom.member.application;
 
-import com.ssgsakk.ssgdotcom.member.dto.IdDuplicateCheckDto;
-import com.ssgsakk.ssgdotcom.member.dto.SignInDto;
-import com.ssgsakk.ssgdotcom.member.dto.SignUpDto;
+import com.ssgsakk.ssgdotcom.member.dto.*;
 
 /**
  * Auth 관련 서비스
@@ -20,4 +18,14 @@ public interface AuthService {
 
     // ID 중복 확인
     boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto);
+
+    String findByUserEmail(String uuid);
+
+    int passwordChange(PasswordChangeDto passwordChangeDto);
+
+    String findByUuid(String uuid);
+
+    void mobileNumChange(MobileNumChangeDto mobileNumChangeDto);
+  
+    UserInforDto userInfor(String uuid);
 }

@@ -74,5 +74,5 @@ jobs:
           sudo docker stop spring  
           sudo docker rm spring 
           sudo docker pull ${{ secrets.USERNAME }}/ssgssak
-          sudo docker run -d —name test -p 8080:8080 ${{ secrets.USERNAME }}/ssgssak
+          sudo docker run -d --name spring -p 8080:8080 ${{ secrets.USERNAME }}/ssgssak
           sudo docker image prune -f

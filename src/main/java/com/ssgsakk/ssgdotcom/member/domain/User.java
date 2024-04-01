@@ -35,7 +35,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(nullable = false, length = 255)
     private String userEmail;
 
-    @Column(nullable = true, length = 20)
+    @Column(nullable = true, length = 20, unique = true)
     private String userMobileNum;
 
     // 0이면 일반 회원가입 유저, 1이면 소셜 로그인 유저
