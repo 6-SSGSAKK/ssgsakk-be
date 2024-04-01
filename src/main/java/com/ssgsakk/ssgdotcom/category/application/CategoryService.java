@@ -13,17 +13,11 @@ public interface CategoryService {
     void deleteCategory(Long categorySeq);
     List<Category> getCategoryList(); //전체카테고리조회
     List<CategoryCustomDto> getBigCategory(); //대카테고리조회
-
     List<CategoryCustomDto> getMiddleCategoryByBig(Long parentCategoryId);  //대카테고리별 중카테고리,소카테고리조회
 
 
 
 //    List<CategoryCustomDto> getMidCategory(); //중카테고리조회
-
-//    List<CategoryCustomDto> getMiddleCategoryByParent(Long parentCategoryId); //대카테고리별 중카테고리,소카테고리조회
-
-//
-
 
     List<Category> getSmallCategoryByParent(Long parentCategoryId); //중 카테고리별 소 카테고리조회
 }

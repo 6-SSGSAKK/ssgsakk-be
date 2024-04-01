@@ -21,7 +21,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
 
-    @PostMapping() //create category
+    @PostMapping() //카테고리 생성, categoryName,parentCategorySeq,level 생성가능.
     public void createcategory(@RequestBody CreateCategoryRequestVo createCategoryRequestVo) {
 
         categoryService.createCategory(CategoryDto.builder()
@@ -32,7 +32,7 @@ public class CategoryController {
 
     }
 
-    @PutMapping("update/{categorySeq}") // categorySeq 를 기준으로 수정한다.
+    @PutMapping("update/{categorySeq}") // categorySeq를 기준으로 수정가능, 수정 가능한 값 categoryName,level,parentCategorySeq
     public void updatecategory(@PathVariable Long categorySeq,
                                @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
 
@@ -45,7 +45,7 @@ public class CategoryController {
                 .build());
     }
 
-    @DeleteMapping("delete/{categorySeq}") //delete Category
+    @DeleteMapping("delete/{categorySeq}") //카테고리삭제
     public void deletecategory(@PathVariable Long categorySeq) {
         categoryService.deleteCategory(categorySeq);
     }
@@ -56,43 +56,22 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
-
     @GetMapping("/bigcategories") //대카테고리만 조회
     public ResponseEntity<List<CategoryCustomDto>> getBigCategories() {
         List<CategoryCustomDto> bigCategories = categoryService.getBigCategory();
         return ResponseEntity.ok(bigCategories);
     }
-    @GetMapping("/midbybig{parentcategoryid}/") //대분류별 중분류 출력
-    public ResponseEntity<List<CategoryCustomDto>> getMiddleCategoryByBig(@PathVariable Long parentCategoryId) {
+    @GetMapping("/midbybig/{parentcategoryid}/") //대카테고리별 중카테고리 조회
+    public ResponseEntity<List<CategoryCustomDto>> getMiddleCategoryByBig(@RequestParam Long parentCategoryId) {
         List<CategoryCustomDto> middleCategories = categoryService.getMiddleCategoryByBig(parentCategoryId);
         return ResponseEntity.ok(middleCategories);
     }
 
 
-
-
-//    @GetMapping("/midcategories") //중카테고리만 조회
-//    public ResponseEntity<List<CategoryCustomDto>> getMidCategories() {
-//        List<CategoryCustomDto> midCategories = categoryService.getMidCategory();
-//        return ResponseEntity.ok(midCategories);
-//    }
-
-
-
-//    @GetMapping("/middlecategoriesbybig") //대분류별 중카테고리조회
-//    public ResponseEntity<List<Category>> getmiddlecategorybyparent(@RequestParam Long parentCategoryId) {
-//        List<Category> categories = categoryService.getMiddleCategoryByParent(parentCategoryId);
-//        return ResponseEntity.ok(categories);
-//    }
-
-    @GetMapping("/smallcategorybymid{parentcategoryid}") //중분류별 소카테고리조회
+    @GetMapping("/smallcategorybymid/{parentcategoryid}") //중카테고리별 소카테고리조회
     public ResponseEntity<List<Category>> getsmallcategorybyparent(@RequestParam Long parentCategoryId){
         List<Category> categories = categoryService.getSmallCategoryByParent(parentCategoryId);
         return ResponseEntity.ok(categories);
     }
-
-
-
-
 }
 
