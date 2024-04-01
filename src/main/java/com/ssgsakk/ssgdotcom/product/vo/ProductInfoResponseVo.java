@@ -1,6 +1,6 @@
 package com.ssgsakk.ssgdotcom.product.vo;
 
-import com.ssgsakk.ssgdotcom.common.utils.DeliveryType;
+import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

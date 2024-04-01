@@ -1,6 +1,7 @@
 package com.ssgsakk.ssgdotcom.member.infrastructure;
 
 import com.ssgsakk.ssgdotcom.member.domain.User;
+import com.ssgsakk.ssgdotcom.member.dto.PasswordChangeDto;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -31,4 +32,14 @@ public interface MemberRepository extends JpaRepository<User, Long> {
     boolean existsByUserEmail(String email);
 
     boolean existsByUserId(String userId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE User u SET userPassword = :password WHERE u.uuid = :uuid")
+    int passwordChange(@Param("uuid") String uuid, @Param("password") String password);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE User u SET userMobileNum = :userMobileNum WHERE u.uuid = :uuid")
+    void mobileNumChange(@Param("uuid") String uuid, @Param("userMobileNum") String userMobileNum);
 }

@@ -48,7 +48,7 @@ public class MailSendService {
 
         // redis 저장
         try {
-            redisUtil.setData(email, authNum);
+            redisUtil.setDataExpire(email, authNum, 180);
         } catch (BusinessException e){
             throw new BusinessException(ErrorCode.REDIS_SERVER_ERROR);
         }
