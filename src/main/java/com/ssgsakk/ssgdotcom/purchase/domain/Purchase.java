@@ -1,5 +1,5 @@
 package com.ssgsakk.ssgdotcom.purchase.domain;
-
+import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Purchase {
+public class Purchase extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

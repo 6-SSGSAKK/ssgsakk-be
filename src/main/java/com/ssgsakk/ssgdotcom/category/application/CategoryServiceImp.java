@@ -31,7 +31,7 @@ public class CategoryServiceImp implements CategoryService{
     }
 
     @Override
-    public void createCategory(CategoryDto categoryDTO) {
+    public void createCategory(CategoryDto categoryDTO) { //카테고리생성
         Category category = Category.builder()
                 .categoryName(categoryDTO.getCategoryName())
                 .level(categoryDTO.getLevel())
