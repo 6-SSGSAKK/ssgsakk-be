@@ -99,7 +99,6 @@ public class AuthController {
 
         // 로그인이 되어 비밀번호 변경을 하는 경우, 이메일 전송 진행
         String email = authService.findByUuid(uuid);
-//        log.info("email >>>>> {} ", email);
         mailSendService.joinEmail(email);
 
         return new BaseResponse<>("이메일 발송", null);
@@ -116,14 +115,9 @@ public class AuthController {
                 .password(passwordChangeRequestVo.getPassword())
                 .uuid(uuid)
                 .build();
-        int checkd = authService.passwordChange(passwordChangeDto);
 
-        // 서비스 로직에서 처리할 것!
-        if (checkd != 0) {
-            return new BaseResponse<>("비밀번호가 변경되었습니다.", null);
-        } else {
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
-        }
+        authService.passwordChange(passwordChangeDto);
+        return new BaseResponse<>("비밀번호가 변경되었습니다.", null);
     }
 
     @Operation(summary = "회원 정보 조회", description = "회원 정보 조회", tags = {"Look Up Member Information"})

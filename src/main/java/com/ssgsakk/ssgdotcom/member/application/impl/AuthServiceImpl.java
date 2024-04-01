@@ -135,8 +135,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public int passwordChange(PasswordChangeDto passwordChangeDto) {
-        return memberRepository.passwordChange(passwordChangeDto.getUuid(), hashPassword(passwordChangeDto.getPassword()));
+    public void passwordChange(PasswordChangeDto passwordChangeDto) {
+        if(memberRepository.passwordChange(passwordChangeDto.getUuid(), hashPassword(passwordChangeDto.getPassword())) == 0 ){
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
