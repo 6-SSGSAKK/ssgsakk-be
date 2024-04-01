@@ -11,6 +11,7 @@ import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import com.ssgsakk.ssgdotcom.shippingAddress.domain.ShippingAddress;
 import com.ssgsakk.ssgdotcom.shippingAddress.infrastructure.ShippingAddressRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -68,6 +69,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public SignUpDto signUp(SignUpDto signUpDto) {
 
         // 비밀번호 암호화
@@ -145,6 +147,8 @@ public class AuthServiceImpl implements AuthService {
 
     public UserInforDto userInfor(String uuid) {
         return UserInforDto.builder()
+
+                // orElseThrow 처리할 것!
                 .userId(memberRepository.findByUuid(uuid).get().getUserId())
                 .userName(memberRepository.findByUuid(uuid).get().getName())
                 .userEmail(memberRepository.findByUuid(uuid).get().getUserEmail())

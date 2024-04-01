@@ -8,7 +8,6 @@ import com.ssgsakk.ssgdotcom.member.application.MailSendService;
 import com.ssgsakk.ssgdotcom.member.dto.*;
 
 import com.ssgsakk.ssgdotcom.member.vo.*;
-import com.ssgsakk.ssgdotcom.security.JWTFilter;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -24,7 +23,6 @@ public class AuthController {
 
     private final AuthService authService;
     private final MailSendService mailSendService;
-    private final JWTFilter jwtFilter;
     private final JWTUtil jwtUtil;
 
     @Operation(summary = "로그인", description = "로그인", tags = {"User SignIn"})
@@ -65,7 +63,6 @@ public class AuthController {
 
         return new BaseResponse<>("SignUp Success", SignUpResponseVo.builder()
                 .userName(servicedSignUpDto.getUserName())
-                .uuid(servicedSignUpDto.getUuid())
                 .build());
     }
 
@@ -100,6 +97,8 @@ public class AuthController {
                 .inputId(idDuplicateCheckRequestVo.getInputId())
                 .build();
         boolean checked = authService.idDuplicateCheck(idDuplicateCheckDto);
+
+        // 분기문 서비스에서 진행할 것!
         if (!checked) {
             return new BaseResponse<>("중복된 ID가 없습니다.", null);
         } else {
@@ -114,7 +113,7 @@ public class AuthController {
 
         // 로그인이 되어 비밀번호 변경을 하는 경우, 이메일 전송 진행
         String email = authService.findByUuid(uuid);
-        log.info("email >>>>> {} ", email);
+//        log.info("email >>>>> {} ", email);
         mailSendService.joinEmail(email);
 
         return new BaseResponse<>("이메일 발송", null);
@@ -132,6 +131,8 @@ public class AuthController {
                 .uuid(uuid)
                 .build();
         int checkd = authService.passwordChange(passwordChangeDto);
+
+        // 서비스 로직에서 처리할 것!
         if (checkd != 0) {
             return new BaseResponse<>("비밀번호가 변경되었습니다.", null);
         } else {
@@ -140,8 +141,8 @@ public class AuthController {
     }
 
     @Operation(summary = "회원 정보 조회", description = "회원 정보 조회", tags = {"Look Up Member Information"})
-    @GetMapping("/user-infor")
-    public BaseResponse<Object> userInfor(@RequestHeader("Authorization") String accessToken) {
+    @GetMapping("/user-info")
+    public BaseResponse<Object> userInfo(@RequestHeader("Authorization") String accessToken) {
         String uuid = getUuid(accessToken);
         UserInforDto userInforDto = authService.userInfor(uuid);
 
@@ -165,7 +166,9 @@ public class AuthController {
                     .build());
 
             return new BaseResponse<>("전화번호 변경", null);
-        } catch (Exception e) {
+        }
+        // 서비스 쪽에 예외처리하기!
+        catch (Exception e) {
             throw new BusinessException(ErrorCode.DUPLICATE_MOBILE_NUM);
         }
     }
