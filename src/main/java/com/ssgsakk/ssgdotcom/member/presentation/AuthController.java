@@ -139,18 +139,12 @@ public class AuthController {
     public BaseResponse<Object> mobileNumChange(@RequestBody MobileNumChangeRequestVo mobileNumChangeRequestVo, @RequestHeader("Authorization") String accessToken) {
         String uuid = getUuid(accessToken);
 
-        try {
-            authService.mobileNumChange(MobileNumChangeDto.builder()
+        authService.mobileNumChange(MobileNumChangeDto.builder()
                     .mobileNum(mobileNumChangeRequestVo.getMobileNum())
                     .uuid(uuid)
                     .build());
 
             return new BaseResponse<>("전화번호 변경", null);
-        }
-        // 서비스 쪽에 예외처리하기!
-        catch (Exception e) {
-            throw new BusinessException(ErrorCode.DUPLICATE_MOBILE_NUM);
-        }
     }
 
 

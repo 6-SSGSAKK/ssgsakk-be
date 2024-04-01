@@ -148,7 +148,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void mobileNumChange(MobileNumChangeDto mobileNumChangeDto) {
-        memberRepository.mobileNumChange(mobileNumChangeDto.getUuid(), mobileNumChangeDto.getMobileNum());
+        try {
+            memberRepository.mobileNumChange(mobileNumChangeDto.getUuid(), mobileNumChangeDto.getMobileNum());
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.DUPLICATE_MOBILE_NUM);
+        }
     }
 
     public UserInforDto userInfor(String uuid) {

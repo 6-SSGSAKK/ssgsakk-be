@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SignUpResponseVo {
     private String userName;
-    private String uuid;
-
     @Builder
-    public SignUpResponseVo(String userName, String uuid) {
+    public SignUpResponseVo(String userName) {
         this.userName = userName;
-        this.uuid = uuid;
     }
 }
