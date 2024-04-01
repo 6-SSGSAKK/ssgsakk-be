@@ -46,4 +46,7 @@ public class CustomOAuth2User implements OAuth2User {
     public String getUuid() {
         return oAuthDto.getUuid();
     }
+
+    // oauthId를 로그인 성공 핸들러에 전달해줘야 한다.
+    public String getOauthId() { return oAuthDto.getOauthId(); }
 }

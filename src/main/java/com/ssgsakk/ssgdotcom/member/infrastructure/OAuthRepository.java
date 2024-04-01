@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OAuthRepository extends JpaRepository<OAuth, Long> {
     OAuth findByOauthIdAndOauthType(String oauthId, String oauthType);
+
+    boolean existsByOauthId(String oauthId);
 }
