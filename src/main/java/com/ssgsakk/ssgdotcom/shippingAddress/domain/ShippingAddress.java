@@ -34,7 +34,7 @@ public class ShippingAddress extends BaseTimeEntity {
     @Column(nullable = false, length = 50)
     private String detailAddress;
     @Column(nullable = false, length = 5)
-    private int defaultAddressCheck;
+    private int defaultAddressCheck;        // 1이 기본 배송지, 0은 기타 배송지
 
     @Builder
     public ShippingAddress(long shippingAddressSeq, User user, String addressNickname, String receiverName, String receiverMobileNum, String zipCode, String roadAddress, String jibunAddress, String detailAddress, int defaultAddressCheck) {

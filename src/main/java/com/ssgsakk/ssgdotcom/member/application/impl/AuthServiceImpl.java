@@ -97,6 +97,7 @@ public class AuthServiceImpl implements AuthService {
                 .jibunAddress(signUpDto.getJibunAddress())
                 .roadAddress(signUpDto.getRoadAddress())
                 .zipCode(signUpDto.getZipCode())
+                .defaultAddressCheck(1)     // 기본 배송지로 지정
                 .build();
 
         ShippingAddress savedShippingAddress = shippingAddressRepository.save(shippingAddress);
