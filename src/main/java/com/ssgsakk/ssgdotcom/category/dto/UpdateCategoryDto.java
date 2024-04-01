@@ -1,7 +1,6 @@
 package com.ssgsakk.ssgdotcom.category.dto;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
