@@ -12,5 +12,5 @@ public class OptionDto {
     private String firstDepthName;
     private String secondDepthName;
     private String thirdDepthName;
-    private List<StockDto> stockDto;
+    private List<StockDto> options;
 }

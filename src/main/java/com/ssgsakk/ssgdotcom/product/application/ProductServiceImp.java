@@ -1,11 +1,15 @@
 package com.ssgsakk.ssgdotcom.product.application;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
+import com.ssgsakk.ssgdotcom.event.domain.EventProduct;
+import com.ssgsakk.ssgdotcom.event.infrastructure.EventProductRepository;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
 import com.ssgsakk.ssgdotcom.product.dto.ProductDto;
+import com.ssgsakk.ssgdotcom.product.dto.ProductFilterDto;
 import com.ssgsakk.ssgdotcom.product.dto.SearchProductDto;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
-import com.ssgsakk.ssgdotcom.vendor.infrastructure.VendorRepository;
+import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepositoryImpl;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,10 +23,11 @@ import java.util.stream.Collectors;
 public class ProductServiceImp implements ProductService{
 
     private final ProductRepository productRepository;
-    private final VendorRepository vendorRepository;
-    private final JPAQueryFactory jpaQueryFactory;
+    private final ProductRepositoryImpl productRepositoryimpl;
+    private final EventProductRepository eventProductRepository;
     // 상품 상세 정보 조회
     @Override
+    @Transactional
     public ProductDto productInfo(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("찾으시는 상품이 없습니다."));
@@ -40,8 +45,8 @@ public class ProductServiceImp implements ProductService{
     }
 
     // 상품 검색
-    // entity 전체로 받아서 dto에서 처리 JPA에선 그렇게 자주 함.
     @Override
+    @Transactional
     public List<SearchProductDto> searchProducts(String keyword) {
         List<Product> products = productRepository.findByProductNameContaining(keyword);
 
@@ -51,4 +56,31 @@ public class ProductServiceImp implements ProductService{
                         .build())
                 .collect(Collectors.toList());
         }
+    @Override
+    @Transactional
+    public List<SearchProductDto> productEvent(Long eventSeq) {
+        List<EventProduct> eventProductList = eventProductRepository.findByEvent_EventSeq(eventSeq);
+        return eventProductList.stream()
+                .map(eventProduct -> SearchProductDto.builder()
+                        .productSeq(eventProduct.getProduct().getProductSeq())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SearchProductDto> productBest(DeliveryType deliveryType) {
+        List<Long> products = productRepositoryimpl.productbest(deliveryType);
+        return products.stream()
+                .map(product -> SearchProductDto.builder()
+                        .productSeq(product)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public List<SearchProductDto> productFilter(ProductFilterDto productFilterDto) {
+        //productRepositoryimpl.findByDeliveryType()
+        return null;
+    }
 }

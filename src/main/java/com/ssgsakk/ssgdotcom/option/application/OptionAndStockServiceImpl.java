@@ -43,15 +43,15 @@ public class OptionAndStockServiceImpl implements OptionAndStockService {
         List<StockDto> stocks = getStocks(productSeq, depthLevel);
         return switch (depthLevel) {
             case 1 -> builder.depthLevel(1).firstDepthName(depthNames.get(0))
-                    .stockDto(stocks).build();
+                    .options(stocks).build();
             case 2 -> builder.depthLevel(2).firstDepthName(depthNames.get(0))
-                    .secondDepthName(depthNames.get(1)).stockDto(stocks).build();
+                    .secondDepthName(depthNames.get(1)).options(stocks).build();
             case 3 -> builder.depthLevel(3).firstDepthName(depthNames.get(0))
                     .secondDepthName(depthNames.get(1))
                     .thirdDepthName(depthNames.get(2))
-                    .stockDto(stocks)
+                    .options(stocks)
                     .build();
-            default -> builder.stockDto(stocks).build();
+            default -> builder.options(stocks).build();
         };
     }
     public List<StockDto> getStocks(Long productSeq, Integer depthLevel) {

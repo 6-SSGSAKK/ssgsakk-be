@@ -5,7 +5,6 @@ import com.ssgsakk.ssgdotcom.option.dto.StockDto;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -17,5 +16,5 @@ public class OptionVo {
     private String firstDepthName;
     private String secondDepthName;
     private String thirdDepthName;
-    private List<StockDto> stockDto;
+    private List<StockDto> options;
 }

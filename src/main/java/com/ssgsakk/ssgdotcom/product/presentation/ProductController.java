@@ -1,9 +1,11 @@
 package com.ssgsakk.ssgdotcom.product.presentation;
 
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
+import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.contents.application.ContentsService;
 import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
 import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
+import com.ssgsakk.ssgdotcom.product.dto.ProductFilterDto;
 import com.ssgsakk.ssgdotcom.product.vo.*;
 import com.ssgsakk.ssgdotcom.product.application.ProductService;
 import com.ssgsakk.ssgdotcom.product.dto.ProductDto;
@@ -70,6 +72,33 @@ public class ProductController {
                 .reviewCount(productDto.getReviewCount())
                 .contents(contentVos)
                 .build());
+    }
+    @GetMapping("/filter")
+    @Operation(summary = "상품 필터 적용", description = "상품을 조건에 맞게 조회", tags = { "Product filter" })
+    public BaseResponse<?> productFilter( @RequestParam DeliveryType deliveryType,
+                                          @RequestParam int minPrice,
+                                          @RequestParam int maxPrice)
+    {
+        ProductFilterDto productFilterDto = ProductFilterDto.builder()
+                .deliveryType(deliveryType)
+                .maxPrice(maxPrice)
+                .minPrice(minPrice)
+                .build();
+        return new BaseResponse<>("","");
+    }
+
+    @GetMapping("/event/{id}")
+    @Operation(summary = "묶음 상품", description = "이벤트 묶음 상품", tags = { "Event product" })
+    public BaseResponse<?> productEvent(@PathVariable("id") Long eventSeq){
+        productService.productEvent(eventSeq);
+        return new BaseResponse<>("","");
+    }
+
+    @GetMapping("/best")
+    @Operation(summary = "베스트 상품", description = "리뷰순으로 정렬", tags = { "Best product" })
+    public BaseResponse<?> productBest(@RequestParam DeliveryType deliveryType){
+        productService.productBest(deliveryType);
+        return new BaseResponse<>("", "");
     }
 
 }

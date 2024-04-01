@@ -7,7 +7,9 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CartDto {
+        private Short checkbox;
+        private Short fixItem;
         private Long optionAndStockId;
         private Integer quantity;
-        private Integer productSeq;
+        private Long productSeq;
 }

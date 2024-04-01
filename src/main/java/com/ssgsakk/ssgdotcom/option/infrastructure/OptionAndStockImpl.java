@@ -19,14 +19,6 @@ public class OptionAndStockImpl extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public List<Integer> getOptionInfoByProduct(Long productSeq, Long sizeSeq,
-                                                Long colorSeq, Long customizationSeq) {
-        return jpaQueryFactory.select(qOptionAndStock.stock)
-                .from(qOptionAndStock)
-                .where(eqProduct(productSeq), eqSize(sizeSeq),
-                        eqColor(colorSeq), eqCustomizationOption(customizationSeq))
-                .fetch();
-    }
 
     private BooleanExpression eqProduct(Long productSeq) {
         if(productSeq == null || productSeq == 0) {
