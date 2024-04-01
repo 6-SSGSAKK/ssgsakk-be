@@ -116,8 +116,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     // 이메일 중복 확인
-    public boolean duplicateChecked(String email) {
-        return memberRepository.existsByUserEmail(email);
+    public void duplicateChecked(String email) {
+        if(memberRepository.existsByUserEmail(email)) {
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+        }
     }
 
     @Override
