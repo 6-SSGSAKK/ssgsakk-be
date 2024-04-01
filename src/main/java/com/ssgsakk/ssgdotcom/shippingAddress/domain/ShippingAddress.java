@@ -19,19 +19,19 @@ public class ShippingAddress extends BaseTimeEntity {
     @JoinColumn(name = "user_seq")
     private User user;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String addressNickname;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String receiverName;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String receiverMobileNum;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String zipCode;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String roadAddress;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String jibunAddress;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String detailAddress;
     @Column(nullable = false, length = 5)
     private int defaultAddressCheck;
