@@ -70,18 +70,15 @@ public class AuthController {
     @PostMapping("/mail-send")
     public BaseResponse<Object> mailSend(@RequestBody @Valid EmailSendRequestVo emailSendRequestVo) {
         authService.duplicateChecked(emailSendRequestVo.getEmail());
+        mailSendService.joinEmail(emailSendRequestVo.getEmail());
         return new BaseResponse<>("이메일 발송", null);
     }
 
     @Operation(summary = "이메일 인증", description = "이메일 인증", tags = {"Email Certification"})
     @PostMapping("/mail-check")
     public BaseResponse<Object> mailCheck(@RequestBody @Valid EmailCheckRequestVo emailCheckRequestVo) {
-        boolean checked = mailSendService.checkAuthNum(emailCheckRequestVo.getEmail(), emailCheckRequestVo.getAuthNum());
-        if (checked) {
-            return new BaseResponse<>("인증 성공", null);
-        } else {
-            throw new BusinessException(ErrorCode.MASSAGE_VALID_FAILED);
-        }
+        mailSendService.checkAuthNum(emailCheckRequestVo.getEmail(), emailCheckRequestVo.getAuthNum());
+        return new BaseResponse<>("인증 성공", null);
     }
 
     @Operation(summary = "아이디 중복 확인", description = "아이디 중복 확인", tags = {"Id Duplicate Check"})
