@@ -7,7 +7,6 @@ import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDto;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepository;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepositoryImp;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
+
 @Transactional
 public class CategoryServiceImp implements CategoryService{
 
@@ -33,7 +32,6 @@ public class CategoryServiceImp implements CategoryService{
 
     @Override
     public void createCategory(CategoryDto categoryDTO) { //카테고리생성
-        log.info("============" + categoryDTO.getParentCategorySeq());
         Category category = Category.builder()
                 .categoryName(categoryDTO.getCategoryName())
                 .level(categoryDTO.getLevel())
@@ -82,16 +80,6 @@ public class CategoryServiceImp implements CategoryService{
                 .collect(Collectors.toList());
         return customDto;
     }
-
-//    @Override
-//    public List<CategoryCustomDto> getMidCategoryByBig(Long parentCategoryId){ //대카테고리별 중카테고리조회
-//        List<com.querydsl.core.Tuple> tuples = categoryRepositoryImp.getMiddleCategoryByBig(Long parentCategoryId);
-//        List<CategoryCustomDto> customdto = tuples.stream()
-//                .map(this::mapTupleToDTO)
-//                .collect(Collectors.toList());
-//        return customdto;
-//    }
-
     @Override
     public List<CategoryCustomDto> getMiddleCategoryByBig(Long parentCategoryId) { //대카테고리별 중 카테고리 조회
         List<com.querydsl.core.Tuple> tuples = categoryRepositoryImp.getMiddleCategoryByBig(parentCategoryId);
@@ -101,32 +89,9 @@ public class CategoryServiceImp implements CategoryService{
         return customDto;
     }
 
-
     @Override
     public List<Category> getSmallCategoryByParent(Long parentCategoryId){ //중카테고리별 소카테고리조회
         return categoryRepositoryImp.getSmallCategoryByMid(parentCategoryId);
     }
-
-
-
-
-//    @Override
-//    public List<CategoryCustomDto> getMidCategory() { //중카테고리조회
-//        List<com.querydsl.core.Tuple> tuples = categoryRepositoryImp.getMidCategory();
-//        List<CategoryCustomDto> collect = tuples.stream()
-//                .map(this::mapTupleToDTO)
-//                .collect(Collectors.toList());
-//        return collect;
-//    }
-
-//    @Override
-//    public List<Category> getMiddleCategoryByParent(Long parentCategoryId){
-//
-//        return categoryRepositoryImp.getMiddleCategoryByParent(parentCategoryId); // 대카테고리별 중카테고리 조회
-//    }
-
-
-
-
 }
 
