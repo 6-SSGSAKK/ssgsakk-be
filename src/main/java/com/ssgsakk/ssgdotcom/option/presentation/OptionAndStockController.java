@@ -3,14 +3,15 @@ package com.ssgsakk.ssgdotcom.option.presentation;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.option.application.OptionAndStockService;
 import com.ssgsakk.ssgdotcom.option.dto.AddOptionDto;
-import com.ssgsakk.ssgdotcom.option.dto.OptionAndStockDto;
+import com.ssgsakk.ssgdotcom.option.dto.OptionDto;
+import com.ssgsakk.ssgdotcom.option.dto.StockDto;
 import com.ssgsakk.ssgdotcom.option.vo.AddOptionVo;
 import com.ssgsakk.ssgdotcom.option.vo.OptionAndStockVo;
+import com.ssgsakk.ssgdotcom.option.vo.StockRequestVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,18 +21,26 @@ public class OptionAndStockController {
 
     @GetMapping("/{productId}")
     public BaseResponse<?> getOptions(@PathVariable("productId") Long productId) {
-        List<OptionAndStockDto> optionAndStockDtoList = optionAndStockService.findOptionsByProductId(productId);
+        OptionDto optionDto = optionAndStockService.findOptionsByProductId(productId);
 
-        return new BaseResponse<>("Get Options Success", optionAndStockDtoList.stream()
-                .map(optionAndStockDto -> OptionAndStockVo.builder()
+        return new BaseResponse<>("Get Options Success", OptionAndStockVo.builder()
                         .productSeq(productId)
-                        .size(optionAndStockDto.getSize())
-                        .color(optionAndStockDto.getColor())
-                        .customizationOption(optionAndStockDto.getCustomizationOption())
-                        .stock(optionAndStockDto.getStock())
-                        .minimumStock(optionAndStockDto.getMinimumStock())
-                        .build())
-                .collect(Collectors.toList()));
+                        .size(optionDto.getSize())
+                        .color(optionDto.getColor())
+                        .customizationOption(optionDto.getCustomizationOption())
+                        .build());
+    }
+
+    @PostMapping("/stock/{productId}")
+    public BaseResponse<?> getStocks(@PathVariable("productId") Long productId,
+                                     @RequestBody StockRequestVo stockRequestVo){
+        List<Integer> responseStockDto = optionAndStockService.getStocks(productId,
+                StockDto.builder()
+                        .colorSeq(stockRequestVo.getColorSeq())
+                        .sizeSeq(stockRequestVo.getSizeSeq())
+                        .customizationOptionSeq(stockRequestVo.getCustomizationOptionSeq())
+                        .build());
+        return new BaseResponse<>("", responseStockDto);
     }
 
     @PutMapping("/add")

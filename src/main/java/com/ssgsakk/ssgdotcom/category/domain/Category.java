@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.category.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
@@ -8,13 +9,13 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Category {
+public class Category extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categorySeq;
 
-    @Column(nullable = false,length = 10)
+    @Column(nullable = false,length = 20)
     private String categoryName;
 
 

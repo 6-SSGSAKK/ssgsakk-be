@@ -2,18 +2,16 @@ package com.ssgsakk.ssgdotcom.option.application;
 
 import com.ssgsakk.ssgdotcom.option.domain.*;
 import com.ssgsakk.ssgdotcom.option.dto.AddOptionDto;
-import com.ssgsakk.ssgdotcom.option.dto.OptionAndStockDto;
-import com.ssgsakk.ssgdotcom.option.infrastructure.ColorRepository;
-import com.ssgsakk.ssgdotcom.option.infrastructure.CustomizationRepository;
-import com.ssgsakk.ssgdotcom.option.infrastructure.OptionAndStockRepository;
-import com.ssgsakk.ssgdotcom.option.infrastructure.SizeRepository;
+import com.ssgsakk.ssgdotcom.option.dto.OptionDto;
+import com.ssgsakk.ssgdotcom.option.dto.StockDto;
+import com.ssgsakk.ssgdotcom.option.infrastructure.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -25,21 +23,45 @@ public class OptionAndStockServiceImpl implements OptionAndStockService {
     private final SizeRepository sizeRepository;
     private final ColorRepository colorRepository;
     private final CustomizationRepository customizationRepository;
+    private final OptionAndStockImpl optionAndStockImpl;
 
 
     @Override
-    public List<OptionAndStockDto> findOptionsByProductId(Long productId) {
-        return optionAndStockRepository.findByProductSeq(productId).stream()
-                .map(optionAndStock -> OptionAndStockDto.builder()
-                        .optionAndStockSeq(optionAndStock.getOptionAndStockSeq())
-                        .stock(optionAndStock.getStock())
-                        .minimumStock(optionAndStock.getMinimumStock())
-                        .color(optionAndStock.getColor() != null ? optionAndStock.getColor().getColorData() : null)
-                        .size(optionAndStock.getSize() != null ? optionAndStock.getSize().getSizeData() : null)
-                        .customizationOption(optionAndStock.getCustomizationOption() != null
-                                ? optionAndStock.getCustomizationOption() : null)
-                        .build())
+    public OptionDto findOptionsByProductId(Long productId) {
+        List<OptionAndStock> options = optionAndStockRepository.findByProductSeq(productId);
+
+        List<HashMap.Entry<Long, String>> colorList = options.stream()
+                .map(optionAndStock -> optionAndStock.getColor() != null ?
+                        new HashMap.SimpleEntry<>(optionAndStock.getColor().getColorSeq(),
+                                optionAndStock.getColor().getColorData())
+                        : null)
                 .collect(Collectors.toList());
+
+        List<HashMap.Entry<Long, String>> sizeList = options.stream()
+                .map(optionAndStock -> optionAndStock.getSize() != null ?
+                        new HashMap.SimpleEntry<>(optionAndStock.getSize().getSizeSeq(),
+                                optionAndStock.getSize().getSizeData())
+                        : null)
+                .collect(Collectors.toList());
+
+        List<HashMap.Entry<Long, String>> customizationList = options.stream()
+                .map(optionAndStock -> optionAndStock.getCustomizationOption() != null ?
+                        new HashMap.SimpleEntry<>(optionAndStock.getCustomizationOption().getCustomizationOptionSeq(),
+                                optionAndStock.getCustomizationOption().getCustomizationData())
+                        : null)
+                .collect(Collectors.toList());
+
+        return OptionDto.builder()
+                .color(colorList.stream().distinct().collect(Collectors.toList()))
+                .size(sizeList.stream().distinct().collect(Collectors.toList()))
+                .customizationOption(customizationList.stream().distinct().collect(Collectors.toList()))
+                .build();
+    }
+    public List<Integer> getStocks(Long productSeq, StockDto stockDto) {
+        return optionAndStockImpl.getOptionInfoByProduct(
+                productSeq, stockDto.getColorSeq(),
+                stockDto.getSizeSeq(), stockDto.getCustomizationOptionSeq()
+        );
     }
 
     @Transactional

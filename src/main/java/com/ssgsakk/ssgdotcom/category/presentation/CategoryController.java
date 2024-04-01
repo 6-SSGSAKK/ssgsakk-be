@@ -35,8 +35,6 @@ public class CategoryController {
     @PutMapping("update/{categorySeq}") // categorySeq를 기준으로 수정가능, 수정 가능한 값 categoryName,level,parentCategorySeq
     public void updatecategory(@PathVariable Long categorySeq,
                                @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
-
-
         categoryService.updateCategory(UpdateCategoryDto.builder()
                 .categorySeq(categorySeq)
                 .categoryName(updateCategoryRequestVo.getCategoryName())

@@ -29,9 +29,12 @@ public enum ErrorCode {
     PASSWORD_SAME_FAILED(409, "ERROR-AUTH-016",  "현재 사용중인 비밀번호 입니다."),
     PASSWORD_CONTAIN_NUM_FAILED(406, "ERROR-AUTH-017",  "휴대폰 번호를 포함한 비밀번호 입니다."),
     PASSWORD_CONTAIN_EMAIL_FAILED(406, "ERROR-AUTH-018",  "이메일이 포함된 비밀번호 입니다."),
+    DUPLICATE_ID(406, "ERROR-AUTH-019",  "이미 가입된 ID 입니다."),
+    DUPLICATE_MOBILE_NUM(406, "ERROR-AUTH-020",  "이미 존재하는 전화번호 입니다."),
 
     // 500 번대 에러
-    INTERNAL_SERVER_ERROR(500, "ERROR-SERVER-001", "서버에서 요청을 처리하지 못했습니다.");
+    INTERNAL_SERVER_ERROR(500, "ERROR-SERVER-001", "서버에서 요청을 처리하지 못했습니다."),
+    REDIS_SERVER_ERROR(500, "ERROR-SERVER-002", "레디스 서버에서 요청을 처리하지 못했습니다.");
 
 
     private final int status;

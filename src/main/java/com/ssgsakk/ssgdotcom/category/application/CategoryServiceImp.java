@@ -31,7 +31,7 @@ public class CategoryServiceImp implements CategoryService{
     }
 
     @Override
-    public void createCategory(CategoryDto categoryDTO) { //카테고리생성
+    public void createCategory(CategoryDto categoryDTO) {
         Category category = Category.builder()
                 .categoryName(categoryDTO.getCategoryName())
                 .level(categoryDTO.getLevel())
@@ -93,5 +93,6 @@ public class CategoryServiceImp implements CategoryService{
     public List<Category> getSmallCategoryByParent(Long parentCategoryId){ //중카테고리별 소카테고리조회
         return categoryRepositoryImp.getSmallCategoryByMid(parentCategoryId);
     }
+
 }
 
