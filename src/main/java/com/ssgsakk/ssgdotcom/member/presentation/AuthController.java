@@ -87,14 +87,9 @@ public class AuthController {
         IdDuplicateCheckDto idDuplicateCheckDto = IdDuplicateCheckDto.builder()
                 .inputId(idDuplicateCheckRequestVo.getInputId())
                 .build();
-        boolean checked = authService.idDuplicateCheck(idDuplicateCheckDto);
 
-        // 분기문 서비스에서 진행할 것!
-        if (!checked) {
-            return new BaseResponse<>("중복된 ID가 없습니다.", null);
-        } else {
-            throw new BusinessException(ErrorCode.DUPLICATE_ID);
-        }
+        authService.idDuplicateCheck(idDuplicateCheckDto);
+        return new BaseResponse<>("중복된 ID가 없습니다.", null);
     }
 
     @Operation(summary = "비밀번호 확인에 사용되는 이메일 전송", description = "비밀번호 확인에 사용되는 이메일 전송", tags = {"Email Send For Password Change"})

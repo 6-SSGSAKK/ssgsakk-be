@@ -17,7 +17,7 @@ public interface AuthService {
     public void duplicateChecked(String email);
 
     // ID 중복 확인
-    boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto);
+    void idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto);
 
     String findByUserEmail(String uuid);
 

@@ -123,8 +123,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto) {
-        return memberRepository.existsByUserId(idDuplicateCheckDto.getInputId());
+    public void idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto) {
+        if(memberRepository.existsByUserId(idDuplicateCheckDto.getInputId())){
+           throw new BusinessException(ErrorCode.DUPLICATE_ID);
+        }
     }
 
     @Override
