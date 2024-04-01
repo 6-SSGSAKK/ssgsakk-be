@@ -72,11 +72,21 @@ public class AuthController {
     @Operation(summary = "이메일 전송", description = "이메일 전송", tags = {"Email Send"})
     @PostMapping("/mail-send")
     public BaseResponse<Object> mailSend(@RequestBody @Valid EmailSendRequestVo emailSendRequestVo) {
+<<<<<<< HEAD
 
         // 로그인이 되어 비밀번호 변경을 하는 경우, 이메일 전송 진행
         mailSendService.joinEmail(emailSendRequestVo.getEmail());
 
         return new BaseResponse<>("이메일 발송", null);
+=======
+        // 이메일 중복 확인
+        if(!authService.duplicateChecked(emailSendRequestVo.getEmail())) {
+            // 로그인이 되어 비밀번호 변경을 하는 경우, 이메일 전송 진행
+            mailSendService.joinEmail(emailSendRequestVo.getEmail());
+            return new BaseResponse<>("이메일 발송", null);
+        }
+        throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+>>>>>>> 15c2d50a920b00a2aa893fb402cb1a56e73d0bea
     }
 
     @Operation(summary = "이메일 인증", description = "이메일 인증", tags = {"Email Certification"})
