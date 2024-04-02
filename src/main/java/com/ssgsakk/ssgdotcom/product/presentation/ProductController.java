@@ -75,7 +75,7 @@ public class ProductController {
     public BaseResponse<?> productListInfo(@PathVariable("id") Long productSeq) {
         ProductListInfoDto productListInfoDto = productService.productListInfo(productSeq);
 
-        return new BaseResponse<>("productInfo Success", ProductListInfoRequestVo.builder()
+        return new BaseResponse<>("productInfo Success", ProductListInfoResponseVo.builder()
                 .productName(productListInfoDto.getProductName())
                 .productPrice(productListInfoDto.getProductPrice())
                 .vendor(productListInfoDto.getVendor())

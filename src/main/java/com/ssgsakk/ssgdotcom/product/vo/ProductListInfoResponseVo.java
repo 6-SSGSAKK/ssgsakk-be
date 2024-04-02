@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ProductListInfoRequestVo {
+public class ProductListInfoResponseVo {
     private String productName;
     private Integer productPrice;
     private String vendor;
