@@ -22,13 +22,21 @@ public class QCategory extends EntityPathBase<Category> {
 
     public static final QCategory category = new QCategory("category");
 
+    public final com.ssgsakk.ssgdotcom.common.entity.QBaseTimeEntity _super = new com.ssgsakk.ssgdotcom.common.entity.QBaseTimeEntity(this);
+
     public final StringPath categoryName = createString("categoryName");
 
     public final NumberPath<Long> categorySeq = createNumber("categorySeq", Long.class);
 
     public final ListPath<Category, QCategory> child = this.<Category, QCategory>createList("child", Category.class, QCategory.class, PathInits.DIRECT2);
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
+
     public final NumberPath<Integer> level = createNumber("level", Integer.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final QCategory parentCategorySeq;
 
