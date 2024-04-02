@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.config;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

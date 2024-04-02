@@ -74,13 +74,9 @@ public class MailSendService {
     }
 
     // 이메일 코드 인증
-    public boolean checkAuthNum(String email, String authNum) {
-
-        if(redisUtil.getData(email).equals(authNum)){
-            return true;
-        }
-        else{
-            return false;
+    public void checkAuthNum(String email, String authNum) {
+        if(!redisUtil.getData(email).equals(authNum)){
+            throw new BusinessException(ErrorCode.MASSAGE_VALID_FAILED);
         }
     }
 }

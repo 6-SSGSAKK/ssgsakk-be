@@ -7,10 +7,7 @@ import com.ssgsakk.ssgdotcom.option.dto.StockDto;
 import java.util.List;
 
 public interface OptionAndStockService {
-    OptionDto findOptionsByProductId(Long productId);
-    //StockDto getStocks(Long productSeq, StockDto stockDto);
-    void addOptions(AddOptionDto addOptionDto);
-    void deleteOption(Long optionId);
+    OptionDto getOptionList(Long productSeq);
+    List<StockDto> getStocks(Long productSeq, Integer depthLevel);
 
-    List<Integer> getStocks(Long productId, StockDto build);
 }

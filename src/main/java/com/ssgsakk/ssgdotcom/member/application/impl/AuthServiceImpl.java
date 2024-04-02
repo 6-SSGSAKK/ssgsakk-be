@@ -116,13 +116,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     // 이메일 중복 확인
-    public boolean duplicateChecked(String email) {
-        return memberRepository.existsByUserEmail(email);
+    public void duplicateChecked(String email) {
+        if(memberRepository.existsByUserEmail(email)) {
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+        }
     }
 
     @Override
-    public boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto) {
-        return memberRepository.existsByUserId(idDuplicateCheckDto.getInputId());
+    public void idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto) {
+        if(memberRepository.existsByUserId(idDuplicateCheckDto.getInputId())){
+           throw new BusinessException(ErrorCode.DUPLICATE_ID);
+        }
     }
 
     @Override
@@ -131,8 +135,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public int passwordChange(PasswordChangeDto passwordChangeDto) {
-        return memberRepository.passwordChange(passwordChangeDto.getUuid(), hashPassword(passwordChangeDto.getPassword()));
+    public void passwordChange(PasswordChangeDto passwordChangeDto) {
+        if(memberRepository.passwordChange(passwordChangeDto.getUuid(), hashPassword(passwordChangeDto.getPassword())) == 0 ){
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
@@ -142,7 +148,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void mobileNumChange(MobileNumChangeDto mobileNumChangeDto) {
-        memberRepository.mobileNumChange(mobileNumChangeDto.getUuid(), mobileNumChangeDto.getMobileNum());
+        try {
+            memberRepository.mobileNumChange(mobileNumChangeDto.getUuid(), mobileNumChangeDto.getMobileNum());
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.DUPLICATE_MOBILE_NUM);
+        }
     }
 
     public UserInforDto userInfor(String uuid) {
