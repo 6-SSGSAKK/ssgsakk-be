@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.shippingAddress.vo;
 
+import com.ssgsakk.ssgdotcom.shippingAddress.domain.ShippingAddress;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +11,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GetShippingAddressListResponseVo {
-    private List<Integer> shippingAddressList;
+public class FindDetailShippingAddressInfoResponseVo {
+    private List<ShippingAddress> shippingAddressList;
 
     @Builder
-    public GetShippingAddressListResponseVo(List<Integer> shippingAddressList) {
+    public FindDetailShippingAddressInfoResponseVo(List<ShippingAddress> shippingAddressList) {
         this.shippingAddressList = shippingAddressList;
     }
 }

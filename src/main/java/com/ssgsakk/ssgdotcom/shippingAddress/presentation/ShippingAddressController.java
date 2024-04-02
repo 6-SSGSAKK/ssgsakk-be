@@ -6,14 +6,14 @@ import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import com.ssgsakk.ssgdotcom.shippingAddress.application.ShippingAddressService;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.ChangeDefaultAddressDto;
+import com.ssgsakk.ssgdotcom.shippingAddress.dto.FindDetailShippingAddressInfoDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.GetShippingAddressListDto;
-import com.ssgsakk.ssgdotcom.shippingAddress.vo.GetShippingAddressListResponseVo;
+import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindDetailShippingAddressInfoResponseVo;
+import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindShippingAddressSeqsResponseVo;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -39,26 +39,26 @@ public class ShippingAddressController {
 
     @Operation(summary = "배송지 목록 조회", description = "배송지 목록 조회", tags = {"Find Shipping Address Seqs"})
     @GetMapping("/list")
-    public BaseResponse<Object> findShippingAddressSeqs(@RequestHeader("Authorization") String accessToken) {
+    public BaseResponse<FindShippingAddressSeqsResponseVo> findShippingAddressSeqs(@RequestHeader("Authorization") String accessToken) {
         String uuid = getUuid(accessToken);
 
-        GetShippingAddressListResponseVo getShippingAddressListResponseVo = shippingAddressService.findShippingAddressSeqs(GetShippingAddressListDto.builder()
+        FindShippingAddressSeqsResponseVo findShippingAddressSeqsResponseVo = shippingAddressService.findShippingAddressSeqs(GetShippingAddressListDto.builder()
                 .uuid(uuid)
                 .build());
 
-        return new BaseResponse<>("배송지 목록 조회", getShippingAddressListResponseVo);
+        return new BaseResponse<>("배송지 목록 조회", findShippingAddressSeqsResponseVo);
     }
 
     @Operation(summary = "상세 배송지 조회", description = "상세 배송지 조회", tags = {"Find Detail Shipping Address Information"})
-    @GetMapping("/list")
-    public BaseResponse<Object> findDetailShippingAddressInfo(@RequestHeader("Authorization") String accessToken) {
+    @GetMapping("")
+    public BaseResponse<FindDetailShippingAddressInfoResponseVo> findDetailShippingAddressInfo(@RequestHeader("Authorization") String accessToken) {
         String uuid = getUuid(accessToken);
 
-//        GetShippingAddressListResponseVo getShippingAddressListResponseVo = shippingAddressService.(GetShippingAddressListDto.builder()
-//                .uuid(uuid)
-//                .build());
+        FindDetailShippingAddressInfoResponseVo findDetailShippingAddressInfoResponseVo = shippingAddressService.findDetailShippingAddressInfo(FindDetailShippingAddressInfoDto.builder()
+                .uuid(uuid)
+                .build());
 
-        return new BaseResponse<>("배송지 목록 조회", null);
+        return new BaseResponse<>("배송지 목록 조회", findDetailShippingAddressInfoResponseVo);
     }
 
 

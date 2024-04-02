@@ -2,18 +2,17 @@ package com.ssgsakk.ssgdotcom.shippingAddress.application.impl;
 
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
-import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.shippingAddress.application.ShippingAddressService;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.ChangeDefaultAddressDto;
+import com.ssgsakk.ssgdotcom.shippingAddress.dto.FindDetailShippingAddressInfoDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.GetShippingAddressListDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.infrastructure.ShippingAddressRepository;
-import com.ssgsakk.ssgdotcom.shippingAddress.vo.GetShippingAddressListResponseVo;
+import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindDetailShippingAddressInfoResponseVo;
+import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindShippingAddressSeqsResponseVo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -31,9 +30,16 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
     }
 
     @Override
-    public GetShippingAddressListResponseVo findShippingAddressSeqs(GetShippingAddressListDto getShippingAddressListDto) {
-        return GetShippingAddressListResponseVo.builder()
-                .shippingAddressList(shippingAddressRepository.getShippingAddressList(getShippingAddressListDto.getUuid()))
+    public FindShippingAddressSeqsResponseVo findShippingAddressSeqs(GetShippingAddressListDto getShippingAddressListDto) {
+        return FindShippingAddressSeqsResponseVo.builder()
+                .shippingAddressList(shippingAddressRepository.findShippingAddressSeqs(getShippingAddressListDto.getUuid()))
+                .build();
+    }
+
+    @Override
+    public FindDetailShippingAddressInfoResponseVo findDetailShippingAddressInfo(FindDetailShippingAddressInfoDto findDetailShippingAddressInfoDto) {
+        return FindDetailShippingAddressInfoResponseVo.builder()
+                .shippingAddressList(shippingAddressRepository.findByUuid(findDetailShippingAddressInfoDto.getUuid()))
                 .build();
     }
 }
