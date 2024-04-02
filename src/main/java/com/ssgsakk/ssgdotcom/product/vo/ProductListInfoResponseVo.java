@@ -1,28 +1,19 @@
-package com.ssgsakk.ssgdotcom.product.dto;
+package com.ssgsakk.ssgdotcom.product.vo;
 
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
-
+import lombok.Getter;
 
 @Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ProductDto {
-    private Long productSeq;
+@Getter
+public class ProductListInfoResponseVo {
     private String productName;
     private Integer productPrice;
     private String vendor;
-    private String productDescription;
     private Integer discountPercent;
     private DeliveryType deliveryType;
     private Double averageRating;
     private Integer reviewCount;
-    private List<ProductContentsVo> contentsUrl;
+    private ProductContentsVo contentsUrl;
 }
