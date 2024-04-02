@@ -49,6 +49,18 @@ public class ShippingAddressController {
         return new BaseResponse<>("배송지 목록 조회", getShippingAddressListResponseVo);
     }
 
+    @Operation(summary = "상세 배송지 조회", description = "상세 배송지 조회", tags = {"Find Detail Shipping Address Information"})
+    @GetMapping("/list")
+    public BaseResponse<Object> findDetailShippingAddressInfo(@RequestHeader("Authorization") String accessToken) {
+        String uuid = getUuid(accessToken);
+
+        GetShippingAddressListResponseVo getShippingAddressListResponseVo = shippingAddressService.getShippingAddressList(GetShippingAddressListDto.builder()
+                .uuid(uuid)
+                .build());
+
+        return new BaseResponse<>("배송지 목록 조회", getShippingAddressListResponseVo);
+    }
+
 
     // JWT에서 UUID 추출 메서드
     public String getUuid(String jwt) {
