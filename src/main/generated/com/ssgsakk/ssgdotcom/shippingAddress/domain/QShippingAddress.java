@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,8 +16,6 @@ import com.querydsl.core.types.dsl.PathInits;
 public class QShippingAddress extends EntityPathBase<ShippingAddress> {
 
     private static final long serialVersionUID = -1051909127L;
-
-    private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QShippingAddress shippingAddress = new QShippingAddress("shippingAddress");
 
@@ -46,29 +43,20 @@ public class QShippingAddress extends EntityPathBase<ShippingAddress> {
 
     public final NumberPath<Long> shippingAddressSeq = createNumber("shippingAddressSeq", Long.class);
 
-    public final com.ssgsakk.ssgdotcom.member.domain.QUser user;
+    public final StringPath uuid = createString("uuid");
 
     public final StringPath zipCode = createString("zipCode");
 
     public QShippingAddress(String variable) {
-        this(ShippingAddress.class, forVariable(variable), INITS);
+        super(ShippingAddress.class, forVariable(variable));
     }
 
     public QShippingAddress(Path<? extends ShippingAddress> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QShippingAddress(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QShippingAddress(PathMetadata metadata, PathInits inits) {
-        this(ShippingAddress.class, metadata, inits);
-    }
-
-    public QShippingAddress(Class<? extends ShippingAddress> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.user = inits.isInitialized("user") ? new com.ssgsakk.ssgdotcom.member.domain.QUser(forProperty("user")) : null;
+        super(ShippingAddress.class, metadata);
     }
 
 }

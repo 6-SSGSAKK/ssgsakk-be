@@ -92,7 +92,7 @@ public class AuthServiceImpl implements AuthService {
         User savedMember = memberRepository.save(member);
 
         ShippingAddress shippingAddress = ShippingAddress.builder()
-                .user(member)
+                .uuid(uuidToStr)
                 .detailAddress(signUpDto.getDetailAddress())
                 .jibunAddress(signUpDto.getJibunAddress())
                 .roadAddress(signUpDto.getRoadAddress())

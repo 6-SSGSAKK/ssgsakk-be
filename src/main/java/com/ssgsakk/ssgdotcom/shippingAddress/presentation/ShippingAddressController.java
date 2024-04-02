@@ -33,6 +33,22 @@ public class ShippingAddressController {
         return new BaseResponse<>("기본 배송지 변경", null);
     }
 
+//    @Operation(summary = "배송지 목록 조회", description = "배송지 목록 조회", tags = {"Find Shipping Address Seqs"})
+//    @PatchMapping("/list")
+//    public BaseResponse<Object> findShippingAddressSeqs(@RequestHeader("Authorization") String accessToken) {
+//        String uuid = getUuid(accessToken);
+//
+//        // shippingAddressSeq를 1로 만들고 나머지는 0으로 변경
+//        shippingAddressService.changeDefaultAddress(ChangeDefaultAddressDto.builder()
+//                .uuid(uuid)
+//                .shippingAddressSeq(shippingAddressSeq)
+//                .build());
+//
+//        return new BaseResponse<>("기본 배송지 변경", null);
+//    }
+
+
+
 
     // JWT에서 UUID 추출 메서드
     public String getUuid(String jwt) {

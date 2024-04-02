@@ -13,13 +13,13 @@ public interface ShippingAddressRepository extends JpaRepository<ShippingAddress
     // 기존 기본 배송지 value를 0으로 변환
     @Transactional
     @Modifying
-    @Query("UPDATE ShippingAddress sa SET sa.defaultAddressCheck = 0 WHERE sa.user = :user")
-    void setDefaultAddress(@Param("user") User user);
+    @Query("UPDATE ShippingAddress sa SET sa.defaultAddressCheck = 0 WHERE sa.uuid = :uuid")
+    int setDefaultAddress(@Param("uuid") String uuid);
 
     // 지정받은 배송지 seq를 1로 변환
     @Transactional
     @Modifying
     @Query("UPDATE ShippingAddress sa SET sa.defaultAddressCheck = 1 WHERE sa.shippingAddressSeq = :shippingAddressSeq")
-    void changeDefaultAddress(@Param("shippingAddressSeq") Long shippingAddressSeq);
+    int changeDefaultAddress(@Param("shippingAddressSeq") Long shippingAddressSeq);
 
 }
