@@ -6,10 +6,14 @@ import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import com.ssgsakk.ssgdotcom.shippingAddress.application.ShippingAddressService;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.ChangeDefaultAddressDto;
+import com.ssgsakk.ssgdotcom.shippingAddress.dto.GetShippingAddressListDto;
+import com.ssgsakk.ssgdotcom.shippingAddress.vo.GetShippingAddressListResponseVo;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -33,21 +37,17 @@ public class ShippingAddressController {
         return new BaseResponse<>("기본 배송지 변경", null);
     }
 
-//    @Operation(summary = "배송지 목록 조회", description = "배송지 목록 조회", tags = {"Find Shipping Address Seqs"})
-//    @PatchMapping("/list")
-//    public BaseResponse<Object> findShippingAddressSeqs(@RequestHeader("Authorization") String accessToken) {
-//        String uuid = getUuid(accessToken);
-//
-//        // shippingAddressSeq를 1로 만들고 나머지는 0으로 변경
-//        shippingAddressService.changeDefaultAddress(ChangeDefaultAddressDto.builder()
-//                .uuid(uuid)
-//                .shippingAddressSeq(shippingAddressSeq)
-//                .build());
-//
-//        return new BaseResponse<>("기본 배송지 변경", null);
-//    }
+    @Operation(summary = "배송지 목록 조회", description = "배송지 목록 조회", tags = {"Find Shipping Address Seqs"})
+    @GetMapping("/list")
+    public BaseResponse<Object> findShippingAddressSeqs(@RequestHeader("Authorization") String accessToken) {
+        String uuid = getUuid(accessToken);
 
+        GetShippingAddressListResponseVo getShippingAddressListResponseVo = shippingAddressService.getShippingAddressList(GetShippingAddressListDto.builder()
+                .uuid(uuid)
+                .build());
 
+        return new BaseResponse<>("배송지 목록 조회", getShippingAddressListResponseVo);
+    }
 
 
     // JWT에서 UUID 추출 메서드

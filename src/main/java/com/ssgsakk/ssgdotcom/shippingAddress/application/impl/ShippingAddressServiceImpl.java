@@ -2,11 +2,12 @@ package com.ssgsakk.ssgdotcom.shippingAddress.application.impl;
 
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
-import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.shippingAddress.application.ShippingAddressService;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.ChangeDefaultAddressDto;
+import com.ssgsakk.ssgdotcom.shippingAddress.dto.GetShippingAddressListDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.infrastructure.ShippingAddressRepository;
+import com.ssgsakk.ssgdotcom.shippingAddress.vo.GetShippingAddressListResponseVo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,5 +29,12 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
         if (shippingAddressRepository.setDefaultAddress(changeDefaultAddressDto.getUuid()) == 0 || shippingAddressRepository.changeDefaultAddress(changeDefaultAddressDto.getShippingAddressSeq()) == 0) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public GetShippingAddressListResponseVo getShippingAddressList(GetShippingAddressListDto getShippingAddressListDto) {
+        GetShippingAddressListResponseVo getShippingAddressListResponseVo = new GetShippingAddressListResponseVo();
+//        log.info("seq >>>>> {}", shippingAddressRepository.getShippingAddressList(getShippingAddressListDto.getUuid()));
+        return getShippingAddressListResponseVo;
     }
 }

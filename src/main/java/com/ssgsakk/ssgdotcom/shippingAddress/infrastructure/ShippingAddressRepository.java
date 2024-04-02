@@ -22,4 +22,6 @@ public interface ShippingAddressRepository extends JpaRepository<ShippingAddress
     @Query("UPDATE ShippingAddress sa SET sa.defaultAddressCheck = 1 WHERE sa.shippingAddressSeq = :shippingAddressSeq")
     int changeDefaultAddress(@Param("shippingAddressSeq") Long shippingAddressSeq);
 
+    @Query("SELECT sa.shippingAddressSeq FROM ShippingAddress sa WHERE sa.uuid = :uuid")
+    void getShippingAddressList(@Param("uuid") String uuid);
 }
