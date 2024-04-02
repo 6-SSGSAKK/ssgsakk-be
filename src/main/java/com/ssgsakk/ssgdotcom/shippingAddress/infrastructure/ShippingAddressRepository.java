@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ShippingAddressRepository extends JpaRepository<ShippingAddress, Long> {
 
     // 기존 기본 배송지 value를 0으로 변환
@@ -23,5 +25,5 @@ public interface ShippingAddressRepository extends JpaRepository<ShippingAddress
     int changeDefaultAddress(@Param("shippingAddressSeq") Long shippingAddressSeq);
 
     @Query("SELECT sa.shippingAddressSeq FROM ShippingAddress sa WHERE sa.uuid = :uuid")
-    void getShippingAddressList(@Param("uuid") String uuid);
+    List<Integer> getShippingAddressList(@Param("uuid") String uuid);
 }

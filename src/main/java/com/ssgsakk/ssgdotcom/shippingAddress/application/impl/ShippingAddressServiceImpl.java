@@ -33,8 +33,8 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
 
     @Override
     public GetShippingAddressListResponseVo getShippingAddressList(GetShippingAddressListDto getShippingAddressListDto) {
-        GetShippingAddressListResponseVo getShippingAddressListResponseVo = new GetShippingAddressListResponseVo();
-//        log.info("seq >>>>> {}", shippingAddressRepository.getShippingAddressList(getShippingAddressListDto.getUuid()));
-        return getShippingAddressListResponseVo;
+        return GetShippingAddressListResponseVo.builder()
+                .shippingAddressList(shippingAddressRepository.getShippingAddressList(getShippingAddressListDto.getUuid()))
+                .build();
     }
 }
