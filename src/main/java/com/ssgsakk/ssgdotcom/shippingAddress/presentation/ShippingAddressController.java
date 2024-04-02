@@ -42,7 +42,7 @@ public class ShippingAddressController {
     public BaseResponse<Object> findShippingAddressSeqs(@RequestHeader("Authorization") String accessToken) {
         String uuid = getUuid(accessToken);
 
-        GetShippingAddressListResponseVo getShippingAddressListResponseVo = shippingAddressService.getShippingAddressList(GetShippingAddressListDto.builder()
+        GetShippingAddressListResponseVo getShippingAddressListResponseVo = shippingAddressService.findShippingAddressSeqs(GetShippingAddressListDto.builder()
                 .uuid(uuid)
                 .build());
 
@@ -54,11 +54,11 @@ public class ShippingAddressController {
     public BaseResponse<Object> findDetailShippingAddressInfo(@RequestHeader("Authorization") String accessToken) {
         String uuid = getUuid(accessToken);
 
-        GetShippingAddressListResponseVo getShippingAddressListResponseVo = shippingAddressService.getShippingAddressList(GetShippingAddressListDto.builder()
-                .uuid(uuid)
-                .build());
+//        GetShippingAddressListResponseVo getShippingAddressListResponseVo = shippingAddressService.(GetShippingAddressListDto.builder()
+//                .uuid(uuid)
+//                .build());
 
-        return new BaseResponse<>("배송지 목록 조회", getShippingAddressListResponseVo);
+        return new BaseResponse<>("배송지 목록 조회", null);
     }
 
 

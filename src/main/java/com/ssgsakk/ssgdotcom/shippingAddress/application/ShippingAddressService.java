@@ -7,5 +7,5 @@ import com.ssgsakk.ssgdotcom.shippingAddress.vo.GetShippingAddressListResponseVo
 public interface ShippingAddressService {
     void changeDefaultAddress(ChangeDefaultAddressDto changeDefaultAddressDto);
 
-    GetShippingAddressListResponseVo getShippingAddressList(GetShippingAddressListDto getShippingAddressListDto);
+    GetShippingAddressListResponseVo findShippingAddressSeqs(GetShippingAddressListDto getShippingAddressListDto);
 }

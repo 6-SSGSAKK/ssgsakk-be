@@ -20,7 +20,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ShippingAddressServiceImpl implements ShippingAddressService {
     private final ShippingAddressRepository shippingAddressRepository;
-    private final MemberRepository memberRepository;
 
     @Override
     @Transactional
@@ -32,7 +31,7 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
     }
 
     @Override
-    public GetShippingAddressListResponseVo getShippingAddressList(GetShippingAddressListDto getShippingAddressListDto) {
+    public GetShippingAddressListResponseVo findShippingAddressSeqs(GetShippingAddressListDto getShippingAddressListDto) {
         return GetShippingAddressListResponseVo.builder()
                 .shippingAddressList(shippingAddressRepository.getShippingAddressList(getShippingAddressListDto.getUuid()))
                 .build();
