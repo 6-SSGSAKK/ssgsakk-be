@@ -36,6 +36,7 @@ public class ShippingAddress extends BaseTimeEntity {
     @Column(nullable = false, length = 5)
     private int defaultAddressCheck;
 
+
     @Builder
     public ShippingAddress(long shippingAddressSeq, User user, String addressNickname, String receiverName, String receiverMobileNum, String zipCode, String roadAddress, String jibunAddress, String detailAddress, int defaultAddressCheck) {
         this.shippingAddressSeq = shippingAddressSeq;

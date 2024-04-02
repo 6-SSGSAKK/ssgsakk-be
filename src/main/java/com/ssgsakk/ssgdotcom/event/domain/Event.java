@@ -3,7 +3,6 @@ package com.ssgsakk.ssgdotcom.event.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long event_seq;
+    private Long eventSeq;
 
     @Column(length = 50)
     private String eventName;

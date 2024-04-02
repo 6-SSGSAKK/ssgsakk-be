@@ -7,7 +7,6 @@ import com.ssgsakk.ssgdotcom.option.domain.QOptionAndStock;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
 public class OptionAndStockImpl extends QuerydslRepositorySupport {
@@ -19,13 +18,17 @@ public class OptionAndStockImpl extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-
-    private BooleanExpression eqProduct(Long productSeq) {
-        if(productSeq == null || productSeq == 0) {
-            return null;
-        }
-        return qOptionAndStock.productSeq.eq(productSeq);
-    }
+//    public List<Long> getOption(ProductFilterDto productFilterDto) {
+//        return jpaQueryFactory
+//                .select(qProductList.product.productSeq)
+//                .from(qProductList)
+//                .where(eqDeliveryType(productFilterDto.getDeliveryType())
+//                        ,eqPriceRange(productFilterDto.getMinPrice()
+//                                ,productFilterDto.getMaxPrice())
+//                        ,eqCategory(productFilterDto.getCategorySeq())
+//                        ,eqKeywordSearch(productFilterDto.getKeyword()))
+//                .fetch();
+//    }
 
     private BooleanExpression eqSize(Long sizeSeq) {
         if(sizeSeq == null) {

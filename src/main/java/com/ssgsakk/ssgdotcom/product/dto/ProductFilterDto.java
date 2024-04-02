@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.product.dto;
 
+
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductFilterDto {
+    private Long categorySeq;
     private DeliveryType deliveryType;
-    private int minPrice;
-    private int maxPrice;
+    private Integer minPrice;
+    private Integer maxPrice;
+    private String keyword;
 }
