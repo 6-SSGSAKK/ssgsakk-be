@@ -15,7 +15,7 @@ public class PurchaseController {
     private final PurchaseService purchaseService;
 
 
-    @PostMapping
+    @PostMapping      //주문생성
     public void createorder(@RequestBody CreatePurchaseRequestVo createPurchaseRequestVo){
 
 
@@ -34,7 +34,7 @@ public class PurchaseController {
                 .cancelltionStatus(createPurchaseRequestVo.getCancelltionStatus())
                 .build());
     }
-    @PutMapping("/update/cacelltionstatus/{purchaseSeq}")
+    @PutMapping("/update/cacelltionstatus/{purchaseSeq}") //취소여부 수정
     public void updateCancelltion(@PathVariable Long purchaseSeq,
                                   @RequestBody UpdateCancelltionStatusRequestVo updateCancelltionStatusRequestVo){
         purchaseService.updateCancelltion(UpdateCancelltionDto.builder()

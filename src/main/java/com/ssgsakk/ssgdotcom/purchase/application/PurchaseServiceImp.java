@@ -1,5 +1,4 @@
 package com.ssgsakk.ssgdotcom.purchase.application;
-
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.purchase.domain.Purchase;
@@ -8,9 +7,6 @@ import com.ssgsakk.ssgdotcom.purchase.dto.UpdateCancelltionDto;
 import com.ssgsakk.ssgdotcom.purchase.infrastructure.PurchaseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +42,7 @@ public class PurchaseServiceImp implements PurchaseService {
                 .orElseThrow(()-> new BusinessException(ErrorCode.CANNOT_FOUND_PURCHASE));
 
         Purchase updateCancelltion = Purchase.builder()
+                .purchaseSeq(updateCancelltionDto.getPurchaseSeq())
                 .purchaser(purchase.getPurchaser())
                 .purchaserPhoneNum(purchase.getPurchaserPhoneNum())
                 .purchaseEmail(purchase.getPurchaseEmail())
@@ -59,6 +56,8 @@ public class PurchaseServiceImp implements PurchaseService {
                 .deliverymessage(purchase.getDeliverymessage())
                 .cancelltionStatus(updateCancelltionDto.getCancelltionStatus())
                 .build();
+
+        purchaseRepository.save(updateCancelltion);
     }
 
 
