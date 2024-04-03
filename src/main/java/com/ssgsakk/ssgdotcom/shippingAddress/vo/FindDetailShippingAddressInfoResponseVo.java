@@ -11,10 +11,26 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class FindDetailShippingAddressInfoResponseVo {
-    private ShippingAddress shippingAddress;
+    private Long shippingAddressSeq;
+    private String addressNickname;
+    private String receiverName;
+    private String receiverMobileNum;
+    private String zipCode;
+    private String roadAddress;
+    private String jibunAddress;
+    private String detailAddress;
+    private int defaultAddressCheck;
 
     @Builder
-    public FindDetailShippingAddressInfoResponseVo(ShippingAddress shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    public FindDetailShippingAddressInfoResponseVo(Long shippingAddressSeq, String addressNickname, String receiverName, String receiverMobileNum, String zipCode, String roadAddress, String jibunAddress, String detailAddress, int defaultAddressCheck) {
+        this.shippingAddressSeq = shippingAddressSeq;
+        this.addressNickname = addressNickname;
+        this.receiverName = receiverName;
+        this.receiverMobileNum = receiverMobileNum;
+        this.zipCode = zipCode;
+        this.roadAddress = roadAddress;
+        this.jibunAddress = jibunAddress;
+        this.detailAddress = detailAddress;
+        this.defaultAddressCheck = defaultAddressCheck;
     }
 }

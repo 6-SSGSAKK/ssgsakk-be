@@ -52,14 +52,18 @@ public class ShippingAddressController {
     @Operation(summary = "상세 배송지 조회", description = "상세 배송지 조회", tags = {"Find Detail Shipping Address Information"})
     @GetMapping("/{shippingAddressSeq}")
     public BaseResponse<FindDetailShippingAddressInfoResponseVo> findDetailShippingAddressInfo(@RequestHeader("Authorization") String accessToken
-    , @PathVariable("shippingAddressSeq") Long shippingAddressSeq) {
+            , @PathVariable("shippingAddressSeq") Long shippingAddressSeq) {
         String uuid = getUuid(accessToken);
 
-        FindDetailShippingAddressInfoResponseVo findDetailShippingAddressInfoResponseVo = shippingAddressService.findDetailShippingAddressInfo(FindDetailShippingAddressInfoDto.builder()
-                .shippingAddressSeq(shippingAddressSeq)
-                .build());
+//        FindDetailShippingAddressInfoResponseVo findDetailShippingAddressInfoResponseVo = shippingAddressService.findDetailShippingAddressInfo(FindDetailShippingAddressInfoDto.builder()
+//                .shippingAddressSeq(shippingAddressSeq)
+//                .build());
 
-        return new BaseResponse<>("배송지 상세 정보 조회", findDetailShippingAddressInfoResponseVo);
+        return new BaseResponse<>("배송지 상세 정보 조회", shippingAddressService.findDetailShippingAddressInfo(
+                FindDetailShippingAddressInfoDto.builder()
+                        .shippingAddressSeq(shippingAddressSeq)
+                        .build()
+        ));
     }
 
     @Operation(summary = "배송지 추가", description = "배송지 추가", tags = {"Add Shipping Address"})

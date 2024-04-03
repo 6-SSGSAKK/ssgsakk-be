@@ -39,8 +39,17 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
     @Override
     @Transactional
     public FindDetailShippingAddressInfoResponseVo findDetailShippingAddressInfo(FindDetailShippingAddressInfoDto findDetailShippingAddressInfoDto) {
+        ShippingAddress shippingAddress = shippingAddressRepository.findByShippingAddressSeq(findDetailShippingAddressInfoDto.getShippingAddressSeq());
         return FindDetailShippingAddressInfoResponseVo.builder()
-                .shippingAddress(shippingAddressRepository.findByShippingAddressSeq(findDetailShippingAddressInfoDto.getShippingAddressSeq()))
+                .shippingAddressSeq(shippingAddress.getShippingAddressSeq())
+                .addressNickname(shippingAddress.getAddressNickname())
+                .receiverName(shippingAddress.getReceiverName())
+                .receiverMobileNum(shippingAddress.getReceiverMobileNum())
+                .zipCode(shippingAddress.getZipCode())
+                .roadAddress(shippingAddress.getRoadAddress())
+                .jibunAddress(shippingAddress.getJibunAddress())
+                .detailAddress(shippingAddress.getDetailAddress())
+                .defaultAddressCheck(shippingAddress.getDefaultAddressCheck())
                 .build();
     }
 
