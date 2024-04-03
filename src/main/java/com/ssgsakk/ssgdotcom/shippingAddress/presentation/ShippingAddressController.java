@@ -5,9 +5,11 @@ import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import com.ssgsakk.ssgdotcom.shippingAddress.application.ShippingAddressService;
+import com.ssgsakk.ssgdotcom.shippingAddress.dto.AddShippingAddressDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.ChangeDefaultAddressDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.FindDetailShippingAddressInfoDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.GetShippingAddressListDto;
+import com.ssgsakk.ssgdotcom.shippingAddress.vo.AddShippingAddressRequestVo;
 import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindDetailShippingAddressInfoResponseVo;
 import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindShippingAddressSeqsResponseVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,6 +61,25 @@ public class ShippingAddressController {
                 .build());
 
         return new BaseResponse<>("배송지 목록 조회", findDetailShippingAddressInfoResponseVo);
+    }
+
+    @Operation(summary = "배송지 추가", description = "배송지 추가", tags = {"Add Shipping Address"})
+    @PostMapping("")
+    public BaseResponse<Object> addShippingAddress(@RequestHeader("Authorization") String accessToken, @RequestBody AddShippingAddressRequestVo addShippingAddressRequestVo) {
+        String uuid = getUuid(accessToken);
+
+        shippingAddressService.addShippingAddress(AddShippingAddressDto.builder()
+                .uuid(uuid)
+                .addressNickname(addShippingAddressRequestVo.getAddressNickname())
+                .receiverName(addShippingAddressRequestVo.getReceiverName())
+                .receiverMobileNum(addShippingAddressRequestVo.getReciverMobileNum())
+                .zipCode(addShippingAddressRequestVo.getZipCode())
+                .roadAddress(addShippingAddressRequestVo.getRoadAddress())
+                .jibunAddress(addShippingAddressRequestVo.getJibunAddress())
+                .detailAddress(addShippingAddressRequestVo.getDetailAddress())
+                .build());
+
+        return new BaseResponse<>("배송지 추가", null);
     }
 
 

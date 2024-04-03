@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.shippingAddress.application;
 
+import com.ssgsakk.ssgdotcom.shippingAddress.dto.AddShippingAddressDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.ChangeDefaultAddressDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.FindDetailShippingAddressInfoDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.GetShippingAddressListDto;
@@ -12,4 +13,6 @@ public interface ShippingAddressService {
     FindShippingAddressSeqsResponseVo findShippingAddressSeqs(GetShippingAddressListDto getShippingAddressListDto);
 
     FindDetailShippingAddressInfoResponseVo findDetailShippingAddressInfo(FindDetailShippingAddressInfoDto findDetailShippingAddressInfoDto);
+
+    void addShippingAddress(AddShippingAddressDto addShippingAddressDto);
 }

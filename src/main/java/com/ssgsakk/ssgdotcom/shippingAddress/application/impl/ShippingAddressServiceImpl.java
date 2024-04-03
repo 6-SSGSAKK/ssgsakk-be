@@ -3,6 +3,8 @@ package com.ssgsakk.ssgdotcom.shippingAddress.application.impl;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.shippingAddress.application.ShippingAddressService;
+import com.ssgsakk.ssgdotcom.shippingAddress.domain.ShippingAddress;
+import com.ssgsakk.ssgdotcom.shippingAddress.dto.AddShippingAddressDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.ChangeDefaultAddressDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.FindDetailShippingAddressInfoDto;
 import com.ssgsakk.ssgdotcom.shippingAddress.dto.GetShippingAddressListDto;
@@ -41,5 +43,20 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
         return FindDetailShippingAddressInfoResponseVo.builder()
                 .shippingAddressList(shippingAddressRepository.findByUuid(findDetailShippingAddressInfoDto.getUuid()))
                 .build();
+    }
+
+    @Override
+    public void addShippingAddress(AddShippingAddressDto addShippingAddressDto) {
+        // 전달받은 DTO로 shippingAddress 엔티티 만들어서 저장
+        shippingAddressRepository.save(ShippingAddress.builder()
+                .uuid(addShippingAddressDto.getUuid())
+                .addressNickname(addShippingAddressDto.getAddressNickname())
+                .receiverName(addShippingAddressDto.getReceiverName())
+                .receiverMobileNum(addShippingAddressDto.getReceiverMobileNum())
+                .zipCode(addShippingAddressDto.getZipCode())
+                .roadAddress(addShippingAddressDto.getRoadAddress())
+                .jibunAddress(addShippingAddressDto.getJibunAddress())
+                .detailAddress(addShippingAddressDto.getDetailAddress())
+                .build());
     }
 }
