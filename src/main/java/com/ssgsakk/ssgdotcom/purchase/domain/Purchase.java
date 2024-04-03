@@ -33,24 +33,30 @@ public class Purchase extends BaseTimeEntity {
     private String recipientEmail; //수령자 이메일
 
     @Column(length = 50)
-    private String finalAddress; //최종배송지우편번호
+    private String address; //최종배송지우편번호
 
     @Column(length = 50)
-    private String finalRoadAddress; //최종배송지 도로명주소
+    private String roadAddress; //최종배송지 도로명주소
 
     @Column(length = 50)
-    private String finalJibunAddress; //최종배송지지번주소
+    private String jibunAddress; //최종배송지지번주소
 
     @Column(length = 50)
-    private String finalDetailAddress; //최종배송지상세주소
+    private String detailAddress; //최종배송지상세주소
 
     @Column(length = 100)
     private String deliverymessage; //배송메시지
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean cancelltionStatus; //취소여부
+
+
+
     @Builder
-    public Purchase(Long purchaseSeq, String purchaser, String purchaserPhoneNum, String purchaseEmail,
-                    String recipient, String recipientPhoneNum, String recipientEmail, String finalAddress,
-                    String finalRoadAddress, String finalJibunAddress, String finalDetailAddress, String deliverymessage) {
+    public Purchase(Long purchaseSeq, String purchaser,
+                    String purchaserPhoneNum, String purchaseEmail, String recipient,
+                    String recipientPhoneNum, String recipientEmail, String address, String roadAddress,
+                    String jibunAddress, String detailAddress, String deliverymessage, Boolean cancelltionStatus) {
 
         this.purchaseSeq = purchaseSeq;
         this.purchaser = purchaser;
@@ -59,11 +65,12 @@ public class Purchase extends BaseTimeEntity {
         this.recipient = recipient;
         this.recipientPhoneNum = recipientPhoneNum;
         this.recipientEmail = recipientEmail;
-        this.finalAddress = finalAddress;
-        this.finalRoadAddress = finalRoadAddress;
-        this.finalJibunAddress = finalJibunAddress;
-        this.finalDetailAddress = finalDetailAddress;
+        this.address = address;
+        this.roadAddress = roadAddress;
+        this.jibunAddress = jibunAddress;
+        this.detailAddress = detailAddress;
         this.deliverymessage = deliverymessage;
+        this.cancelltionStatus = cancelltionStatus;
 
     }
 }

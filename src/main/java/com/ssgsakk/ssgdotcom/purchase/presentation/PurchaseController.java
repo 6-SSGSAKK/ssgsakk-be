@@ -1,13 +1,11 @@
 package com.ssgsakk.ssgdotcom.purchase.presentation;
-
 import com.ssgsakk.ssgdotcom.purchase.application.PurchaseService;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
+import com.ssgsakk.ssgdotcom.purchase.dto.UpdateCancelltionDto;
 import com.ssgsakk.ssgdotcom.purchase.vo.CreatePurchaseRequestVo;
+import com.ssgsakk.ssgdotcom.purchase.vo.UpdateCancelltionStatusRequestVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/purchase")
@@ -28,12 +26,22 @@ public class PurchaseController {
                 .recipient(createPurchaseRequestVo.getRecipient())
                 .recipientEmail(createPurchaseRequestVo.getRecipientEmail())
                 .recipientPhoneNum(createPurchaseRequestVo.getRecipientPhoneNum())
-                .finalAddress(createPurchaseRequestVo.getFinalAddress())
-                .finalRoadAddress(createPurchaseRequestVo.getFinalRoadAddress())
-                .finalJibunAddress(createPurchaseRequestVo.getFinalJibunAddress())
-                .finalDetailAddress(createPurchaseRequestVo.getFinalDetailAddress())
+                .address(createPurchaseRequestVo.getAddress())
+                .roadAddress(createPurchaseRequestVo.getRoadAddress())
+                .jibunAddress(createPurchaseRequestVo.getJibunAddress())
+                .detailAddress(createPurchaseRequestVo.getDetailAddress())
                 .deliverymessage(createPurchaseRequestVo.getDeliverymessage())
+                .cancelltionStatus(createPurchaseRequestVo.getCancelltionStatus())
                 .build());
+    }
+    @PutMapping("/update/cacelltionstatus/{purchaseSeq}")
+    public void updateCancelltion(@PathVariable Long purchaseSeq,
+                                  @RequestBody UpdateCancelltionStatusRequestVo updateCancelltionStatusRequestVo){
+        purchaseService.updateCancelltion(UpdateCancelltionDto.builder()
+                .purchaseSeq(purchaseSeq)
+                .cancelltionStatus(updateCancelltionStatusRequestVo.getCancelltionStatus())
+                .build());
+
     }
 
 }
