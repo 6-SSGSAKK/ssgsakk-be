@@ -12,4 +12,5 @@ public record BaseResponse<T>(String msg, T result) {
     public static <T> BaseResponse<T> ofMessageOnly(String msg) {
         return new BaseResponse<>(msg, null);
     }
+
 }

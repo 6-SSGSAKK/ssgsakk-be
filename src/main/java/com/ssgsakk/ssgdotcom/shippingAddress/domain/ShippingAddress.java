@@ -35,6 +35,7 @@ public class ShippingAddress extends BaseTimeEntity {
     @Column(nullable = false, length = 5)
     private int defaultAddressCheck;        // 1이 기본 배송지, 0은 기타 배송지
 
+
     @Builder
     public ShippingAddress(long shippingAddressSeq, String uuid, String addressNickname, String receiverName, String receiverMobileNum, String zipCode, String roadAddress, String jibunAddress, String detailAddress, int defaultAddressCheck) {
         this.shippingAddressSeq = shippingAddressSeq;

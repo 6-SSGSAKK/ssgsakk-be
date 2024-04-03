@@ -11,6 +11,7 @@ import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import com.ssgsakk.ssgdotcom.shippingAddress.domain.ShippingAddress;
 import com.ssgsakk.ssgdotcom.shippingAddress.infrastructure.ShippingAddressRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -68,6 +69,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public SignUpDto signUp(SignUpDto signUpDto) {
 
         // 비밀번호 암호화
@@ -115,13 +117,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     // 이메일 중복 확인
-    public boolean duplicateChecked(String email) {
-        return memberRepository.existsByUserEmail(email);
+    public void duplicateChecked(String email) {
+        if(memberRepository.existsByUserEmail(email)) {
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+        }
     }
 
     @Override
-    public boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto) {
-        return memberRepository.existsByUserId(idDuplicateCheckDto.getInputId());
+    public void idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto) {
+        if(memberRepository.existsByUserId(idDuplicateCheckDto.getInputId())){
+           throw new BusinessException(ErrorCode.DUPLICATE_ID);
+        }
     }
 
     @Override
@@ -130,8 +136,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public int passwordChange(PasswordChangeDto passwordChangeDto) {
-        return memberRepository.passwordChange(passwordChangeDto.getUuid(), hashPassword(passwordChangeDto.getPassword()));
+    public void passwordChange(PasswordChangeDto passwordChangeDto) {
+        if(memberRepository.passwordChange(passwordChangeDto.getUuid(), hashPassword(passwordChangeDto.getPassword())) == 0 ){
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
@@ -141,11 +149,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void mobileNumChange(MobileNumChangeDto mobileNumChangeDto) {
-        memberRepository.mobileNumChange(mobileNumChangeDto.getUuid(), mobileNumChangeDto.getMobileNum());
+        try {
+            memberRepository.mobileNumChange(mobileNumChangeDto.getUuid(), mobileNumChangeDto.getMobileNum());
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.DUPLICATE_MOBILE_NUM);
+        }
     }
 
     public UserInforDto userInfor(String uuid) {
         return UserInforDto.builder()
+
+                // orElseThrow 처리할 것!
                 .userId(memberRepository.findByUuid(uuid).get().getUserId())
                 .userName(memberRepository.findByUuid(uuid).get().getName())
                 .userEmail(memberRepository.findByUuid(uuid).get().getUserEmail())

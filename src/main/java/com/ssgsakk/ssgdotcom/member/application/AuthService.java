@@ -14,14 +14,14 @@ public interface AuthService {
     SignUpDto signUp(SignUpDto signUpDto);
 
     // 이메일 중복 확인
-    public boolean duplicateChecked(String email);
+    public void duplicateChecked(String email);
 
     // ID 중복 확인
-    boolean idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto);
+    void idDuplicateCheck(IdDuplicateCheckDto idDuplicateCheckDto);
 
     String findByUserEmail(String uuid);
 
-    int passwordChange(PasswordChangeDto passwordChangeDto);
+    void passwordChange(PasswordChangeDto passwordChangeDto);
 
     String findByUuid(String uuid);
 

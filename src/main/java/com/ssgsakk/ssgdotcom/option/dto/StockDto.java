@@ -1,16 +1,17 @@
 package com.ssgsakk.ssgdotcom.option.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Builder
 public class StockDto {
-    private Long optionAndStockSeq;
-    private Long productSeq;
-    private Long sizeSeq;
-    private Long colorSeq;
-    private Long customizationOptionSeq;
+    private Long OptionAndStockSeq;
+    private String explain;
+    private String explain2;
+    private String explain3;
     private Integer stock;
-    private Integer minimumStock;
 }

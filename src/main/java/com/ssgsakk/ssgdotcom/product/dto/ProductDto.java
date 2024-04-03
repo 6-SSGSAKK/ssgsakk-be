@@ -1,10 +1,13 @@
 package com.ssgsakk.ssgdotcom.product.dto;
 
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
+import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @Builder
@@ -21,5 +24,5 @@ public class ProductDto {
     private DeliveryType deliveryType;
     private Double averageRating;
     private Integer reviewCount;
-    private String contentsUrl;
+    private List<ProductContentsVo> contentsUrl;
 }
