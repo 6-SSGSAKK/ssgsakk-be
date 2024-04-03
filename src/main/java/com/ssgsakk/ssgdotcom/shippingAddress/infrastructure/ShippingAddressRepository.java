@@ -31,5 +31,5 @@ public interface ShippingAddressRepository extends JpaRepository<ShippingAddress
 
     void deleteByShippingAddressSeq(Long shippingAddressSeq);
 
-    List<ShippingAddress> findByShippingAddressSeq(Long shippingAddressSeq);
+    ShippingAddress findByShippingAddressSeq(Long shippingAddressSeq);
 }

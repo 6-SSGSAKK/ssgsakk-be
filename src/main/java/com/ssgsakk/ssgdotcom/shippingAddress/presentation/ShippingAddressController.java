@@ -59,7 +59,7 @@ public class ShippingAddressController {
                 .shippingAddressSeq(shippingAddressSeq)
                 .build());
 
-        return new BaseResponse<>("배송지 목록 조회", findDetailShippingAddressInfoResponseVo);
+        return new BaseResponse<>("배송지 상세 정보 조회", findDetailShippingAddressInfoResponseVo);
     }
 
     @Operation(summary = "배송지 추가", description = "배송지 추가", tags = {"Add Shipping Address"})
