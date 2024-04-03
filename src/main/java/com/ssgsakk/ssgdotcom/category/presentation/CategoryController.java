@@ -53,12 +53,12 @@ public class CategoryController {
         return ResponseEntity.ok(bigCategories);
     }
     @GetMapping("/mid-by-big/{parentcategoryid}/") //대카테고리별 중카테고리 조회
-    public ResponseEntity<List<CategoryCustomDto>> getMiddleCategoryByBig(@RequestParam Long parentCategoryId) {
+    public ResponseEntity<List<CategoryCustomDto>> getMiddleCategoryByBig(@PathVariable Long parentCategoryId) {
         List<CategoryCustomDto> middleCategories = categoryService.getMiddleCategoryByBig(parentCategoryId);
         return ResponseEntity.ok(middleCategories);
     }
     @GetMapping("/small-by-mid/{parentcategoryid}/") //중카테고리별 소카테고리 조회
-    public ResponseEntity<List<CategoryCustomDto>> getSmallCategoryByMid(@RequestParam Long parentCategoryId) {
+    public ResponseEntity<List<CategoryCustomDto>> getSmallCategoryByMid(@PathVariable Long parentCategoryId) {
         List<CategoryCustomDto> smallCategories = categoryService.getSmallCategoryByMid(parentCategoryId);
         return ResponseEntity.ok(smallCategories);
     }
