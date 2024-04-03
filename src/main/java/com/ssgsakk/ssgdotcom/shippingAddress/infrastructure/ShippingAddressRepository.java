@@ -23,11 +23,13 @@ public interface ShippingAddressRepository extends JpaRepository<ShippingAddress
     @Query("SELECT sa.shippingAddressSeq FROM ShippingAddress sa WHERE sa.uuid = :uuid")
     List<Integer> findShippingAddressSeqs(@Param("uuid") String uuid);
 
-    List<ShippingAddress> findByUuid(String uuid);
+//    List<ShippingAddress> findByUuid(String uuid);
 
     @Modifying
     @Query("UPDATE ShippingAddress sa SET sa.addressNickname = :addressNickname, sa.receiverName = :receiverName, sa.receiverMobileNum = :receiverMobileNum, sa.zipCode = :zipCode, sa.roadAddress = :roadAddress, sa.jibunAddress = :jibunAddress, sa.detailAddress = :detailAddress WHERE sa.shippingAddressSeq = :shippingAddressSeq")
     void changeShippingAddress(Long shippingAddressSeq, String addressNickname, String receiverName, String receiverMobileNum, String zipCode, String roadAddress, String jibunAddress, String detailAddress);
 
     void deleteByShippingAddressSeq(Long shippingAddressSeq);
+
+    ShippingAddress findByShippingAddressSeq(Long shippingAddressSeq);
 }

@@ -30,6 +30,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     // 로그인 성공 시, 작동할 핸들러
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        log.info("auth<><<<<<<<<<<<<<<");
 
         // OAuth2User
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
@@ -46,17 +47,27 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String token = jwtUtil.createJwt(uuid, 864000000L);
 
-        response.addHeader("Authorization", "Bearer " + token);
+//        response.addHeader("Authorization", "Bearer " + token);
 
         // 기존에 사용하던 소셜 로그인 회원인 경우 확인
         if (oAuthRepository.existsByOauthId(oauthId)) {
+
+            log.info("exist member oauthId: {}", oauthId);
+            response.addHeader("Authorization", "Bearer " + token);
+
             // 프론트엔드로 BaseResponse 반환
-            BaseResponse baseResponse = new BaseResponse("기존 OAuth2 회원 로그인", null);
+            BaseResponse baseResponse = new BaseResponse(">>>>>>>exist member<<<<<", null);
             String baseResponseJson = objectMapper.writeValueAsString(baseResponse);
             response.setContentType("application/json");
             response.getWriter().write(baseResponseJson);
         } else {
-            String baseResponseJson = objectMapper.writeValueAsString(ErrorCode.NO_EXIST_MEMBERS);
+
+            log.info("first member oauthId: {}", oauthId);
+            response.addHeader("oauthId>>>>>>", oauthId);
+
+
+
+            String baseResponseJson = objectMapper.writeValueAsString(ErrorCode.PASSWORD_SAME_FAILED);
             response.setContentType("application/json");
             response.getWriter().write(baseResponseJson);
         }

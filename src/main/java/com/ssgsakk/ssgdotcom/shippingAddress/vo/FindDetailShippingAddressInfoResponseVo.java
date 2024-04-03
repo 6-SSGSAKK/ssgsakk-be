@@ -11,10 +11,10 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class FindDetailShippingAddressInfoResponseVo {
-    private List<ShippingAddress> shippingAddressList;
+    private ShippingAddress shippingAddress;
 
     @Builder
-    public FindDetailShippingAddressInfoResponseVo(List<ShippingAddress> shippingAddressList) {
-        this.shippingAddressList = shippingAddressList;
+    public FindDetailShippingAddressInfoResponseVo(ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 }
