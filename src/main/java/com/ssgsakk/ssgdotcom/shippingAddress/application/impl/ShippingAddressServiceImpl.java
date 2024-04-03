@@ -4,10 +4,7 @@ import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.shippingAddress.application.ShippingAddressService;
 import com.ssgsakk.ssgdotcom.shippingAddress.domain.ShippingAddress;
-import com.ssgsakk.ssgdotcom.shippingAddress.dto.AddShippingAddressDto;
-import com.ssgsakk.ssgdotcom.shippingAddress.dto.ChangeDefaultAddressDto;
-import com.ssgsakk.ssgdotcom.shippingAddress.dto.FindDetailShippingAddressInfoDto;
-import com.ssgsakk.ssgdotcom.shippingAddress.dto.GetShippingAddressListDto;
+import com.ssgsakk.ssgdotcom.shippingAddress.dto.*;
 import com.ssgsakk.ssgdotcom.shippingAddress.infrastructure.ShippingAddressRepository;
 import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindDetailShippingAddressInfoResponseVo;
 import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindShippingAddressSeqsResponseVo;
@@ -58,5 +55,19 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
                 .jibunAddress(addShippingAddressDto.getJibunAddress())
                 .detailAddress(addShippingAddressDto.getDetailAddress())
                 .build());
+    }
+
+    @Override
+    public void changeShippingAddress(ChangeShippingAddressDto changeShippingAddressDto) {
+        shippingAddressRepository.changeShippingAddress(
+                changeShippingAddressDto.getShippingAddressSeq()
+                , changeShippingAddressDto.getAddressNickname()
+                , changeShippingAddressDto.getReceiverName()
+                , changeShippingAddressDto.getReceiverMobileNum()
+                , changeShippingAddressDto.getZipCode()
+                , changeShippingAddressDto.getRoadAddress()
+                , changeShippingAddressDto.getJibunAddress()
+                , changeShippingAddressDto.getDetailAddress()
+        );
     }
 }

@@ -5,11 +5,9 @@ import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import com.ssgsakk.ssgdotcom.shippingAddress.application.ShippingAddressService;
-import com.ssgsakk.ssgdotcom.shippingAddress.dto.AddShippingAddressDto;
-import com.ssgsakk.ssgdotcom.shippingAddress.dto.ChangeDefaultAddressDto;
-import com.ssgsakk.ssgdotcom.shippingAddress.dto.FindDetailShippingAddressInfoDto;
-import com.ssgsakk.ssgdotcom.shippingAddress.dto.GetShippingAddressListDto;
+import com.ssgsakk.ssgdotcom.shippingAddress.dto.*;
 import com.ssgsakk.ssgdotcom.shippingAddress.vo.AddShippingAddressRequestVo;
+import com.ssgsakk.ssgdotcom.shippingAddress.vo.ChangeShippingAddressRequestVo;
 import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindDetailShippingAddressInfoResponseVo;
 import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindShippingAddressSeqsResponseVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -82,6 +80,24 @@ public class ShippingAddressController {
         return new BaseResponse<>("배송지 추가", null);
     }
 
+    @Operation(summary = "배송지 수정", description = "배송지 수정", tags = {"Change Shipping Address"})
+    @PutMapping("{shippingAddressSeq}")
+    public BaseResponse<Object> changeShippingAddress(@RequestHeader("Authorization") String accessToken, @PathVariable("shippingAddressSeq") Long shippingAddressSeq, @RequestBody ChangeShippingAddressRequestVo changeShippingAddressRequestVo) {
+        String uuid = getUuid(accessToken);
+
+        shippingAddressService.changeShippingAddress(ChangeShippingAddressDto.builder()
+                .shippingAddressSeq(shippingAddressSeq)
+                .addressNickname(changeShippingAddressRequestVo.getAddressNickname())
+                .receiverName(changeShippingAddressRequestVo.getReceiverName())
+                .receiverMobileNum(changeShippingAddressRequestVo.getReciverMobileNum())
+                .zipCode(changeShippingAddressRequestVo.getZipCode())
+                .roadAddress(changeShippingAddressRequestVo.getRoadAddress())
+                .jibunAddress(changeShippingAddressRequestVo.getJibunAddress())
+                .detailAddress(changeShippingAddressRequestVo.getDetailAddress())
+                .build());
+
+        return new BaseResponse<>("배송지 수정", null);
+    }
 
     // JWT에서 UUID 추출 메서드
     public String getUuid(String jwt) {
