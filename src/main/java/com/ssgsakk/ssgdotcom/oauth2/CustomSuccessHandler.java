@@ -1,9 +1,12 @@
 package com.ssgsakk.ssgdotcom.oauth2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
+import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.dto.CustomOAuth2User;
+import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.member.infrastructure.OAuthRepository;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import jakarta.servlet.ServletException;
@@ -26,17 +29,27 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JWTUtil jwtUtil;
     private final OAuthRepository oAuthRepository;
     private final ObjectMapper objectMapper;
+    private final MemberRepository memberRepository;
 
     // 로그인 성공 시, 작동할 핸들러
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        log.info("auth<><<<<<<<<<<<<<<");
 
         // OAuth2User
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
-
-        String uuid = customUserDetails.getUuid();
+        log.info("customUserDetails >>> {}", customUserDetails);
+//        String uuid = customUserDetails.getUuid();
         String oauthId = customUserDetails.getOauthId();
+        // uuid는 oauthId로 구한다.
+        log.info("oauthId >>> {}", oauthId);
+
+        User user = oAuthRepository.findUserByOauthId(oauthId).orElseThrow(
+                () -> new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR)
+        );
+
+        String uuid = user.getUuid();
+        log.info("findByOauthId >>>>> uuid >>> {}", uuid);
+
 
         //todo
         // role에 관련된 인가설정이 필요한 경우 아래를 실행
