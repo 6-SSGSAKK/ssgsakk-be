@@ -6,13 +6,13 @@ import lombok.*;
 public class CategoryCustomDto {
 
     private String categoryName;
-    private Long parentCategorySeq;
+    private Long CategorySeq;
     private int level;
 
     @Builder
-    public CategoryCustomDto(String categoryName, Long parentCategorySeq, int level) {
+    public CategoryCustomDto(String categoryName, Long CategorySeq, int level) {
         this.categoryName = categoryName;
-        this.parentCategorySeq = parentCategorySeq;
+        this.CategorySeq = CategorySeq;
         this.level = level;
     }
 }
