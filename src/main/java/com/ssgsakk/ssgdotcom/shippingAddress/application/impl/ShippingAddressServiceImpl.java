@@ -40,7 +40,7 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
     @Transactional
     public FindDetailShippingAddressInfoResponseVo findDetailShippingAddressInfo(FindDetailShippingAddressInfoDto findDetailShippingAddressInfoDto) {
         return FindDetailShippingAddressInfoResponseVo.builder()
-                .shippingAddressList(shippingAddressRepository.findByUuid(findDetailShippingAddressInfoDto.getUuid()))
+                .shippingAddressList(shippingAddressRepository.findByShippingAddressSeq(findDetailShippingAddressInfoDto.getShippingAddressSeq()))
                 .build();
     }
 

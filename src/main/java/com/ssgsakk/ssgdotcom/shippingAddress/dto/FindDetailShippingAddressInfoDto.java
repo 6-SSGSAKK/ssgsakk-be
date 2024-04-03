@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class FindDetailShippingAddressInfoDto {
-    private String uuid;
+    private Long shippingAddressSeq;
 
     @Builder
-    public FindDetailShippingAddressInfoDto(String uuid) {
-        this.uuid = uuid;
+    public FindDetailShippingAddressInfoDto(Long shippingAddressSeq) {
+        this.shippingAddressSeq = shippingAddressSeq;
     }
 }
