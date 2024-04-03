@@ -29,6 +29,7 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
     }
 
     @Override
+    @Transactional
     public FindShippingAddressSeqsResponseVo findShippingAddressSeqs(GetShippingAddressListDto getShippingAddressListDto) {
         return FindShippingAddressSeqsResponseVo.builder()
                 .shippingAddressList(shippingAddressRepository.findShippingAddressSeqs(getShippingAddressListDto.getUuid()))
@@ -36,6 +37,7 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
     }
 
     @Override
+    @Transactional
     public FindDetailShippingAddressInfoResponseVo findDetailShippingAddressInfo(FindDetailShippingAddressInfoDto findDetailShippingAddressInfoDto) {
         return FindDetailShippingAddressInfoResponseVo.builder()
                 .shippingAddressList(shippingAddressRepository.findByUuid(findDetailShippingAddressInfoDto.getUuid()))
@@ -43,6 +45,7 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
     }
 
     @Override
+    @Transactional
     public void addShippingAddress(AddShippingAddressDto addShippingAddressDto) {
         // 전달받은 DTO로 shippingAddress 엔티티 만들어서 저장
         shippingAddressRepository.save(ShippingAddress.builder()
@@ -58,6 +61,7 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
     }
 
     @Override
+    @Transactional
     public void changeShippingAddress(ChangeShippingAddressDto changeShippingAddressDto) {
         shippingAddressRepository.changeShippingAddress(
                 changeShippingAddressDto.getShippingAddressSeq()
@@ -72,6 +76,7 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
     }
 
     @Override
+    @Transactional
     public void deleteShippingAddress(DeleteShippingAddressDto deleteShippingAddressDto) {
         shippingAddressRepository.deleteByShippingAddressSeq(deleteShippingAddressDto.getShippingAddressSeq());
     }
