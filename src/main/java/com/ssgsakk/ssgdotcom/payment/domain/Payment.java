@@ -1,5 +1,4 @@
 package com.ssgsakk.ssgdotcom.payment.domain;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @DynamicInsert
 @Entity
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+//@EntityListeners(AuditingEntityListener.class)
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +18,6 @@ public class Payment {
     @Column(nullable = false)
     private Long pointUserId;
 
-    @Column(nullable = false, columnDefinition = "0")
+    @Column(nullable = false, columnDefinition = "integer default 0")
     private Integer finalPoint;
 }
