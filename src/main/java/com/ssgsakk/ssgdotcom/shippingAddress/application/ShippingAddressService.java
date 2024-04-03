@@ -14,4 +14,6 @@ public interface ShippingAddressService {
     void addShippingAddress(AddShippingAddressDto addShippingAddressDto);
 
     void changeShippingAddress(ChangeShippingAddressDto changeShippingAddressDto);
+
+    void deleteShippingAddress(DeleteShippingAddressDto deleteShippingAddressDto);
 }

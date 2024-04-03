@@ -70,4 +70,9 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
                 , changeShippingAddressDto.getDetailAddress()
         );
     }
+
+    @Override
+    public void deleteShippingAddress(DeleteShippingAddressDto deleteShippingAddressDto) {
+        shippingAddressRepository.deleteByShippingAddressSeq(deleteShippingAddressDto.getShippingAddressSeq());
+    }
 }

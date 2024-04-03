@@ -32,4 +32,7 @@ public interface ShippingAddressRepository extends JpaRepository<ShippingAddress
     @Modifying
     @Query("UPDATE ShippingAddress sa SET sa.addressNickname = :addressNickname, sa.receiverName = :receiverName, sa.receiverMobileNum = :receiverMobileNum, sa.zipCode = :zipCode, sa.roadAddress = :roadAddress, sa.jibunAddress = :jibunAddress, sa.detailAddress = :detailAddress WHERE sa.shippingAddressSeq = :shippingAddressSeq")
     void changeShippingAddress(Long shippingAddressSeq, String addressNickname, String receiverName, String receiverMobileNum, String zipCode, String roadAddress, String jibunAddress, String detailAddress);
+
+    @Transactional
+    void deleteByShippingAddressSeq(Long shippingAddressSeq);
 }

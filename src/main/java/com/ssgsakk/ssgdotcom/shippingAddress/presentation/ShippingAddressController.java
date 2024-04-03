@@ -99,6 +99,19 @@ public class ShippingAddressController {
         return new BaseResponse<>("배송지 수정", null);
     }
 
+    @Operation(summary = "배송지 삭제", description = "배송지 삭제", tags = {"Delete Shipping Address"})
+    @DeleteMapping("{shippingAddressSeq}")
+    public BaseResponse<Object> deleteShippingAddress(@RequestHeader("Authorization") String accessToken, @PathVariable("shippingAddressSeq") Long shippingAddressSeq) {
+        String uuid = getUuid(accessToken);
+
+        shippingAddressService.deleteShippingAddress(DeleteShippingAddressDto.builder()
+                .shippingAddressSeq(shippingAddressSeq)
+                .build()
+        );
+
+        return new BaseResponse<>("배송지 삭제", null);
+    }
+
     // JWT에서 UUID 추출 메서드
     public String getUuid(String jwt) {
         String uuid;
