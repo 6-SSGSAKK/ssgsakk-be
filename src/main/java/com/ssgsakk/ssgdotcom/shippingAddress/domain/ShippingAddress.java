@@ -15,9 +15,8 @@ public class ShippingAddress extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long shippingAddressSeq;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_seq")
-    private User user;
+    @Column(nullable = false)
+    private String uuid;
 
     @Column(nullable = false, length = 50)
     private String addressNickname;
@@ -34,13 +33,13 @@ public class ShippingAddress extends BaseTimeEntity {
     @Column(nullable = false, length = 50)
     private String detailAddress;
     @Column(nullable = false, length = 5)
-    private int defaultAddressCheck;
+    private int defaultAddressCheck;        // 1이 기본 배송지, 0은 기타 배송지
 
 
     @Builder
-    public ShippingAddress(long shippingAddressSeq, User user, String addressNickname, String receiverName, String receiverMobileNum, String zipCode, String roadAddress, String jibunAddress, String detailAddress, int defaultAddressCheck) {
+    public ShippingAddress(long shippingAddressSeq, String uuid, String addressNickname, String receiverName, String receiverMobileNum, String zipCode, String roadAddress, String jibunAddress, String detailAddress, int defaultAddressCheck) {
         this.shippingAddressSeq = shippingAddressSeq;
-        this.user = user;
+        this.uuid = uuid;
         this.addressNickname = addressNickname == null ? " " : addressNickname;
         this.receiverName = receiverName == null ? " " : receiverName;
         this.receiverMobileNum = receiverMobileNum == null ? " " : receiverMobileNum;

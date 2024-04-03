@@ -1,11 +1,17 @@
 package com.ssgsakk.ssgdotcom.oauth2;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
+import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.member.dto.CustomOAuth2User;
+import com.ssgsakk.ssgdotcom.member.infrastructure.OAuthRepository;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -14,13 +20,12 @@ import java.io.IOException;
 
 
 @Component
+@Slf4j
+@RequiredArgsConstructor
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JWTUtil jwtUtil;
-
-    public CustomSuccessHandler(JWTUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
-
+    private final OAuthRepository oAuthRepository;
+    private final ObjectMapper objectMapper;
 
     // 로그인 성공 시, 작동할 핸들러
     @Override
@@ -30,6 +35,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         String uuid = customUserDetails.getUuid();
+        String oauthId = customUserDetails.getOauthId();
 
         //todo
         // role에 관련된 인가설정이 필요한 경우 아래를 실행
@@ -42,8 +48,17 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         response.addHeader("Authorization", "Bearer " + token);
 
-        // 프론트엔드로 response 반환
-//        response.sendRedirect("http://localhost:3000/");
-        response.sendRedirect("https://ssgssak.shop");
+        // 기존에 사용하던 소셜 로그인 회원인 경우 확인
+        if (oAuthRepository.existsByOauthId(oauthId)) {
+            // 프론트엔드로 BaseResponse 반환
+            BaseResponse baseResponse = new BaseResponse("기존 OAuth2 회원 로그인", null);
+            String baseResponseJson = objectMapper.writeValueAsString(baseResponse);
+            response.setContentType("application/json");
+            response.getWriter().write(baseResponseJson);
+        } else {
+            String baseResponseJson = objectMapper.writeValueAsString(ErrorCode.NO_EXIST_MEMBERS);
+            response.setContentType("application/json");
+            response.getWriter().write(baseResponseJson);
+        }
     }
 }

@@ -12,4 +12,5 @@ public class OAuthDto {
     private String name;
     private String email;
     private String uuid;
+    private String oauthId;
 }

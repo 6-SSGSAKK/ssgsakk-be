@@ -94,11 +94,12 @@ public class AuthServiceImpl implements AuthService {
         User savedMember = memberRepository.save(member);
 
         ShippingAddress shippingAddress = ShippingAddress.builder()
-                .user(member)
+                .uuid(uuidToStr)
                 .detailAddress(signUpDto.getDetailAddress())
                 .jibunAddress(signUpDto.getJibunAddress())
                 .roadAddress(signUpDto.getRoadAddress())
                 .zipCode(signUpDto.getZipCode())
+                .defaultAddressCheck(1)     // 기본 배송지로 지정
                 .build();
 
         ShippingAddress savedShippingAddress = shippingAddressRepository.save(shippingAddress);
