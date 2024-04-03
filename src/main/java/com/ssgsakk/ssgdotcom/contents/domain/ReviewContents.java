@@ -1,3 +1,4 @@
+
 //package com.ssgsakk.ssgdotcom.contents.domain;
 //
 //import jakarta.persistence.Entity;
@@ -11,3 +12,4 @@
 //@AllArgsConstructor
 //public class ReviewContents {
 //}
+

@@ -4,14 +4,13 @@
 //import com.ssgsakk.ssgdotcom.cart.dto.CartDto;
 //import com.ssgsakk.ssgdotcom.cart.infrastructure.CartRepository;
 //import com.ssgsakk.ssgdotcom.cart.vo.CartRequestVo;
-//import com.ssgsakk.ssgdotcom.member.domain.User;
-//import com.ssgsakk.ssgdotcom.option.domain.OptionAndStock;
 //import com.ssgsakk.ssgdotcom.product.application.ProductService;
 //import jakarta.transaction.Transactional;
 //import org.springframework.stereotype.Service;
-//
-//import java.util.ArrayList;
 //import java.util.List;
+//import java.util.stream.Collectors;
+//
+//import static com.ssgsakk.ssgdotcom.member.domain.QUser.user;
 //
 //@Service
 //public class CartServiceImpl implements CartService {
@@ -19,9 +18,11 @@
 //    private final CartRepository cartRepository;
 //    private final ProductService productService;
 //
+//
+//
 //    @Transactional
 //    @Override
-//    public List<CartDto> addCart(List<CartDto> cartDtos) {
+//    public List<CartDto> addCart(List<CartRequestVo> cartDtos) {
 //        return cartDtos.stream()
 //                .map(cartDto -> {
 //                    Cart cart = Cart.builder()

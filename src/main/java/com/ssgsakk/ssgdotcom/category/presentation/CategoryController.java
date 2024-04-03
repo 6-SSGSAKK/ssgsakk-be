@@ -52,12 +52,12 @@ public class CategoryController {
         List<CategoryCustomDto> bigCategories = categoryService.getBigCategory();
         return ResponseEntity.ok(bigCategories);
     }
-    @GetMapping("/mid-by-big/{parentcategoryid}/") //대카테고리별 중카테고리 조회
+    @GetMapping("/mid-by-big/") //대카테고리별 중카테고리 조회
     public ResponseEntity<List<CategoryCustomDto>> getMiddleCategoryByBig(@RequestParam Long parentCategoryId) {
         List<CategoryCustomDto> middleCategories = categoryService.getMiddleCategoryByBig(parentCategoryId);
         return ResponseEntity.ok(middleCategories);
     }
-    @GetMapping("/small-by-mid/{parentcategoryid}/") //중카테고리별 소카테고리 조회
+    @GetMapping("/small-by-mid/") //중카테고리별 소카테고리 조회
     public ResponseEntity<List<CategoryCustomDto>> getSmallCategoryByMid(@RequestParam Long parentCategoryId) {
         List<CategoryCustomDto> smallCategories = categoryService.getSmallCategoryByMid(parentCategoryId);
         return ResponseEntity.ok(smallCategories);
