@@ -42,5 +42,13 @@ public class CategoryRepositoryImp extends QuerydslRepositorySupport {
                 .fetch();
     }
 
+    public List<Tuple> getCategoryInfo(Long categorySeq){ //카테고리 정보조회
+        return jpaQueryFactory
+                .select(qCategory.categorySeq, qCategory.categoryName, qCategory.level)
+                .from(qCategory)
+                .where(qCategory.categorySeq.eq(categorySeq))
+                .fetch();
+    }
+
 
 }
