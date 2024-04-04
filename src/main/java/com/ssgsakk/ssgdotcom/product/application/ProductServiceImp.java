@@ -60,11 +60,7 @@ public class ProductServiceImp implements ProductService{
     public List<SearchProductDto> searchProducts(ProductFilterDto productFilterDto) {
         List<Long> products = productRepositoryimpl.productFilter(productFilterDto);
 
-        return products.stream()
-                .map(product -> SearchProductDto.builder()
-                        .productSeq(product)
-                        .build())
-                .collect(Collectors.toList());
+        return SearchProductDto.ToDto(products);
         }
     @Override
     @Transactional

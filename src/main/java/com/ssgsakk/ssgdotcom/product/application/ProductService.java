@@ -1,6 +1,6 @@
 package com.ssgsakk.ssgdotcom.product.application;
 
-import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
+
 import com.ssgsakk.ssgdotcom.product.dto.*;
 
 import java.util.List;

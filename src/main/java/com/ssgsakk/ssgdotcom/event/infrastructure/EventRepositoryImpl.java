@@ -4,9 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.event.domain.QEvent;
-import com.ssgsakk.ssgdotcom.event.domain.QEventProduct;
 import com.ssgsakk.ssgdotcom.event.dto.EventDto;
-import com.ssgsakk.ssgdotcom.product.dto.ProductFilterDto;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 

@@ -1,11 +1,10 @@
 package com.ssgsakk.ssgdotcom.cart.vo;
 
-import com.ssgsakk.ssgdotcom.cart.dto.CartDto;
+
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Getter
 @Builder

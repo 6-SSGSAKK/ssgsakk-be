@@ -2,7 +2,6 @@ package com.ssgsakk.ssgdotcom.cart.dto;
 
 import com.ssgsakk.ssgdotcom.cart.domain.Cart;
 import com.ssgsakk.ssgdotcom.cart.vo.CartRequestVo;
-import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 
