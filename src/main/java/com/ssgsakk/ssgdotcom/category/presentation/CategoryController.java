@@ -6,6 +6,7 @@ import com.ssgsakk.ssgdotcom.category.dto.CategoryDto;
 import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDto;
 import com.ssgsakk.ssgdotcom.category.vo.CreateCategoryRequestVo;
 import com.ssgsakk.ssgdotcom.category.vo.UpdateCategoryRequestVo;
+import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -48,19 +49,33 @@ public class CategoryController {
     }
 
     @GetMapping("/big-categories") //대카테고리만 조회
-    public ResponseEntity<List<CategoryCustomDto>> getBigCategories() {
+    public BaseResponse<List<CategoryCustomDto>> getBigCategories() {
         List<CategoryCustomDto> bigCategories = categoryService.getBigCategory();
-        return ResponseEntity.ok(bigCategories);
+        if (bigCategories != null) {
+            return new BaseResponse<>("대카테고리조회 성공했습니다.", bigCategories);
+        } else {
+            return new BaseResponse<>("No big category found", null);
+        }
     }
     @GetMapping("/mid-by-big") //대카테고리별 중카테고리 조회
-    public ResponseEntity<List<CategoryCustomDto>> getMiddleCategoryByBig(@RequestParam Long parentCategoryId) {
+    public BaseResponse<List<CategoryCustomDto>> getMiddleCategoryByBig(@RequestParam Long parentCategoryId) {
         List<CategoryCustomDto> middleCategories = categoryService.getMiddleCategoryByBig(parentCategoryId);
-        return ResponseEntity.ok(middleCategories);
+
+        if (middleCategories != null) {
+            return new BaseResponse<>("대카테고리별 중카테고리 조회 성공했습니다.", middleCategories);
+        } else {
+            return new BaseResponse<>("No middle category found", null);
+        }
+
     }
     @GetMapping("/small-by-mid") //중카테고리별 소카테고리 조회
-    public ResponseEntity<List<CategoryCustomDto>> getSmallCategoryByMid(@RequestParam Long parentCategoryId) {
+    public  BaseResponse<List<CategoryCustomDto>> getSmallCategoryByMid(@RequestParam Long parentCategoryId) {
         List<CategoryCustomDto> smallCategories = categoryService.getSmallCategoryByMid(parentCategoryId);
-        return ResponseEntity.ok(smallCategories);
+        if (smallCategories != null) {
+            return new BaseResponse<>("중카테고리별 소카테고리 조회 성공했습니다.", smallCategories);
+        } else {
+            return new BaseResponse<>("No small category found", null);
+        }
     }
 }
 
