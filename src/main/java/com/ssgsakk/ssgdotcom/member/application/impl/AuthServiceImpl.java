@@ -4,10 +4,12 @@ package com.ssgsakk.ssgdotcom.member.application.impl;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
+import com.ssgsakk.ssgdotcom.member.domain.OAuth;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.dto.*;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 
+import com.ssgsakk.ssgdotcom.member.infrastructure.OAuthRepository;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import com.ssgsakk.ssgdotcom.shippingAddress.domain.ShippingAddress;
 import com.ssgsakk.ssgdotcom.shippingAddress.infrastructure.ShippingAddressRepository;
@@ -28,6 +30,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final MemberRepository memberRepository;
     private final ShippingAddressRepository shippingAddressRepository;
+    private final OAuthRepository oAuthRepository;
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
@@ -81,38 +84,85 @@ public class AuthServiceImpl implements AuthService {
         String uuidToStr = uuid.toString();
         signUpDto.setUuid(uuidToStr);
 
-        User member = User.builder()
-                .userId(signUpDto.getUserId())
-                .userPassword(signUpDto.getUserPassword())
-                .name(signUpDto.getUserName())
-                .userEmail(signUpDto.getUserEmail())
-                .userMobileNum(signUpDto.getUserMobileNum())
-                .uuid(signUpDto.getUuid())
-                .build();
+        // OAuth 로그인인 경우
+        if(signUpDto.getOauthId() != null) {
+            User member = User.builder()
+                    .state(1)
+                    .userId(signUpDto.getUserId())
+                    .userPassword(signUpDto.getUserPassword())
+                    .name(signUpDto.getUserName())
+                    .userEmail(signUpDto.getUserEmail())
+                    .userMobileNum(signUpDto.getUserMobileNum())
+                    .uuid(signUpDto.getUuid())
+                    .build();
 
-        // 회원가입 데이터 DB에 저장
-        User savedMember = memberRepository.save(member);
+            // 회원가입 데이터 DB에 저장
+            User savedMember = memberRepository.save(member);
 
-        ShippingAddress shippingAddress = ShippingAddress.builder()
-                .uuid(uuidToStr)
-                .detailAddress(signUpDto.getDetailAddress())
-                .jibunAddress(signUpDto.getJibunAddress())
-                .roadAddress(signUpDto.getRoadAddress())
-                .zipCode(signUpDto.getZipCode())
-                .defaultAddressCheck(1)     // 기본 배송지로 지정
-                .build();
+            OAuth savedOauth = oAuthRepository.save(OAuth.builder()
+                    .user(savedMember)
+                    .oauthId(signUpDto.getOauthId())
+                    .oauthType("naver")     // naver 밖에 못 받아서 하드코딩
+                    .build());
 
-        ShippingAddress savedShippingAddress = shippingAddressRepository.save(shippingAddress);
+            // 배송지 저장
+            ShippingAddress shippingAddress = ShippingAddress.builder()
+                    .uuid(uuidToStr)
+                    .detailAddress(signUpDto.getDetailAddress())
+                    .jibunAddress(signUpDto.getJibunAddress())
+                    .roadAddress(signUpDto.getRoadAddress())
+                    .zipCode(signUpDto.getZipCode())
+                    .defaultAddressCheck(1)     // 기본 배송지로 지정
+                    .build();
 
-        // 저장 여부 확인
-        if(savedMember == null || savedShippingAddress == null) {
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            ShippingAddress savedShippingAddress = shippingAddressRepository.save(shippingAddress);
+
+            // 저장 여부 확인
+            if(savedMember == null || savedShippingAddress == null || savedOauth == null) {
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            }
+
+            return SignUpDto.builder()
+                    .uuid(savedMember.getUuid())
+                    .userName(savedMember.getName())
+                    .build();
         }
+        // 일반 회원가입인 경우
+        else {
+            User member = User.builder()
+                    .userId(signUpDto.getUserId())
+                    .userPassword(signUpDto.getUserPassword())
+                    .name(signUpDto.getUserName())
+                    .userEmail(signUpDto.getUserEmail())
+                    .userMobileNum(signUpDto.getUserMobileNum())
+                    .uuid(signUpDto.getUuid())
+                    .build();
 
-        return SignUpDto.builder()
-                .uuid(savedMember.getUuid())
-                .userName(savedMember.getName())
-                .build();
+            // 회원가입 데이터 DB에 저장
+            User savedMember = memberRepository.save(member);
+
+            // 배송지 저장
+            ShippingAddress shippingAddress = ShippingAddress.builder()
+                    .uuid(uuidToStr)
+                    .detailAddress(signUpDto.getDetailAddress())
+                    .jibunAddress(signUpDto.getJibunAddress())
+                    .roadAddress(signUpDto.getRoadAddress())
+                    .zipCode(signUpDto.getZipCode())
+                    .defaultAddressCheck(1)     // 기본 배송지로 지정
+                    .build();
+
+            ShippingAddress savedShippingAddress = shippingAddressRepository.save(shippingAddress);
+
+            // 저장 여부 확인
+            if(savedMember == null || savedShippingAddress == null) {
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            }
+
+            return SignUpDto.builder()
+                    .uuid(savedMember.getUuid())
+                    .userName(savedMember.getName())
+                    .build();
+        }
     }
 
     @Override

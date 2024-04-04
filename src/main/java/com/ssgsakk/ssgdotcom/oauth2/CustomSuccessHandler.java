@@ -30,7 +30,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JWTUtil jwtUtil;
     private final OAuthRepository oAuthRepository;
     private final ObjectMapper objectMapper;
-    private final MemberRepository memberRepository;
 
     // 로그인 성공 시, 작동할 핸들러
     @Override
@@ -70,7 +69,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=UTF-8");
             response.getWriter().print(result);
-//            response.getOutputStream().println(objectMapper.writeValueAsString(oauthResponseVo));
             // 적절한 HTTP 상태 코드 설정
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
