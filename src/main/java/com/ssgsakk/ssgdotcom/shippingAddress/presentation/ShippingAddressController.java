@@ -94,7 +94,7 @@ public class ShippingAddressController {
                 .shippingAddressSeq(shippingAddressSeq)
                 .addressNickname(changeShippingAddressRequestVo.getAddressNickname())
                 .receiverName(changeShippingAddressRequestVo.getReceiverName())
-                .receiverMobileNum(changeShippingAddressRequestVo.getReciverMobileNum())
+                .receiverMobileNum(changeShippingAddressRequestVo.getReceiverMobileNum())
                 .zipCode(changeShippingAddressRequestVo.getZipCode())
                 .roadAddress(changeShippingAddressRequestVo.getRoadAddress())
                 .jibunAddress(changeShippingAddressRequestVo.getJibunAddress())
