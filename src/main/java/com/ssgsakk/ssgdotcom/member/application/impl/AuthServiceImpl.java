@@ -182,7 +182,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String findByUserEmail(String uuid) {
-        return memberRepository.findByUserEmail(uuid).getUserEmail();
+        return memberRepository.findByUserEmail(uuid).get().getUserEmail();
     }
 
     @Override
