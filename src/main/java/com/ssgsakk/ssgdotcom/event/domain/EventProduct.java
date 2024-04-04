@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class EventProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long EventProduct;
+    private Long EventProductSeq;
 
     @ManyToOne
     @JoinColumn(name = "event_seq")

@@ -1,13 +1,26 @@
 package com.ssgsakk.ssgdotcom.cart.application;
 
-import com.ssgsakk.ssgdotcom.cart.domain.Cart;
 import com.ssgsakk.ssgdotcom.cart.dto.CartDto;
-import com.ssgsakk.ssgdotcom.cart.vo.CartRequestVo;
-import com.ssgsakk.ssgdotcom.option.domain.OptionAndStock;
+
 
 import java.util.List;
 
 public interface CartService {
-    List<CartDto> addCart(List<CartRequestVo> cartRequestVo);
-    List<Cart> getCartItems();
+    String addCart(CartDto cartDto, String accessToken);
+
+    List<CartDto> getCartList(String accessToken);
+
+    CartDto getCart(Long cartSeq, String accessToken);
+
+    void deleteCart(Long cartSeq, String accessToken);
+
+    void updateQuantity(Long cartSeq, Integer quantity, String accessToken);
+
+    void updateOption(Long cartSeq, Long optionAndStockSeq, String accessToken);
+
+    Integer getCartCount(String accessToken);
+
+    void updateCartPin(Long cartSeq, Short fixItem, String accessToken);
+
+    void updateCheckbox(Long cartSeq, Short checkbox, String accessToken);
 }

@@ -47,10 +47,14 @@ public class Product {
     @Column(length = 10)
     private DeliveryType deliveryType;
 
+    @Column(nullable = false, length = 10)
+    @ColumnDefault("0")
+    private Integer soldCount;
+
 
     @Builder
     public Product(Long productSeq, String productName, Integer productPrice, Vendor vendor,
-                   String productDescription, Integer discountPercent,
+                   String productDescription, Integer discountPercent, Integer soldCount,
                    Double averageRating, Integer reviewCount, DeliveryType deliveryType) {
         this.productSeq = productSeq;
         this.productName = productName;
@@ -58,6 +62,7 @@ public class Product {
         this.vendor = vendor;
         this.productDescription = productDescription;
         this.discountPercent = discountPercent;
+        this.soldCount = soldCount;
         this.averageRating = averageRating;
         this.reviewCount = reviewCount;
         this.deliveryType = deliveryType;

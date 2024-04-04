@@ -2,16 +2,8 @@ package com.ssgsakk.ssgdotcom.member.dto;
 
 import lombok.*;
 
-/**
- * 회원가입에 필요한 입력 데이터 명시
- *  userId, userPassword, userName, userEmail, userPhoneNum, userMobileNum, uuid
- *
- *  Dto는 서비스 로직에 따라서 수정이 가능해야 하므로 Getter, Setter 존재
- */
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class SignUpDto {
@@ -26,4 +18,22 @@ public class SignUpDto {
     private String roadAddress;
     private String jibunAddress;
     private String detailAddress;
+
+    private String oauthId;
+
+    @Builder
+
+    public SignUpDto(String userId, String userPassword, String userName, String userEmail, String userMobileNum, String uuid, String zipCode, String roadAddress, String jibunAddress, String detailAddress, String oauthId) {
+        this.userId = userId;
+        this.userPassword = userPassword;
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.userMobileNum = userMobileNum;
+        this.uuid = uuid;
+        this.zipCode = zipCode;
+        this.roadAddress = roadAddress;
+        this.jibunAddress = jibunAddress;
+        this.detailAddress = detailAddress;
+        this.oauthId = oauthId;
+    }
 }

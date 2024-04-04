@@ -3,6 +3,7 @@ package com.ssgsakk.ssgdotcom.product.infrastructure;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
+import com.ssgsakk.ssgdotcom.product.domain.Product;
 import com.ssgsakk.ssgdotcom.product.domain.QProduct;
 import com.ssgsakk.ssgdotcom.product.domain.QProductList;
 import com.ssgsakk.ssgdotcom.product.dto.ProductFilterDto;
@@ -14,22 +15,16 @@ import java.util.List;
 @Repository
 public class ProductRepositoryImpl extends QuerydslRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
-    private final QProduct qProduct = QProduct.product;
     private final QProductList qProductList = QProductList.productList;
+
+    private final QProduct qProduct = QProduct.product;
+
 
     public ProductRepositoryImpl(JPAQueryFactory jpaQueryFactory) {
         super(ProductRepositoryImpl.class);
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public List<Long> productBest(DeliveryType deliveryType){
-        return jpaQueryFactory
-                .select(qProduct.productSeq)
-                .from(qProduct)
-                .where(eqDeliveryType(deliveryType))
-                .orderBy(qProduct.reviewCount.desc())
-                .fetch();
-    }
 
     public List<Long> productFilter(ProductFilterDto productFilterDto) {
         return jpaQueryFactory
@@ -40,6 +35,18 @@ public class ProductRepositoryImpl extends QuerydslRepositorySupport {
                                 ,productFilterDto.getMaxPrice())
                                 ,eqCategory(productFilterDto.getCategorySeq())
                 ,eqKeywordSearch(productFilterDto.getKeyword()))
+                .distinct()
+                .fetch();
+    }
+
+    public List<Product> bestProduct(ProductFilterDto productFilterDto){
+        return jpaQueryFactory
+                .select(qProductList.product)
+                .from(qProductList)
+                .where(eqDeliveryType(productFilterDto.getDeliveryType()),
+                        eqCategory(productFilterDto.getCategorySeq()))
+                .orderBy(qProductList.product.soldCount.desc(), qProductList.product.productName.asc())
+                .limit(20)
                 .distinct()
                 .fetch();
     }

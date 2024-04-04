@@ -21,4 +21,6 @@ public class SignUpRequestVo {
     private String roadAddress;
     private String jibunAddress;
     private String detailAddress;
+
+    private String oauthId;
 }
