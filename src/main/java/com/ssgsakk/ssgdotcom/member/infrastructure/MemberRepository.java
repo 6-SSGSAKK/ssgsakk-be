@@ -19,7 +19,7 @@ public interface MemberRepository extends JpaRepository<User, Long> {
     Optional<User> findByUuid(String uuid);
 
     // OAuth2
-    User findByUserEmail(String userEmail);
+    Optional<User> findByUserEmail(String userEmail);
 
     @Query("SELECT u.userSeq FROM User u WHERE u.userEmail = :userEmail")
     long findByEmail(String userEmail);
