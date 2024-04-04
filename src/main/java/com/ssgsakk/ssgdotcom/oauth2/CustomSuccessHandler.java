@@ -58,7 +58,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             response.getWriter().print(result);
 
             // test
-            response.sendRedirect("http://localhost:3000/login/social");
+            response.sendRedirect("http://localhost:3000/login/social?token=" + "Bearer " + token + "&state=0&userName=" + user.getName() + "&userEmail=" + customUserDetails.getEmail());
         }
         // oauthId가 없는 사람들 중, user 테이블에 동일 이메일이 있는 지 확인
         catch (BusinessException e) {
@@ -88,7 +88,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 response.getWriter().print(result);
 
                 // test
-                response.sendRedirect("http://localhost:3000/login/social");
+                response.sendRedirect("http://localhost:3000/login/social" + "?token=" + "Bearer " + token + "&state=1&userName=" + user.getName() + "&userEmail=" + customUserDetails.getEmail());
             }
             // 동일 이메일이 없는 경우
             catch (BusinessException e1) {
@@ -106,7 +106,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
                 // test
-                response.sendRedirect("http://localhost:3000/login/social");
+                response.sendRedirect("http://localhost:3000/login/social" + "?state=2&userEmail=" + customUserDetails.getEmail() + "&oAuthId=" + oauthId);
             }
         }
     }
