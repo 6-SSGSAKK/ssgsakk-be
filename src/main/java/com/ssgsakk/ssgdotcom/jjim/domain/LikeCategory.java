@@ -1,8 +1,8 @@
 package com.ssgsakk.ssgdotcom.jjim.domain;
 
+import com.ssgsakk.ssgdotcom.category.domain.Category;
 import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
 import com.ssgsakk.ssgdotcom.member.domain.User;
-import com.ssgsakk.ssgdotcom.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,19 +12,17 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @ToString
-public class LikeProduct extends BaseTimeEntity {
+public class LikeCategory extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeProductSeq;
+    private Long likeCategorySeq;
 
-    // 회원과 연결
     @ManyToOne
     private User user;
 
-    // 상품과 연결
     @ManyToOne
-    private Product product;
+    private Category category;
 
-    private int likeState;
+    private int categoryState;
 }
