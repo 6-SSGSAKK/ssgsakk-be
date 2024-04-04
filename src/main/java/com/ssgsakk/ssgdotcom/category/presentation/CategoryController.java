@@ -50,7 +50,7 @@ public class CategoryController {
         categoryService.deleteCategory(categorySeq);
     }
 
-    @GetMapping("category/{categorySeq}")  //카테고리정보조회
+    @GetMapping("search/{categorySeq}")  //카테고리정보조회
     public BaseResponse<List<CategoryCustomDto>> categoryinfo(@PathVariable Long categorySeq) {
         List<CategoryCustomDto> categoryInfo = categoryService.getCategoryInfo(categorySeq);
         if ( categoryInfo!= null) {
