@@ -2,19 +2,26 @@ package com.ssgsakk.ssgdotcom.product.dto;
 
 
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class ProductFilterDto {
     private Long categorySeq;
     private DeliveryType deliveryType;
     private Integer minPrice;
     private Integer maxPrice;
     private String keyword;
+
+    public static ProductFilterDto ToDto(String keyword, DeliveryType deliveryType, Integer minPrice,
+                                                       Integer maxPrice, Long categorySeq) {
+        return ProductFilterDto.builder()
+                .keyword(keyword)
+                .deliveryType(deliveryType)
+                .maxPrice(maxPrice)
+                .minPrice(minPrice)
+                .categorySeq(categorySeq)
+                .build();
+    }
+
 }

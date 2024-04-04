@@ -2,18 +2,13 @@ package com.ssgsakk.ssgdotcom.product.dto;
 
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 
 @Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class ProductDto {
     private Long productSeq;
     private String productName;

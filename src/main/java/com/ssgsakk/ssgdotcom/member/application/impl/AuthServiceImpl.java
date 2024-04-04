@@ -24,7 +24,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AuthServiceImpl implements AuthService {
+public class                                                                                                        AuthServiceImpl implements AuthService {
 
     private final MemberRepository memberRepository;
     private final ShippingAddressRepository shippingAddressRepository;

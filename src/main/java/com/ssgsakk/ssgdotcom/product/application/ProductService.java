@@ -1,10 +1,7 @@
 package com.ssgsakk.ssgdotcom.product.application;
 
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
-import com.ssgsakk.ssgdotcom.product.dto.ProductDto;
-import com.ssgsakk.ssgdotcom.product.dto.ProductFilterDto;
-import com.ssgsakk.ssgdotcom.product.dto.ProductListInfoDto;
-import com.ssgsakk.ssgdotcom.product.dto.SearchProductDto;
+import com.ssgsakk.ssgdotcom.product.dto.*;
 
 import java.util.List;
 
@@ -17,6 +14,6 @@ public interface ProductService {
 
     List<SearchProductDto> productEvent(Long eventSeq);
 
-    List<SearchProductDto> productBest(DeliveryType deliveryType);
+    List<SearchProductDto> productBest(ProductFilterDto productFilterDto);
 
 }
