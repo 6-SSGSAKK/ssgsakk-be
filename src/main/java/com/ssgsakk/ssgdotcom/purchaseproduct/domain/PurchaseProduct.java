@@ -1,5 +1,4 @@
 package com.ssgsakk.ssgdotcom.purchaseproduct.domain;
-import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.purchase.domain.Purchase;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -15,6 +14,7 @@ public class PurchaseProduct {
     private Long purchaseProductSeq; //주문상품ID
 
     @ManyToOne
+    @JoinColumn(name = "purchaseSeq")
     private Purchase purchaseSeq; //주문ID
 
     @Column(length = 50)
@@ -42,7 +42,7 @@ public class PurchaseProduct {
     private String productThumbnail; //주문상품이미지
 
     @Column(length = 10)
-    private DeliveryType deliveryType; //주문상품배송타입
+    private String deliveryType ; //주문상품배송타입
 
     @Column(length = 50)
     private String productState; //주문상품 주문배송상태
@@ -53,7 +53,7 @@ public class PurchaseProduct {
                            String purchaseProductName, String purchaseProductVendor,
                            String purchaseProductOption, Integer purchaseProductCount,
                            Integer purchaseProductPrice, Integer purchaseProductDiscountPrice,
-                           String productThumbnail, DeliveryType deliveryType, String productState) {
+                           String productThumbnail, String deliveryType, String productState) {
 
         this.purchaseProductSeq = purchaseProductSeq;
         this.purchaseSeq = purchaseSeq;

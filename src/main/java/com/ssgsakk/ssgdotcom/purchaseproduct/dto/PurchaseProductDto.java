@@ -23,6 +23,8 @@ public class PurchaseProductDto {
     private String productState; //주문상품 주문배송상태
 
 
+
+
     @Builder
     public PurchaseProductDto(Long purchaseProductSeq, Purchase purchaseSeq, Long productId, String purchaseProductName, String purchaseProductVendor,
                               String purchaseProductOption, Integer purchaseProductCount, Integer purchaseProductPrice, Integer purchaseProductDiscountPrice,
