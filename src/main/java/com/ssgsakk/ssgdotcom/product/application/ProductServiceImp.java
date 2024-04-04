@@ -43,8 +43,9 @@ public class ProductServiceImp implements ProductService{
         return getProductInfoDto(product, contentVos);
     }
 
-
+    // 상품 리스트 정보
     @Override
+    @Transactional
     public ProductListInfoDto productListInfo(Long productSeq) {
         Product product = productRepository.findById(productSeq)
                 .orElseThrow(() -> new RuntimeException("찾으시는 상품이 없습니다."));
@@ -53,37 +54,30 @@ public class ProductServiceImp implements ProductService{
         return getProductListInfoDto(product, contentVo);
     }
 
-
     // 상품 검색
     @Override
     @Transactional
     public List<SearchProductDto> searchProducts(ProductFilterDto productFilterDto) {
         List<Long> products = productRepositoryimpl.productFilter(productFilterDto);
-
         return SearchProductDto.ToDto(products);
-        }
+    }
+    // 이벤트 상품
     @Override
     @Transactional
     public List<SearchProductDto> productEvent(Long eventSeq) {
         eventRepository.findById(eventSeq).orElseThrow(() -> new RuntimeException("존재하지 않는 이벤트 입니다."));
         List<EventProduct> eventProductList = eventProductRepository.findByEvent_EventSeq(eventSeq);
-        return eventProductList.stream()
-                .map(eventProduct -> SearchProductDto.builder()
-                        .productSeq(eventProduct.getProduct().getProductSeq())
-                        .build())
-                .collect(Collectors.toList());
+        return getSearchProductDtoListEvent(eventProductList);
     }
 
+    // 베스트 상품
     @Override
     @Transactional
     public List<SearchProductDto> productBest(ProductFilterDto productFilterDto) {
         List<Product> products = productRepositoryimpl.bestProduct(productFilterDto);
-        return products.stream()
-                .map(product -> SearchProductDto.builder()
-                        .productSeq(product.getProductSeq())
-                        .build())
-                .collect(Collectors.toList());
+        return getSearchProductDtoListBest(products);
     }
+
 
 
     private static ProductDto getProductInfoDto(Product product, List<ProductContentsVo> contentVos) {
@@ -139,5 +133,19 @@ public class ProductServiceImp implements ProductService{
                 .reviewCount(product.getReviewCount())
                 .contentsUrl(contentVo)
                 .build();
+    }
+    private static List<SearchProductDto> getSearchProductDtoListEvent(List<EventProduct> eventProductList) {
+        return eventProductList.stream()
+                .map(eventProduct -> SearchProductDto.builder()
+                        .productSeq(eventProduct.getProduct().getProductSeq())
+                        .build())
+                .collect(Collectors.toList());
+    }
+    private static List<SearchProductDto> getSearchProductDtoListBest(List<Product> products) {
+        return products.stream()
+                .map(product -> SearchProductDto.builder()
+                        .productSeq(product.getProductSeq())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
