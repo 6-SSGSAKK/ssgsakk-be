@@ -1,4 +1,5 @@
 package com.ssgsakk.ssgdotcom.category.presentation;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ssgsakk.ssgdotcom.category.application.CategoryService;
 import com.ssgsakk.ssgdotcom.category.domain.Category;
 import com.ssgsakk.ssgdotcom.category.dto.CategoryCustomDto;
@@ -43,9 +44,21 @@ public class CategoryController {
                 .build());
     }
 
+
     @DeleteMapping("delete/{categorySeq}") //카테고리삭제
     public void deleteCategory(@PathVariable Long categorySeq) {
         categoryService.deleteCategory(categorySeq);
+    }
+
+    @GetMapping("category/{categorySeq}")  //카테고리정보조회
+    public BaseResponse<List<CategoryCustomDto>> categoryinfo(@PathVariable Long categorySeq) {
+        List<CategoryCustomDto> categoryInfo = categoryService.getCategoryInfo(categorySeq);
+        if ( categoryInfo!= null) {
+            return new BaseResponse<>("카테고리가져왔습니다", categoryInfo);
+        } else {
+            return new BaseResponse<>("No category found", null);
+        }
+
     }
 
     @GetMapping("/big-categories") //대카테고리만 조회

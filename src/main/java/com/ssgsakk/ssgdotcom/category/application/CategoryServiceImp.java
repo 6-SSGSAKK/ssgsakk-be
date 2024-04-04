@@ -61,6 +61,16 @@ public class CategoryServiceImp implements CategoryService{
         categoryRepository.delete(category); //찾고 카테고리를 삭제함.
     }
 
+    @Override
+    public List<CategoryCustomDto> getCategoryInfo(Long categorySeq) {
+        List<com.querydsl.core.Tuple> tuples = categoryRepositoryImp.getCategoryInfo(categorySeq);
+        List<CategoryCustomDto> customDto = tuples.stream()
+                .map(this::mapTupleToDTO)
+                .collect(Collectors.toList());
+        return customDto;
+
+    } //카테고리가져오기
+
     private CategoryCustomDto mapTupleToDTO(com.querydsl.core.Tuple tuple) { //카테고리 튜플 DTO로 변환
         Long categorySeq = tuple.get(QCategory.category.categorySeq);
         String categoryName = tuple.get(QCategory.category.categoryName);
