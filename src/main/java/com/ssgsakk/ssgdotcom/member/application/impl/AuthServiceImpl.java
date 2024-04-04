@@ -108,6 +108,7 @@ public class AuthServiceImpl implements AuthService {
             // 배송지 저장
             ShippingAddress shippingAddress = ShippingAddress.builder()
                     .uuid(uuidToStr)
+                    .addressNickname("자택")
                     .detailAddress(signUpDto.getDetailAddress())
                     .jibunAddress(signUpDto.getJibunAddress())
                     .roadAddress(signUpDto.getRoadAddress())
