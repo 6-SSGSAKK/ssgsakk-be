@@ -25,6 +25,7 @@ public class PurchaseDto {
     private Long shippingFee; //배송비
 
 
+    @Builder
     public PurchaseDto(Long purchaseSeq, String purchaser, String purchaseCode, String purchaseUuid,
                        String purchaserPhoneNum, String purchaseEmail, String recipient,
                        String recipientPhoneNum, String recipientEmail, String address,
@@ -48,4 +49,6 @@ public class PurchaseDto {
         this.shippingFee = shippingFee;
 
     }
+
+
 }

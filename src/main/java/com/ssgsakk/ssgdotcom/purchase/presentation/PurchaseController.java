@@ -12,17 +12,9 @@ public class PurchaseController {
     private final PurchaseService purchaseService;
 
 
-    @PostMapping("/member-purchase")
+    @PostMapping("/member-purchase") //CreateMemberPurchaseRequestVo -> PurchaseAndPUrchaseProductDto로 반환
     public void createMemberPurchase(@RequestBody CreateMemberPurchaseRequestVo createMemberPurchaseRequestVo) {
 
 
-
     }
-
-
-
-
-
-
-
 }

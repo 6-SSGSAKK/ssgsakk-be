@@ -1,5 +1,5 @@
 package com.ssgsakk.ssgdotcom.purchaseproduct.dto;
-
+import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.purchase.domain.Purchase;
 import lombok.Builder;
 import lombok.Data;
@@ -19,15 +19,14 @@ public class PurchaseProductDto {
     private Integer purchaseProductPrice; //주문상품금액
     private Integer purchaseProductDiscountPrice; //주문상품할인인
     private String productThumbnail; //주문상품이미지
-    private Short productDeliveryType; //주문상품배송타입
+    private DeliveryType deliveryType; //주문상품배송타입
     private String productState; //주문상품 주문배송상태
 
 
     @Builder
-
     public PurchaseProductDto(Long purchaseProductSeq, Purchase purchaseSeq, Long productId, String purchaseProductName, String purchaseProductVendor,
                               String purchaseProductOption, Integer purchaseProductCount, Integer purchaseProductPrice, Integer purchaseProductDiscountPrice,
-                              String productThumbnail, Short productDeliveryType, String productState) {
+                              String productThumbnail, DeliveryType deliveryType, String productState) {
 
         this.purchaseProductSeq = purchaseProductSeq;
         this.purchaseSeq = purchaseSeq;
@@ -39,9 +38,8 @@ public class PurchaseProductDto {
         this.purchaseProductPrice = purchaseProductPrice;
         this.purchaseProductDiscountPrice = purchaseProductDiscountPrice;
         this.productThumbnail = productThumbnail;
-        this.productDeliveryType = productDeliveryType;
+        this.deliveryType = deliveryType;
         this.productState = productState;
 
     }
-
 }

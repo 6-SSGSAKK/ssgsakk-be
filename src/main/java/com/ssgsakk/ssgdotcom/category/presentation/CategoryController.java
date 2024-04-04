@@ -74,7 +74,7 @@ public class CategoryController {
         List<CategoryCustomDto> smallCategories = categoryService.getSmallCategoryByMid(parentCategoryId);
 
         if (smallCategories != null) {
-            return new BaseResponse<>("소카테고리조회 성공했습니다.", smallCategories);
+            return new BaseResponse<>("중카테고리별 소카테고리조회 성공했습니다.", smallCategories);
         } else {
             return new BaseResponse<>("No category found", null);
         }
