@@ -36,7 +36,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
         // 응답을 저장한 바구니 미리 생성
-        OAuth2Response oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
+        OAuth2Response oAuth2Response = null;
 
 
         // 각 제공 회사별 처리
@@ -98,6 +98,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 oAuthDto.setName(oAuth2Response.getName());
                 oAuthDto.setUuid(uuid);
                 oAuthDto.setRole("OAUTH2USER");
+                oAuthDto.setOauthId(oAuth2Response.getProviderId());
 
                 return new CustomOAuth2User(oAuthDto);
             }
@@ -121,6 +122,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 oAuthDto.setName(userExistData.getName());
                 oAuthDto.setUuid(userExistData.getUuid());
                 oAuthDto.setRole("OAUTH2USER");
+                oAuthDto.setOauthId(oAuth2Response.getProviderId());
 
                 return new CustomOAuth2User(oAuthDto);
             }

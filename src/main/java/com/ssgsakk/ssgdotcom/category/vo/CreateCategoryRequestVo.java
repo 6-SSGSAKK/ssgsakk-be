@@ -1,5 +1,4 @@
 package com.ssgsakk.ssgdotcom.category.vo;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +7,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class CreateCategoryRequestVo {
+
     private String categoryName;
     private int level;
     private Long parentCategorySeq;
