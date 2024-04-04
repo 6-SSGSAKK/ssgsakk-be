@@ -52,9 +52,15 @@ public class CategoryController {
     public BaseResponse<List<CategoryCustomDto>> getBigCategories() {
         List<CategoryCustomDto> bigCategories = categoryService.getBigCategory();
         if (bigCategories != null) {
+<<<<<<< HEAD
             return new BaseResponse<>("대카테고리조회에 성공했습니다.", bigCategories);
         } else {
             return new BaseResponse<>("No category found", null);
+=======
+            return new BaseResponse<>("대카테고리조회 성공했습니다.", bigCategories);
+        } else {
+            return new BaseResponse<>("No big category found", null);
+>>>>>>> 80c4ad0c6b3c6217638687ab85a39033aba7efa6
         }
     }
     @GetMapping("/mid-by-big") //대카테고리별 중카테고리 조회
@@ -62,13 +68,20 @@ public class CategoryController {
         List<CategoryCustomDto> middleCategories = categoryService.getMiddleCategoryByBig(parentCategoryId);
 
         if (middleCategories != null) {
+<<<<<<< HEAD
             return new BaseResponse<>("중카테고리조회에 성공했습니다.", middleCategories);
         } else {
             return new BaseResponse<>("No category found", null);
+=======
+            return new BaseResponse<>("대카테고리별 중카테고리 조회 성공했습니다.", middleCategories);
+        } else {
+            return new BaseResponse<>("No middle category found", null);
+>>>>>>> 80c4ad0c6b3c6217638687ab85a39033aba7efa6
         }
 
     }
     @GetMapping("/small-by-mid") //중카테고리별 소카테고리 조회
+<<<<<<< HEAD
     public BaseResponse<List<CategoryCustomDto>> getSmallCategoryByMid(@RequestParam Long parentCategoryId) {
         List<CategoryCustomDto> smallCategories = categoryService.getSmallCategoryByMid(parentCategoryId);
 
@@ -76,6 +89,14 @@ public class CategoryController {
             return new BaseResponse<>("소카테고리조회에 성공했습니다.", smallCategories);
         } else {
             return new BaseResponse<>("No category found", null);
+=======
+    public  BaseResponse<List<CategoryCustomDto>> getSmallCategoryByMid(@RequestParam Long parentCategoryId) {
+        List<CategoryCustomDto> smallCategories = categoryService.getSmallCategoryByMid(parentCategoryId);
+        if (smallCategories != null) {
+            return new BaseResponse<>("중카테고리별 소카테고리 조회 성공했습니다.", smallCategories);
+        } else {
+            return new BaseResponse<>("No small category found", null);
+>>>>>>> 80c4ad0c6b3c6217638687ab85a39033aba7efa6
         }
     }
 }

@@ -57,6 +57,7 @@ public class AuthController {
                 .jibunAddress(signUpRequestVo.getJibunAddress())
                 .roadAddress(signUpRequestVo.getRoadAddress())
                 .zipCode(signUpRequestVo.getZipCode())
+                .oauthId(signUpRequestVo.getOauthId())
                 .build();
 
         SignUpDto servicedSignUpDto = authService.signUp(signUpDto);

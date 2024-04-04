@@ -3,6 +3,7 @@ package com.ssgsakk.ssgdotcom.product.vo;
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
 
+import com.ssgsakk.ssgdotcom.product.dto.ProductDto;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,4 +22,18 @@ public class ProductInfoResponseVo {
     private Double averageRating;
     private Integer reviewCount;
     private List<ProductContentsVo> contents;
+
+    public static ProductInfoResponseVo VoToDto(ProductDto productDto) {
+        return ProductInfoResponseVo.builder()
+                .productName(productDto.getProductName())
+                .productPrice(productDto.getProductPrice())
+                .vendor(productDto.getVendor())
+                .productDescription(productDto.getProductDescription())
+                .discountPercent(productDto.getDiscountPercent())
+                .deliveryType(productDto.getDeliveryType())
+                .averageRating(productDto.getAverageRating())
+                .reviewCount(productDto.getReviewCount())
+                .contents(productDto.getContentsUrl())
+                .build();
+    }
 }
