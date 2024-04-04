@@ -102,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
             OAuth savedOauth = oAuthRepository.save(OAuth.builder()
                     .user(savedMember)
                     .oauthId(signUpDto.getOauthId())
-                    .oauthType("naver")     // naver 밖에 못 받아서 하드코딩
+                    .oauthType("google")     // google 밖에 못 받아서 하드코딩
                     .build());
 
             // 배송지 저장
