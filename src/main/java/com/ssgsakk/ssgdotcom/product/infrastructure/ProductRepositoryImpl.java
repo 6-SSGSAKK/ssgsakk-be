@@ -16,7 +16,6 @@ import java.util.List;
 public class ProductRepositoryImpl extends QuerydslRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
     private final QProductList qProductList = QProductList.productList;
-
     private final QProduct qProduct = QProduct.product;
 
 
@@ -66,7 +65,7 @@ public class ProductRepositoryImpl extends QuerydslRepositorySupport {
     }
 
     private BooleanExpression eqKeywordSearch(String keyword){
-        if (keyword == null || keyword.isEmpty()) {
+        if (keyword == null) {
             return null;
         }
         return qProductList.product.productName.containsIgnoreCase(keyword);

@@ -19,7 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -58,9 +60,19 @@ public class ProductServiceImp implements ProductService{
     @Override
     @Transactional
     public List<SearchProductDto> searchProducts(ProductFilterDto productFilterDto) {
+        if (productFilterDto.getKeyword() == null || productFilterDto.getKeyword().trim().isEmpty()){
+            return Collections.emptyList();
+        }
         List<Long> products = productRepositoryimpl.productFilter(productFilterDto);
         return SearchProductDto.ToDto(products);
     }
+
+    @Override
+    public List<SearchProductDto> filterProducts(ProductFilterDto productFilterDto) {
+        List<Long> products = productRepositoryimpl.productFilter(productFilterDto);
+        return SearchProductDto.ToDto(products);
+    }
+
     // 이벤트 상품
     @Override
     @Transactional
