@@ -63,13 +63,12 @@ public class CreateMemberPurchaseRequestVo {
 
     }
     public static PurchaseProductDto purchaseProductDto
-            (Long purchaseProductSeq,Long productId, String purchaseProductName,String purchaseProductVendor,
+            (Long productId, String purchaseProductName,String purchaseProductVendor,
              String purchaseProductOption,Integer purchaseProductCount,Integer purchaseProductPrice,
              Integer purchaseProductDiscountPrice,String productThumbnail,String deliveryType,
              String productState){
 
         return PurchaseProductDto.builder()
-                .purchaseProductSeq(purchaseProductSeq)
                 .productId(productId)
                 .purchaseProductName(purchaseProductName)
                 .purchaseProductVendor(purchaseProductVendor)

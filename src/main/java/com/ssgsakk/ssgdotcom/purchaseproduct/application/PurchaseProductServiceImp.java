@@ -1,6 +1,6 @@
 package com.ssgsakk.ssgdotcom.purchaseproduct.application;
+import com.ssgsakk.ssgdotcom.purchase.application.PurchaseService;
 import com.ssgsakk.ssgdotcom.purchase.domain.Purchase;
-import com.ssgsakk.ssgdotcom.purchase.infrastructure.PurchaseRepository;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
 import com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure.PurchaseProductRepository;
@@ -10,12 +10,18 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class PurchaseProductServiceImp implements PurchaseProductService {
     private final PurchaseProductRepository purchaseProductRepository;
+    private final PurchaseService purchaseService;
 
     @Override
     public void createPurchaseProduct(PurchaseProductDto purchaseProductDto){
 
+        Purchase purchase = new purchase;
+
+
+
+
         PurchaseProduct purchaseProduct = PurchaseProduct.builder()
-                .purchaseSeq(Purchase.getPurchaseSeq())
+                .purchaseSeq(purchase.getPurchaseSeq())
                 .productId(purchaseProductDto.getProductId())
                 .purchaseProductName(purchaseProductDto.getPurchaseProductName())
                 .purchaseProductVendor(purchaseProductDto.getPurchaseProductVendor())

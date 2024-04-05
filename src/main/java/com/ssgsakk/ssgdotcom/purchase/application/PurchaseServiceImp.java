@@ -4,6 +4,7 @@ import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
 import com.ssgsakk.ssgdotcom.purchase.infrastructure.PurchaseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -11,8 +12,10 @@ public class PurchaseServiceImp implements PurchaseService {
 
     private final PurchaseRepository purchaseRepository;
 
+
     @Override
-    public void createMemberPurchase(PurchaseDto purchaseDto){
+    @Transactional
+    public Purchase createMemberPurchase(PurchaseDto purchaseDto){
         Purchase purchase = Purchase.builder()
                 .purchaser(purchaseDto.getPurchaser())
                 .purchaseUuid(purchaseDto.getPurchaseUuid())
@@ -30,9 +33,8 @@ public class PurchaseServiceImp implements PurchaseService {
                 .build();
 
         purchaseRepository.save(purchase);
+
+        return purchaseRepository.getReferenceById(purchase.getPurchaseSeq());
     }
-
-
-
 
 }
