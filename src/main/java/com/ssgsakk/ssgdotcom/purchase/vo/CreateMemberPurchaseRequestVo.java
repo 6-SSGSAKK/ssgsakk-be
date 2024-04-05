@@ -16,7 +16,7 @@ public class CreateMemberPurchaseRequestVo {
     private String recipient; //수령자 이름
     private String recipientPhoneNum; //수령자 전화번호
     private String recipientEmail; //수령자 이메일
-    private String address; //최종배송지우편번호
+    private String purchaseZipcode; //최종배송지우편번호
     private String purchaseRoadAddress; //최종배송지 도로명주소
     private String purchaseJibunAddress; //최종배송지지번주소
     private String purchaseDetailAddress; //최종배송지상세주소
@@ -41,7 +41,7 @@ public class CreateMemberPurchaseRequestVo {
     public static PurchaseDto voToPurchaseDto
             (String purchaser, String purchaseUuid, String purchaserPhoneNum,
              String purchaseEmail, String recipient, String recipientPhoneNum,
-             String recipientEmail, String address, String purchaseRoadAddress,
+             String recipientEmail, String purchaseZipcode, String purchaseRoadAddress,
              String purchaseJibunAddress, String purchaseDetailAddress,
              String deliverymessage, Long shippingFee) {
 
@@ -53,7 +53,7 @@ public class CreateMemberPurchaseRequestVo {
                 .recipient(recipient)
                 .recipientPhoneNum(recipientPhoneNum)
                 .recipientEmail(recipientEmail)
-                .address(address)
+                .purchaseZipcode(purchaseZipcode)
                 .purchaseRoadAddress(purchaseRoadAddress)
                 .purchaseJibunAddress(purchaseJibunAddress)
                 .purchaseDetailAddress(purchaseDetailAddress)
@@ -62,7 +62,6 @@ public class CreateMemberPurchaseRequestVo {
                 .build();
 
     }
-
     public static PurchaseProductDto purchaseProductDto
             (Long purchaseProductSeq,Long productId, String purchaseProductName,String purchaseProductVendor,
              String purchaseProductOption,Integer purchaseProductCount,Integer purchaseProductPrice,
@@ -84,5 +83,7 @@ public class CreateMemberPurchaseRequestVo {
                 .build();
 
     }
+
+
 
 }

@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 @Data
 public class PurchaseProductDto {
-    private Long purchaseProductSeq; //주문상품ID
+
     private Purchase purchaseSeq; //주문ID
     private Long productId; //상품ID
     private String purchaseProductName; //주문상품명
@@ -26,11 +26,11 @@ public class PurchaseProductDto {
 
 
     @Builder
-    public PurchaseProductDto(Long purchaseProductSeq, Purchase purchaseSeq, Long productId, String purchaseProductName, String purchaseProductVendor,
+    public PurchaseProductDto(Purchase purchaseSeq, Long productId, String purchaseProductName, String purchaseProductVendor,
                               String purchaseProductOption, Integer purchaseProductCount, Integer purchaseProductPrice, Integer purchaseProductDiscountPrice,
                               String productThumbnail, DeliveryType deliveryType, String productState) {
 
-        this.purchaseProductSeq = purchaseProductSeq;
+
         this.purchaseSeq = purchaseSeq;
         this.productId = productId;
         this.purchaseProductName = purchaseProductName;

@@ -1,4 +1,6 @@
 package com.ssgsakk.ssgdotcom.purchaseproduct.application;
+import com.ssgsakk.ssgdotcom.purchase.domain.Purchase;
+import com.ssgsakk.ssgdotcom.purchase.infrastructure.PurchaseRepository;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
 import com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure.PurchaseProductRepository;
@@ -13,7 +15,7 @@ public class PurchaseProductServiceImp implements PurchaseProductService {
     public void createPurchaseProduct(PurchaseProductDto purchaseProductDto){
 
         PurchaseProduct purchaseProduct = PurchaseProduct.builder()
-                .purchaseSeq(purchaseProductDto.getPurchaseSeq())
+                .purchaseSeq(Purchase.getPurchaseSeq())
                 .productId(purchaseProductDto.getProductId())
                 .purchaseProductName(purchaseProductDto.getPurchaseProductName())
                 .purchaseProductVendor(purchaseProductDto.getPurchaseProductVendor())
@@ -23,8 +25,13 @@ public class PurchaseProductServiceImp implements PurchaseProductService {
                 .purchaseProductDiscountPrice(purchaseProductDto.getPurchaseProductDiscountPrice())
                 .productThumbnail(purchaseProductDto.getProductThumbnail())
                 .deliveryType(purchaseProductDto.getDeliveryType())
+                .productState(purchaseProductDto.getProductState())
                 .build();
+
+        purchaseProductRepository.save(purchaseProduct);
     }
+
+
 
 
 }

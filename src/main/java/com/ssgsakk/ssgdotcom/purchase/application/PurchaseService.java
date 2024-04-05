@@ -1,10 +1,9 @@
 package com.ssgsakk.ssgdotcom.purchase.application;
-import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseAndPurchaseProductDto;
-import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
-import com.ssgsakk.ssgdotcom.purchase.vo.CreateMemberPurchaseRequestVo;
 
+import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
 
 public interface PurchaseService {
 
-    void createPurchaseAndPurchaseProductDto(CreateMemberPurchaseRequestVo createMemberPurchaseRequestVo);
+
+    void createMemberPurchase(PurchaseDto purchaseDto);
 }
