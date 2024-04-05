@@ -47,7 +47,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
             // 적절한 HTTP 상태 코드 설정
             response.setStatus(HttpServletResponse.SC_OK);
-            response.sendRedirect("http://localhost:3000/login/social?token=" + "Bearer " + token + "&state=0&userName=" + user.getName() + "&userEmail=" + customUserDetails.getEmail());
+//            response.sendRedirect("http://localhost:3000/login/social?token=" + "Bearer " + token + "&state=0&userName=" + user.getName() + "&userEmail=" + customUserDetails.getEmail());
+            response.sendRedirect("http://localhost:3000/login/social" + "?state=2&userEmail=" + customUserDetails.getEmail() + "&oAuthId=" + oauthId);
+
         }
         // oauthId가 없는 사람들 중, user 테이블에 동일 이메일이 있는 지 확인
         catch (BusinessException e) {
@@ -66,7 +68,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
                 // 적절한 HTTP 상태 코드 설정
                 response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                response.sendRedirect("http://localhost:3000/login/social" + "?token=" + "Bearer " + token + "&state=1&userName=" + user.getName() + "&userEmail=" + customUserDetails.getEmail());
+//                response.sendRedirect("http://localhost:3000/login/social" + "?token=" + "Bearer " + token + "&state=1&userName=" + user.getName() + "&userEmail=" + customUserDetails.getEmail());
+                response.sendRedirect("http://localhost:3000/login/social" + "?state=2&userEmail=" + customUserDetails.getEmail() + "&oAuthId=" + oauthId);
+
             }
             // 동일 이메일이 없는 경우
             catch (BusinessException e1) {
