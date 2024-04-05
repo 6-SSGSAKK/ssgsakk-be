@@ -2,7 +2,6 @@ package com.ssgsakk.ssgdotcom.contents.domain;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,10 +15,10 @@ public class Contents {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contentSeq;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String contentUrl;
 
-    @Column(nullable = false)
+    @Column(length = 255)
     private String contentDescription;
 
     @Builder
