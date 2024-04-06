@@ -8,13 +8,15 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-public class AddProductLikesDto {
+public class AddProductOrCategoryLikesDto {
     private String uuid;
     private Long productSeq;
+    private Long categorySeq;
 
     @Builder
-    public AddProductLikesDto(String uuid, Long productSeq) {
+    public AddProductOrCategoryLikesDto(String uuid, Long productSeq, Long categorySeq) {
         this.uuid = uuid;
         this.productSeq = productSeq;
+        this.categorySeq = categorySeq;
     }
 }

@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class AddProductLikesResponseVo {
+public class AddProductOrCategoryLikesResponseVo {
     private Long productSeq;
 
     @Builder
-    public AddProductLikesResponseVo(Long productSeq) {
+    public AddProductOrCategoryLikesResponseVo(Long productSeq) {
         this.productSeq = productSeq;
     }
 }

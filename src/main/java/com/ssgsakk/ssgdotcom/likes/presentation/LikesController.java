@@ -4,9 +4,9 @@ import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
-import com.ssgsakk.ssgdotcom.likes.dto.AddProductLikesDto;
+import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
 import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductLikesDto;
-import com.ssgsakk.ssgdotcom.likes.vo.AddProductLikesResponseVo;
+import com.ssgsakk.ssgdotcom.likes.vo.AddProductOrCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.likes.vo.DeleteProductLikesResponseVo;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,19 +23,21 @@ public class LikesController {
     private final JWTUtil jwtUtil;
 
 
-    @Operation(summary = "상품 찜 추가", description = "상품 찜 추가")
+    @Operation(summary = "상품 또는 카테고리 찜 추가", description = "상품 또는 카테고리 찜 추가")
     @GetMapping("/add")
-    public BaseResponse<AddProductLikesResponseVo> addProductLikes(@RequestHeader("Authorization") String accessToken
-            , @RequestParam(value = "product-seq", required = false) Long productSeq) {
+    public BaseResponse<AddProductOrCategoryLikesResponseVo> addProductLikes(@RequestHeader("Authorization") String accessToken
+            , @RequestParam(value = "product-seq", required = false) Long productSeq
+            , @RequestParam(value = "category-seq", required = false) Long categorySeq) {
         String uuid = getUuid(accessToken);
 
-        // 입력받은 product-seq를 추가하면 된다.
-        likesService.addProductLikes(AddProductLikesDto.builder()
+        // 입력받은 product-seq 또는 category-seq 를 추가
+        likesService.addProductOrCategoryLikes(AddProductOrCategoryLikesDto.builder()
                 .uuid(uuid)
                 .productSeq(productSeq)
+                .categorySeq(categorySeq)
                 .build());
 
-        return new BaseResponse<>("Add Product Likes Success", AddProductLikesResponseVo.builder()
+        return new BaseResponse<>("Add Product Or Category Likes Success", AddProductOrCategoryLikesResponseVo.builder()
                 .productSeq(productSeq)
                 .build());
     }
@@ -55,6 +57,19 @@ public class LikesController {
                 .productSeq(productSeq)
                 .build());
     }
+
+//    @Operation(summary = "상품 찜 조회", description = "상품 찜 조회")
+//    @DeleteMapping("/user/product")
+//    public BaseResponse<?> userProductLikes(@RequestHeader("Authorization") String accessToken) {
+//        String uuid = getUuid(accessToken);
+//
+//        likesService.deleteProductLikes(DeleteProductLikesDto.builder()
+//                .uuid(uuid)
+//                .productSeq(productSeq)
+//                .build());
+//
+//        return new BaseResponse<>("User Product Likes List", null);
+//    }
 
 
     // JWT에서 UUID 추출 메서드

@@ -1,12 +1,16 @@
 package com.ssgsakk.ssgdotcom.likes.application.impl;
 
+import com.ssgsakk.ssgdotcom.category.domain.Category;
+import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepository;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
+import com.ssgsakk.ssgdotcom.likes.domain.LikeCategory;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeProduct;
-import com.ssgsakk.ssgdotcom.likes.dto.AddProductLikesDto;
+import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
 import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductLikesDto;
-import com.ssgsakk.ssgdotcom.likes.infrastructure.LikesRepository;
+import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeCategoryRepository;
+import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeProductRepository;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
@@ -20,29 +24,48 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class LikesServiceImpl implements LikesService {
-    private final LikesRepository likesRepository;
+    private final LikeProductRepository likeProductRepository;
+    private final LikeCategoryRepository likeCategoryRepository;
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
-    public void addProductLikes(AddProductLikesDto addProductLikesDto) {
+    public void addProductOrCategoryLikes(AddProductOrCategoryLikesDto addProductLikesDto) {
         // uuid를 가지고 User 엔티티 획득
         User user = memberRepository.findByUuid(addProductLikesDto.getUuid()).orElseThrow(
                 () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
 
-        // User 엔티티를 가지고 LikeProduct 엔티티 빌드
-        Product product = productRepository.findByProductSeq(addProductLikesDto.getProductSeq())
-                .orElseThrow(
-                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+        // Product 추가한 경우
+        if (addProductLikesDto.getProductSeq() != null) {
+            Product product = productRepository.findByProductSeq(addProductLikesDto.getProductSeq())
+                    .orElseThrow(
+                            () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
 
-        try {
-            likesRepository.save(LikeProduct.builder()
-                    .user(user)
-                    .product(product)
-                    .likeState(1)
-                    .build());
-        } catch (Exception e) {
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            try {
+                likeProductRepository.save(LikeProduct.builder()
+                        .user(user)
+                        .product(product)
+                        .likeState(1)
+                        .build());
+            } catch (Exception e) {
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            }
+        }
+        if (addProductLikesDto.getCategorySeq() != null) {
+            Category category = categoryRepository.findByCategorySeq(addProductLikesDto.getCategorySeq())
+                    .orElseThrow(
+                            () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
+
+            try {
+                likeCategoryRepository.save(LikeCategory.builder()
+                        .user(user)
+                        .category(category)
+                        .categoryState(1)
+                        .build());
+            } catch (Exception e) {
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            }
         }
     }
 
@@ -58,7 +81,7 @@ public class LikesServiceImpl implements LikesService {
                         () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
 
         try {
-            likesRepository.deleteProductLikes(user, product);
+            likeProductRepository.deleteProductLikes(user, product);
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }

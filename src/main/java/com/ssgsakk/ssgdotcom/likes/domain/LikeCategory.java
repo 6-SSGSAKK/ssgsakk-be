@@ -4,6 +4,7 @@ import com.ssgsakk.ssgdotcom.category.domain.Category;
 import com.ssgsakk.ssgdotcom.common.entity.BaseTimeEntity;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -25,4 +26,11 @@ public class LikeCategory extends BaseTimeEntity {
     private Category category;
 
     private int categoryState;
+
+    @Builder
+    public LikeCategory(User user, Category category, int categoryState) {
+        this.user = user;
+        this.category = category;
+        this.categoryState = categoryState;
+    }
 }
