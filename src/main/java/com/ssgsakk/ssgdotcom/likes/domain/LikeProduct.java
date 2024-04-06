@@ -27,7 +27,7 @@ public class LikeProduct extends BaseTimeEntity {
     @ManyToOne
     private Product product;
 
-    private int likeState;
+    private int likeState;      // 1이면 좋아요 활성화, 0이면 비활성화
 
     @Builder
     public LikeProduct(Long likeProductSeq, User user, Product product, int likeState) {
