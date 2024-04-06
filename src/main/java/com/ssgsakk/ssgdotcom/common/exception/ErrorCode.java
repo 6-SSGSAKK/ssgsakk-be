@@ -35,11 +35,14 @@ public enum ErrorCode {
     DUPLICATE_MOBILE_NUM(406, "ERROR-AUTH-020",  "이미 존재하는 전화번호 입니다."),
 
 
-    //Category
+    // Category
     CANNOT_FOUND_CATEGORY(404,"ERROR-CATEGORY-001","카테고리를 찾을수없습니다."),
 
-    //Purchase
+    // Purchase
     CANNOT_FOUND_PURCHASE(404,"ERRROE-PURCHASE-001","주문을 찾을수 없습니다."),
+
+    // Product
+    CANNOT_FOUND_PRODUCT(404,"ERROR-PRODUCT-001","상품을 찾을수 없습니다."),
 
     // 500 번대 에러
     INTERNAL_SERVER_ERROR(500, "ERROR-SERVER-001", "서버에서 요청을 처리하지 못했습니다."),
