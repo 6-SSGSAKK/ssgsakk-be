@@ -5,9 +5,9 @@ import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
 import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
-import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductLikesDto;
+import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductOrCategoryLikesDto;
 import com.ssgsakk.ssgdotcom.likes.vo.AddProductOrCategoryLikesResponseVo;
-import com.ssgsakk.ssgdotcom.likes.vo.DeleteProductLikesResponseVo;
+import com.ssgsakk.ssgdotcom.likes.vo.DeleteProductOrCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -39,22 +39,26 @@ public class LikesController {
 
         return new BaseResponse<>("Add Product Or Category Likes Success", AddProductOrCategoryLikesResponseVo.builder()
                 .productSeq(productSeq)
+                .categorySeq(categorySeq)
                 .build());
     }
 
-    @Operation(summary = "상품 찜 삭제", description = "상품 찜 삭제")
+    @Operation(summary = "상품 또는 카테고리 찜 삭제", description = "상품 또는 카테고리 찜 삭제")
     @DeleteMapping("/delete")
-    public BaseResponse<DeleteProductLikesResponseVo> deleteProductLikes(@RequestHeader("Authorization") String accessToken
-            , @RequestParam(value = "product-seq", required = false) Long productSeq) {
+    public BaseResponse<DeleteProductOrCategoryLikesResponseVo> deleteProductLikes(@RequestHeader("Authorization") String accessToken
+            , @RequestParam(value = "product-seq", required = false) Long productSeq
+            , @RequestParam(value = "category-seq", required = false) Long categorySeq) {
         String uuid = getUuid(accessToken);
 
-        likesService.deleteProductLikes(DeleteProductLikesDto.builder()
+        likesService.deleteProductOrCategoryLikes(DeleteProductOrCategoryLikesDto.builder()
                 .uuid(uuid)
                 .productSeq(productSeq)
+                .categorySeq(categorySeq)
                 .build());
 
-        return new BaseResponse<>("Delete Product Likes Success", DeleteProductLikesResponseVo.builder()
+        return new BaseResponse<>("Delete Product Or Category Likes Success", DeleteProductOrCategoryLikesResponseVo.builder()
                 .productSeq(productSeq)
+                .categorySeq(categorySeq)
                 .build());
     }
 

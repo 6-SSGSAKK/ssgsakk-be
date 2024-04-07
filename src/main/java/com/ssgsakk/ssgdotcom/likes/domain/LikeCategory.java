@@ -25,7 +25,7 @@ public class LikeCategory extends BaseTimeEntity {
     @ManyToOne
     private Category category;
 
-    private int categoryState;
+    private int categoryState;      // 1이면 좋아요 활성화, 0이면 비활성화
 
     @Builder
     public LikeCategory(User user, Category category, int categoryState) {

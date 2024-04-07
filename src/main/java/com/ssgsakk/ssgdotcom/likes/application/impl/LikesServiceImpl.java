@@ -8,7 +8,7 @@ import com.ssgsakk.ssgdotcom.likes.application.LikesService;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeCategory;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeProduct;
 import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
-import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductLikesDto;
+import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductOrCategoryLikesDto;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeCategoryRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeProductRepository;
 import com.ssgsakk.ssgdotcom.member.domain.User;
@@ -31,14 +31,15 @@ public class LikesServiceImpl implements LikesService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public void addProductOrCategoryLikes(AddProductOrCategoryLikesDto addProductLikesDto) {
+    @Transactional
+    public void addProductOrCategoryLikes(AddProductOrCategoryLikesDto addProductOrCategoryLikesDto) {
         // uuid를 가지고 User 엔티티 획득
-        User user = memberRepository.findByUuid(addProductLikesDto.getUuid()).orElseThrow(
+        User user = memberRepository.findByUuid(addProductOrCategoryLikesDto.getUuid()).orElseThrow(
                 () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
 
         // Product 추가한 경우
-        if (addProductLikesDto.getProductSeq() != null) {
-            Product product = productRepository.findByProductSeq(addProductLikesDto.getProductSeq())
+        if (addProductOrCategoryLikesDto.getProductSeq() != null) {
+            Product product = productRepository.findByProductSeq(addProductOrCategoryLikesDto.getProductSeq())
                     .orElseThrow(
                             () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
 
@@ -52,8 +53,8 @@ public class LikesServiceImpl implements LikesService {
                 throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
             }
         }
-        if (addProductLikesDto.getCategorySeq() != null) {
-            Category category = categoryRepository.findByCategorySeq(addProductLikesDto.getCategorySeq())
+        if (addProductOrCategoryLikesDto.getCategorySeq() != null) {
+            Category category = categoryRepository.findByCategorySeq(addProductOrCategoryLikesDto.getCategorySeq())
                     .orElseThrow(
                             () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
 
@@ -71,19 +72,32 @@ public class LikesServiceImpl implements LikesService {
 
     @Override
     @Transactional
-    public void deleteProductLikes(DeleteProductLikesDto deleteProductLikesDto) {
+    public void deleteProductOrCategoryLikes(DeleteProductOrCategoryLikesDto deleteProductOrCategoryLikesDto) {
 
-        User user = memberRepository.findByUuid(deleteProductLikesDto.getUuid()).orElseThrow(
+        User user = memberRepository.findByUuid(deleteProductOrCategoryLikesDto.getUuid()).orElseThrow(
                 () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
 
-        Product product = productRepository.findByProductSeq(deleteProductLikesDto.getProductSeq())
-                .orElseThrow(
-                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+        if (deleteProductOrCategoryLikesDto.getProductSeq() != null) {
+            Product product = productRepository.findByProductSeq(deleteProductOrCategoryLikesDto.getProductSeq())
+                    .orElseThrow(
+                            () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
 
-        try {
-            likeProductRepository.deleteProductLikes(user, product);
-        } catch (Exception e) {
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            try {
+                likeProductRepository.deleteProductLikes(user, product);
+            } catch (Exception e) {
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            }
+        }
+        if (deleteProductOrCategoryLikesDto.getCategorySeq() != null) {
+            Category category = categoryRepository.findByCategorySeq(deleteProductOrCategoryLikesDto.getCategorySeq())
+                    .orElseThrow(
+                            () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
+
+            try{
+                likeCategoryRepository.deleteCategoryLikes(user, category);
+            } catch (Exception e) {
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            }
         }
     }
 }

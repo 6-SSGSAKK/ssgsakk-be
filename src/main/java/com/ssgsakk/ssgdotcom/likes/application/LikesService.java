@@ -1,10 +1,10 @@
 package com.ssgsakk.ssgdotcom.likes.application;
 
 import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
-import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductLikesDto;
+import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductOrCategoryLikesDto;
 
 public interface LikesService {
     void addProductOrCategoryLikes(AddProductOrCategoryLikesDto addProductLikesDto);
 
-    void deleteProductLikes(DeleteProductLikesDto deleteProductLikesDto);
+    void deleteProductOrCategoryLikes(DeleteProductOrCategoryLikesDto deleteProductOrCategoryLikesDto);
 }

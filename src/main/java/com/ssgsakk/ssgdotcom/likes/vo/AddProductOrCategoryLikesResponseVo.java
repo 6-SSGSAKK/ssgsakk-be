@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddProductOrCategoryLikesResponseVo {
     private Long productSeq;
+    private Long categorySeq;
 
     @Builder
-    public AddProductOrCategoryLikesResponseVo(Long productSeq) {
+    public AddProductOrCategoryLikesResponseVo(Long productSeq, Long categorySeq) {
         this.productSeq = productSeq;
+        this.categorySeq = categorySeq;
     }
 }

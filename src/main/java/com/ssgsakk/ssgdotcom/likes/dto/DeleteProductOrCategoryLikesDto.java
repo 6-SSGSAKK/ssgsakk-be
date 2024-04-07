@@ -6,13 +6,15 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class DeleteProductLikesDto {
+public class DeleteProductOrCategoryLikesDto {
     private String uuid;
     private Long productSeq;
+    private Long categorySeq;
 
     @Builder
-    public DeleteProductLikesDto(String uuid, Long productSeq) {
+    public DeleteProductOrCategoryLikesDto(String uuid, Long productSeq, Long categorySeq) {
         this.uuid = uuid;
         this.productSeq = productSeq;
+        this.categorySeq = categorySeq;
     }
 }
