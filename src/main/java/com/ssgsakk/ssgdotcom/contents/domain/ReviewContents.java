@@ -17,11 +17,11 @@ public class ReviewContents {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewContentsSeq;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_seq")
     private Review review;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contents_seq")
     private Contents contents;
 
