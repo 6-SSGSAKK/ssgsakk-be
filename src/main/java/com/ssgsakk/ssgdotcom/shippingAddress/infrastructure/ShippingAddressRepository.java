@@ -32,4 +32,6 @@ public interface ShippingAddressRepository extends JpaRepository<ShippingAddress
     void deleteByShippingAddressSeq(Long shippingAddressSeq);
 
     ShippingAddress findByShippingAddressSeq(Long shippingAddressSeq);
+
+    List<ShippingAddress> findAllByUuid(String uuid);
 }
