@@ -9,7 +9,7 @@ import com.ssgsakk.ssgdotcom.option.domain.OptionAndStock;
 import com.ssgsakk.ssgdotcom.option.infrastructure.OptionAndStockRepository;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
-import com.ssgsakk.ssgdotcom.security.JWTUtil;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
