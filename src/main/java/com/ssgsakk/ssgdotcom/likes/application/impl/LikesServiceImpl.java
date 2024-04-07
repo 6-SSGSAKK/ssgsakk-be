@@ -22,14 +22,15 @@ import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -174,10 +175,54 @@ public class LikesServiceImpl implements LikesService {
     @Transactional
     public List<UserProductLikesResponseVo> userProductLikes(UserProductLikesDto userProductLikesDto) {
         try {
-            User user = memberRepository.findByUuid(userProductLikesDto.getUuid()).orElseThrow(
-                    () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
+            // 전체 조회
+            if (userProductLikesDto.getFolderSeq() == null) {
+                User user = memberRepository.findByUuid(userProductLikesDto.getUuid()).orElseThrow(
+                        () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
 
-            List<LikeProduct> products = likeProductRepository.findByUser(user);
+                List<LikeProduct> products = likeProductRepository.findByUser(user);
+                List<UserProductLikesResponseVo> responseVos = new ArrayList<>();
+
+                for (LikeProduct likeProduct : products) {
+                    Product product = likeProduct.getProduct();
+                    List<ContentsUrl> contentsUrls = new ArrayList<>();
+
+                    // ProductContents 획득
+                    ProductContents productContents = productContentsRepository.findByProductAndPriority(product, 1).orElseThrow(
+                            () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+
+                    ContentsUrl contentsUrl = ContentsUrl.builder()
+                            .priority(productContents.getPriority())
+                            .contentUrl(productContents.getContents().getContentUrl())
+                            .contentDescription(productContents.getContents().getContentDescription())
+                            .build();
+
+                    contentsUrls.add(contentsUrl);
+
+                    UserProductLikesResponseVo productLikesResponseVo = UserProductLikesResponseVo.builder()
+                            .productName(product.getProductName())
+                            .productPrice(product.getProductPrice())
+                            .discountPercent(product.getDiscountPercent())
+                            .vendor(product.getVendor().getVendorName())
+                            .deliveryType(product.getDeliveryType().name())
+                            .contents(contentsUrls)
+                            .build();
+                    responseVos.add(productLikesResponseVo);
+                }
+                return responseVos;
+            }
+
+            // 특정 폴더 상품 조회
+            LikeFolder folder = likeFolderRepository.findByLikeFolderSeq(userProductLikesDto.getFolderSeq()).orElseThrow(
+                    () -> new BusinessException(ErrorCode.CANNOT_FOUND_FOLDER));
+
+            log.info(">>>>>>>>> {}", folder);
+            List<LikedConnect> likedConnects = likedConnectRepository.findByLikeFolder(folder);
+            List<LikeProduct> products = likedConnects.stream()
+                    .map(LikedConnect::getLikeProduct)
+                    .collect(Collectors.toList());
+            log.info(">>>>>>>>> {}", products);
+
             List<UserProductLikesResponseVo> responseVos = new ArrayList<>();
 
             for (LikeProduct likeProduct : products) {
@@ -207,6 +252,7 @@ public class LikesServiceImpl implements LikesService {
                 responseVos.add(productLikesResponseVo);
             }
             return responseVos;
+
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }

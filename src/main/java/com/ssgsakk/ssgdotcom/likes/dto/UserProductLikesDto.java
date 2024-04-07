@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserProductLikesDto {
     private String uuid;
+    private Long folderSeq;
 
     @Builder
-    public UserProductLikesDto(String uuid) {
+    public UserProductLikesDto(String uuid, Long folderSeq) {
         this.uuid = uuid;
+        this.folderSeq = folderSeq;
     }
 }

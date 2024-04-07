@@ -126,16 +126,19 @@ public class LikesController {
         return new BaseResponse<>("Add Folder Product Or Category Success", null);
     }
 
-    @Operation(summary = "찜 상품 목록 조회", description = "찜 상품 목록 조회")
+    @Operation(summary = "특정 폴더의 찜 상품 목록 조회", description = "특정 폴더의 찜 상품 목록 조회")
     @GetMapping("/user/product")
-    public BaseResponse<List<UserProductLikesResponseVo>> userProductLikes(@RequestHeader("Authorization") String accessToken) {
+    public BaseResponse<List<UserProductLikesResponseVo>> userProductLikes(@RequestHeader("Authorization") String accessToken
+            , @RequestParam(value = "folder-seq", required = false) Long folderSeq) {
         String uuid = getUuid(accessToken);
 
         List<UserProductLikesResponseVo> userProductLikesList = likesService.userProductLikes(UserProductLikesDto.builder()
                 .uuid(uuid)
+                .folderSeq(folderSeq)
                 .build());
         return new BaseResponse<>("User Product Likes List", userProductLikesList);
     }
+
 
     @Operation(summary = "찜 카테고리 목록 조회", description = "찜 카테고리 목록 조회")
     @GetMapping("/user/category")
