@@ -109,6 +109,22 @@ public class LikesController {
         return new BaseResponse<>("Change Folder Name Success", null);
     }
 
+    @Operation(summary = "찜 폴더에 상품 또는 카테고리 추가", description = "찜 폴더에 상품 또는 카테고리 추가")
+    @GetMapping("/folder-add/{folderSeq}")
+    public BaseResponse<Void> addFolderProductOrCategory(@RequestHeader("Authorization") String accessToken
+            , @PathVariable("folderSeq") Long likeFolderSeq
+            , @RequestParam(value = "like-product-seq") Long likeProductSeq
+            , @RequestParam(value = "like-category-seq") Long likeCategorySeq) {
+        String uuid = getUuid(accessToken);
+
+        likesService.addFolderProductOrCategory(AddFolderProductOrCategoryDto.builder()
+                .likeFolderSeq(likeFolderSeq)
+                .likeProductSeq(likeProductSeq)
+                .likeCategorySeq(likeCategorySeq)
+                .build());
+
+        return new BaseResponse<>("Add Folder Product Or Category Success", null);
+    }
 
     @Operation(summary = "찜 상품 목록 조회", description = "찜 상품 목록 조회")
     @GetMapping("/user/product")

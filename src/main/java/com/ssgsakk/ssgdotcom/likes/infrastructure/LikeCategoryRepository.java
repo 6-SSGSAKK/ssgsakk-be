@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LikeCategoryRepository extends JpaRepository<LikeCategory, Long> {
 
@@ -20,10 +21,7 @@ public interface LikeCategoryRepository extends JpaRepository<LikeCategory, Long
     @Query("UPDATE LikeCategory lc SET lc.categoryState = 0 WHERE lc.user = :user AND lc.category = :category")
     void deleteCategoryLikes(@Param("user") User user, @Param("category") Category category);
 
-//    @Modifying
-//    @Query("SELECT lc.category FROM LikeCategory lc WHERE lc.user = :user")
-//    List<UserCategoryLikesResponseVo> userCategoryLikes(@Param("user") User user);
-//    List<UserCategoryLikesResponseVo> userCategoryLikes(@Param("user") User user);
-
     List<LikeCategory> findByUser(User user);
+
+    Optional<LikeCategory> findByLikeCategorySeq(Long likeCategorySeq);
 }

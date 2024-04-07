@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LikeProductRepository extends JpaRepository<LikeProduct, Long> {
 
@@ -18,4 +19,7 @@ public interface LikeProductRepository extends JpaRepository<LikeProduct, Long> 
     void deleteProductLikes(@Param("user") User user, @Param("product") Product product);
 
     List<LikeProduct> findByUser(User user);
+
+
+    Optional<LikeProduct> findByLikeProductSeq(Long likeProductSeq);
 }

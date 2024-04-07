@@ -10,10 +10,12 @@ import com.ssgsakk.ssgdotcom.likes.application.LikesService;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeCategory;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeFolder;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeProduct;
+import com.ssgsakk.ssgdotcom.likes.domain.LikedConnect;
 import com.ssgsakk.ssgdotcom.likes.dto.*;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeCategoryRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeFolderRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeProductRepository;
+import com.ssgsakk.ssgdotcom.likes.infrastructure.LikedConnectRepository;
 import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.likes.vo.UserProductLikesResponseVo;
 import com.ssgsakk.ssgdotcom.member.domain.User;
@@ -40,6 +42,7 @@ public class LikesServiceImpl implements LikesService {
     private final CategoryRepository categoryRepository;
     private final LikeFolderRepository likeFolderRepository;
     private final ProductContentsRepository productContentsRepository;
+    private final LikedConnectRepository likedConnectRepository;
 
 
     @Override
@@ -204,6 +207,32 @@ public class LikesServiceImpl implements LikesService {
                 responseVos.add(productLikesResponseVo);
             }
             return responseVos;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void addFolderProductOrCategory(AddFolderProductOrCategoryDto addFolderProductOrCategoryDto) {
+        try {
+            log.info(">>>> {}", addFolderProductOrCategoryDto);
+            LikeProduct likeProduct = likeProductRepository.findByLikeProductSeq(addFolderProductOrCategoryDto.getLikeProductSeq()).orElseThrow(
+                    () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+            log.info(">>>> {}", likeProduct);
+            LikeCategory likeCategory = likeCategoryRepository.findByLikeCategorySeq(addFolderProductOrCategoryDto.getLikeCategorySeq()).orElseThrow(
+                    () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
+            log.info(">>>> {}", likeCategory);
+
+            LikeFolder likeFolder = likeFolderRepository.findByLikeFolderSeq(addFolderProductOrCategoryDto.getLikeFolderSeq()).orElseThrow(
+                    () -> new BusinessException(ErrorCode.CANNOT_FOUND_FOLDER));
+            log.info(">>>> {}", likeFolder);
+
+            likedConnectRepository.save(LikedConnect.builder()
+                    .likeProduct(likeProduct)
+                    .likeCategory(likeCategory)
+                    .likeFolder(likeFolder)
+                    .build());
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }

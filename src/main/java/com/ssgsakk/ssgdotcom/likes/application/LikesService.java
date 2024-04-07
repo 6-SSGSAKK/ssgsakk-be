@@ -20,4 +20,6 @@ public interface LikesService {
     List<UserCategoryLikesResponseVo> userCategoryLikes(UserCategoryLikesDto userCategoryLikesDto);
 
     List<UserProductLikesResponseVo> userProductLikes(UserProductLikesDto userProductLikesDto);
+
+    void addFolderProductOrCategory(AddFolderProductOrCategoryDto addFolderProductOrCategoryDto);
 }
