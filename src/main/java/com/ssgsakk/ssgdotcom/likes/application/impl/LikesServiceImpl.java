@@ -6,10 +6,13 @@ import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeCategory;
+import com.ssgsakk.ssgdotcom.likes.domain.LikeFolder;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeProduct;
+import com.ssgsakk.ssgdotcom.likes.dto.AddLikesFolderDto;
 import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
 import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductOrCategoryLikesDto;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeCategoryRepository;
+import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeFolderRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeProductRepository;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
@@ -29,6 +32,7 @@ public class LikesServiceImpl implements LikesService {
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final LikeFolderRepository likeFolderRepository;
 
     @Override
     @Transactional
@@ -93,11 +97,22 @@ public class LikesServiceImpl implements LikesService {
                     .orElseThrow(
                             () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
 
-            try{
+            try {
                 likeCategoryRepository.deleteCategoryLikes(user, category);
             } catch (Exception e) {
                 throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
             }
+        }
+    }
+
+    @Override
+    public void addFolder(AddLikesFolderDto addLikesFolderDto) {
+        try {
+            likeFolderRepository.save(LikeFolder.builder()
+                    .likeFolderName(addLikesFolderDto.getFolderName())
+                    .build());
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 }

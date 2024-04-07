@@ -28,7 +28,8 @@ public class LikeCategory extends BaseTimeEntity {
     private int categoryState;      // 1이면 좋아요 활성화, 0이면 비활성화
 
     @Builder
-    public LikeCategory(User user, Category category, int categoryState) {
+    public LikeCategory(Long likeCategorySeq, User user, Category category, int categoryState) {
+        this.likeCategorySeq = likeCategorySeq;
         this.user = user;
         this.category = category;
         this.categoryState = categoryState;

@@ -4,6 +4,7 @@ import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
+import com.ssgsakk.ssgdotcom.likes.dto.AddLikesFolderDto;
 import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
 import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductOrCategoryLikesDto;
 import com.ssgsakk.ssgdotcom.likes.vo.AddProductOrCategoryLikesResponseVo;
@@ -61,6 +62,21 @@ public class LikesController {
                 .categorySeq(categorySeq)
                 .build());
     }
+
+    @Operation(summary = "찜 폴더 생성", description = "찜 폴더 생성")
+    @GetMapping("/folder/add")
+    public BaseResponse<Void> addFolder(@RequestHeader("Authorization") String accessToken
+            , @RequestParam(value = "folder-name") String folderName) {
+        String uuid = getUuid(accessToken);
+
+        likesService.addFolder(AddLikesFolderDto.builder()
+                .uuid(uuid)
+                .folderName(folderName)
+                .build());
+
+        return new BaseResponse<>("Add Folder Success", null);
+    }
+
 
 //    @Operation(summary = "상품 찜 조회", description = "상품 찜 조회")
 //    @DeleteMapping("/user/product")
