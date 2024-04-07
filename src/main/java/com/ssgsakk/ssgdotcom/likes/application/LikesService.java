@@ -1,9 +1,6 @@
 package com.ssgsakk.ssgdotcom.likes.application;
 
-import com.ssgsakk.ssgdotcom.likes.dto.AddLikesFolderDto;
-import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
-import com.ssgsakk.ssgdotcom.likes.dto.DeleteLikesFolderDto;
-import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductOrCategoryLikesDto;
+import com.ssgsakk.ssgdotcom.likes.dto.*;
 
 public interface LikesService {
     void addProductOrCategoryLikes(AddProductOrCategoryLikesDto addProductLikesDto);
@@ -13,4 +10,6 @@ public interface LikesService {
     void addFolder(AddLikesFolderDto addLikesFolderDto);
 
     void deleteFolder(DeleteLikesFolderDto deleteLikesFolderDto);
+
+    void changeFolderName(ChangeLikesFolderDto changeLikesFolderDto);
 }

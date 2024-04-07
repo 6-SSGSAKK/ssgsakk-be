@@ -4,10 +4,7 @@ import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
-import com.ssgsakk.ssgdotcom.likes.dto.AddLikesFolderDto;
-import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
-import com.ssgsakk.ssgdotcom.likes.dto.DeleteLikesFolderDto;
-import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductOrCategoryLikesDto;
+import com.ssgsakk.ssgdotcom.likes.dto.*;
 import com.ssgsakk.ssgdotcom.likes.vo.AddProductOrCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.likes.vo.DeleteProductOrCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
@@ -90,6 +87,22 @@ public class LikesController {
                 .build());
 
         return new BaseResponse<>("Delete Folder Success", null);
+    }
+
+    @Operation(summary = "찜 폴더 이름 변경", description = "찜 폴더 이름 변경")
+    @PutMapping("/folder/{folderSeq}")
+    public BaseResponse<Void> changeFolderName(@RequestHeader("Authorization") String accessToken
+            , @PathVariable("folderSeq") Long folderSeq
+            , @RequestParam(value = "name-modify") String folderName) {
+        String uuid = getUuid(accessToken);
+
+        likesService.changeFolderName(ChangeLikesFolderDto.builder()
+                .uuid(uuid)
+                .folderSeq(folderSeq)
+                .folderName(folderName)
+                .build());
+
+        return new BaseResponse<>("Change Folder Name Success", null);
     }
 
 

@@ -8,10 +8,7 @@ import com.ssgsakk.ssgdotcom.likes.application.LikesService;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeCategory;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeFolder;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeProduct;
-import com.ssgsakk.ssgdotcom.likes.dto.AddLikesFolderDto;
-import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
-import com.ssgsakk.ssgdotcom.likes.dto.DeleteLikesFolderDto;
-import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductOrCategoryLikesDto;
+import com.ssgsakk.ssgdotcom.likes.dto.*;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeCategoryRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeFolderRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeProductRepository;
@@ -122,6 +119,16 @@ public class LikesServiceImpl implements LikesService {
     public void deleteFolder(DeleteLikesFolderDto deleteLikesFolderDto) {
         try {
             likeFolderRepository.deleteByLikeFolderSeq(deleteLikesFolderDto.getFolderSeq());
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void changeFolderName(ChangeLikesFolderDto changeLikesFolderDto) {
+        try {
+            likeFolderRepository.changeFolderName(changeLikesFolderDto.getFolderSeq(), changeLikesFolderDto.getFolderName());
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
