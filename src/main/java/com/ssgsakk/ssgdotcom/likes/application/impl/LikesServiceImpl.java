@@ -152,10 +152,34 @@ public class LikesServiceImpl implements LikesService {
     @Transactional
     public List<UserCategoryLikesResponseVo> userCategoryLikes(UserCategoryLikesDto userCategoryLikesDto) {
         try {
-            User user = memberRepository.findByUuid(userCategoryLikesDto.getUuid()).orElseThrow(
-                    () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
+            // 전체 조회
+            if(userCategoryLikesDto.getFolderSeq() == null) {
+                User user = memberRepository.findByUuid(userCategoryLikesDto.getUuid()).orElseThrow(
+                        () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
 
-            List<LikeCategory> categories = likeCategoryRepository.findByUser(user);
+                List<LikeCategory> categories = likeCategoryRepository.findByUser(user);
+                List<UserCategoryLikesResponseVo> responseVos = new ArrayList<>();
+                for (LikeCategory likeCategory : categories) {
+                    Category category = likeCategory.getCategory();
+                    UserCategoryLikesResponseVo categoryLikesResponseVo = UserCategoryLikesResponseVo.builder()
+                            .categorySeq(category.getCategorySeq())
+                            .categoryName(category.getCategoryName())
+                            .build();
+                    responseVos.add(categoryLikesResponseVo);
+                }
+                return responseVos;
+            }
+
+            // 특정 폴더 카테고리 조회
+            LikeFolder folder = likeFolderRepository.findByLikeFolderSeq(userCategoryLikesDto.getFolderSeq()).orElseThrow(
+                    () -> new BusinessException(ErrorCode.CANNOT_FOUND_FOLDER));
+
+            List<LikedConnect> likedConnects = likedConnectRepository.findByLikeFolder(folder);
+            List<LikeCategory> categories = new ArrayList<>();
+            for(LikedConnect likedConnect : likedConnects) {
+                categories.add(likedConnect.getLikeCategory());
+            }
+
             List<UserCategoryLikesResponseVo> responseVos = new ArrayList<>();
             for (LikeCategory likeCategory : categories) {
                 Category category = likeCategory.getCategory();
@@ -166,6 +190,7 @@ public class LikesServiceImpl implements LikesService {
                 responseVos.add(categoryLikesResponseVo);
             }
             return responseVos;
+
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
@@ -216,12 +241,11 @@ public class LikesServiceImpl implements LikesService {
             LikeFolder folder = likeFolderRepository.findByLikeFolderSeq(userProductLikesDto.getFolderSeq()).orElseThrow(
                     () -> new BusinessException(ErrorCode.CANNOT_FOUND_FOLDER));
 
-            log.info(">>>>>>>>> {}", folder);
             List<LikedConnect> likedConnects = likedConnectRepository.findByLikeFolder(folder);
-            List<LikeProduct> products = likedConnects.stream()
-                    .map(LikedConnect::getLikeProduct)
-                    .collect(Collectors.toList());
-            log.info(">>>>>>>>> {}", products);
+            List<LikeProduct> products = new ArrayList<>();
+            for (LikedConnect likedConnect : likedConnects) {
+                products.add(likedConnect.getLikeProduct());
+            }
 
             List<UserProductLikesResponseVo> responseVos = new ArrayList<>();
 
@@ -262,17 +286,12 @@ public class LikesServiceImpl implements LikesService {
     @Transactional
     public void addFolderProductOrCategory(AddFolderProductOrCategoryDto addFolderProductOrCategoryDto) {
         try {
-            log.info(">>>> {}", addFolderProductOrCategoryDto);
             LikeProduct likeProduct = likeProductRepository.findByLikeProductSeq(addFolderProductOrCategoryDto.getLikeProductSeq()).orElseThrow(
                     () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
-            log.info(">>>> {}", likeProduct);
             LikeCategory likeCategory = likeCategoryRepository.findByLikeCategorySeq(addFolderProductOrCategoryDto.getLikeCategorySeq()).orElseThrow(
                     () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
-            log.info(">>>> {}", likeCategory);
-
             LikeFolder likeFolder = likeFolderRepository.findByLikeFolderSeq(addFolderProductOrCategoryDto.getLikeFolderSeq()).orElseThrow(
                     () -> new BusinessException(ErrorCode.CANNOT_FOUND_FOLDER));
-            log.info(">>>> {}", likeFolder);
 
             likedConnectRepository.save(LikedConnect.builder()
                     .likeProduct(likeProduct)

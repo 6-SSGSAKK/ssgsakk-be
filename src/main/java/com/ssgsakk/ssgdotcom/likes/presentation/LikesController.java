@@ -142,11 +142,13 @@ public class LikesController {
 
     @Operation(summary = "찜 카테고리 목록 조회", description = "찜 카테고리 목록 조회")
     @GetMapping("/user/category")
-    public BaseResponse<List<UserCategoryLikesResponseVo>> userCategoryLikes(@RequestHeader("Authorization") String accessToken) {
+    public BaseResponse<List<UserCategoryLikesResponseVo>> userCategoryLikes(@RequestHeader("Authorization") String accessToken
+            , @RequestParam(value = "folder-seq", required = false) Long folderSeq) {
         String uuid = getUuid(accessToken);
 
         List<UserCategoryLikesResponseVo> userCategoryLikesList = likesService.userCategoryLikes(UserCategoryLikesDto.builder()
                 .uuid(uuid)
+                .folderSeq(folderSeq)
                 .build());
         return new BaseResponse<>("User Category Likes List", userCategoryLikesList);
     }

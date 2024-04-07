@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UserCategoryLikesDto {
     private String uuid;
+    private Long folderSeq;
 
     @Builder
-    public UserCategoryLikesDto(String uuid) {
+    public UserCategoryLikesDto(String uuid, Long folderSeq) {
         this.uuid = uuid;
+        this.folderSeq = folderSeq;
     }
 }
