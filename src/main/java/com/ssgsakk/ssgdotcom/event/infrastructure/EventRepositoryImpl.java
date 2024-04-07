@@ -3,6 +3,7 @@ package com.ssgsakk.ssgdotcom.event.infrastructure;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
+import com.ssgsakk.ssgdotcom.event.domain.Event;
 import com.ssgsakk.ssgdotcom.event.domain.QEvent;
 import com.ssgsakk.ssgdotcom.event.dto.EventDto;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -20,9 +21,9 @@ public class EventRepositoryImpl extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public List<Long> getEvent(EventDto eventDto){
+    public List<Event> getEvent(EventDto eventDto){
         return jpaQueryFactory
-                .select(qEvent.eventSeq)
+                .select(qEvent)
                 .from(qEvent)
                 .where(eqEventDeliveryType(eventDto.getDeliveryType())
                         ,eqEventCategory(eventDto.getCategorySeq()))

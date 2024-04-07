@@ -3,7 +3,7 @@ package com.ssgsakk.ssgdotcom.contents.domain;
 
 import com.ssgsakk.ssgdotcom.review.domain.Review;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

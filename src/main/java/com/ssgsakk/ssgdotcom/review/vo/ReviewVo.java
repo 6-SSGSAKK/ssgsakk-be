@@ -5,12 +5,14 @@ import com.ssgsakk.ssgdotcom.review.dto.ReviewDto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @Builder
 public class ReviewVo {
     private Long productSeq;
     private String reviewParagraph;
     private Short reviewScore;
-    private Contents contentsUrl;
+    private List<String> contentsUrl;
 
 }
