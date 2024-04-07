@@ -6,6 +6,7 @@ import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
 import com.ssgsakk.ssgdotcom.likes.dto.AddLikesFolderDto;
 import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
+import com.ssgsakk.ssgdotcom.likes.dto.DeleteLikesFolderDto;
 import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductOrCategoryLikesDto;
 import com.ssgsakk.ssgdotcom.likes.vo.AddProductOrCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.likes.vo.DeleteProductOrCategoryLikesResponseVo;
@@ -75,6 +76,20 @@ public class LikesController {
                 .build());
 
         return new BaseResponse<>("Add Folder Success", null);
+    }
+
+    @Operation(summary = "찜 폴더 삭제", description = "찜 폴더 삭제")
+    @DeleteMapping("/folder/delete")
+    public BaseResponse<Void> deleteFolder(@RequestHeader("Authorization") String accessToken
+            , @RequestParam(value = "folder-seq") Long folderSeq) {
+        String uuid = getUuid(accessToken);
+
+        likesService.deleteFolder(DeleteLikesFolderDto.builder()
+                .uuid(uuid)
+                .folderSeq(folderSeq)
+                .build());
+
+        return new BaseResponse<>("Delete Folder Success", null);
     }
 
 

@@ -10,6 +10,7 @@ import com.ssgsakk.ssgdotcom.likes.domain.LikeFolder;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeProduct;
 import com.ssgsakk.ssgdotcom.likes.dto.AddLikesFolderDto;
 import com.ssgsakk.ssgdotcom.likes.dto.AddProductOrCategoryLikesDto;
+import com.ssgsakk.ssgdotcom.likes.dto.DeleteLikesFolderDto;
 import com.ssgsakk.ssgdotcom.likes.dto.DeleteProductOrCategoryLikesDto;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeCategoryRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeFolderRepository;
@@ -111,6 +112,16 @@ public class LikesServiceImpl implements LikesService {
             likeFolderRepository.save(LikeFolder.builder()
                     .likeFolderName(addLikesFolderDto.getFolderName())
                     .build());
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteFolder(DeleteLikesFolderDto deleteLikesFolderDto) {
+        try {
+            likeFolderRepository.deleteByLikeFolderSeq(deleteLikesFolderDto.getFolderSeq());
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
