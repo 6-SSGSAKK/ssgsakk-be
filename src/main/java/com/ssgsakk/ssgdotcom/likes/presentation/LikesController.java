@@ -7,11 +7,14 @@ import com.ssgsakk.ssgdotcom.likes.application.LikesService;
 import com.ssgsakk.ssgdotcom.likes.dto.*;
 import com.ssgsakk.ssgdotcom.likes.vo.AddProductOrCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.likes.vo.DeleteProductOrCategoryLikesResponseVo;
+import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -106,18 +109,25 @@ public class LikesController {
     }
 
 
-//    @Operation(summary = "상품 찜 조회", description = "상품 찜 조회")
-//    @DeleteMapping("/user/product")
-//    public BaseResponse<?> userProductLikes(@RequestHeader("Authorization") String accessToken) {
-//        String uuid = getUuid(accessToken);
-//
-//        likesService.deleteProductLikes(DeleteProductLikesDto.builder()
-//                .uuid(uuid)
-//                .productSeq(productSeq)
-//                .build());
-//
-//        return new BaseResponse<>("User Product Likes List", null);
-//    }
+    @Operation(summary = "찜 상품 목록 조회", description = "찜 상품 목록 조회")
+    @GetMapping("/user/product")
+    public BaseResponse<?> userProductLikes(@RequestHeader("Authorization") String accessToken) {
+        String uuid = getUuid(accessToken);
+
+
+        return new BaseResponse<>("User Product Likes List", null);
+    }
+
+    @Operation(summary = "찜 카테고리 목록 조회", description = "찜 카테고리 목록 조회")
+    @GetMapping("/user/category")
+    public BaseResponse<List<UserCategoryLikesResponseVo>> userCategoryLikes(@RequestHeader("Authorization") String accessToken) {
+        String uuid = getUuid(accessToken);
+
+        List<UserCategoryLikesResponseVo> userCategoryLikesList = likesService.userCategoryLikes(UserCategoryLikesDto.builder()
+                .uuid(uuid)
+                .build());
+        return new BaseResponse<>("User Category Likes List", userCategoryLikesList);
+    }
 
 
     // JWT에서 UUID 추출 메서드

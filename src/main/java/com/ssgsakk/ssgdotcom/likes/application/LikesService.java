@@ -1,6 +1,9 @@
 package com.ssgsakk.ssgdotcom.likes.application;
 
 import com.ssgsakk.ssgdotcom.likes.dto.*;
+import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
+
+import java.util.List;
 
 public interface LikesService {
     void addProductOrCategoryLikes(AddProductOrCategoryLikesDto addProductLikesDto);
@@ -12,4 +15,6 @@ public interface LikesService {
     void deleteFolder(DeleteLikesFolderDto deleteLikesFolderDto);
 
     void changeFolderName(ChangeLikesFolderDto changeLikesFolderDto);
+
+    List<UserCategoryLikesResponseVo> userCategoryLikes(UserCategoryLikesDto userCategoryLikesDto);
 }

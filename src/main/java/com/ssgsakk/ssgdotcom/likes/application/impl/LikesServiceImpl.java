@@ -12,6 +12,7 @@ import com.ssgsakk.ssgdotcom.likes.dto.*;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeCategoryRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeFolderRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeProductRepository;
+import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
@@ -20,6 +21,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Member;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +36,7 @@ public class LikesServiceImpl implements LikesService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final LikeFolderRepository likeFolderRepository;
+
 
     @Override
     @Transactional
@@ -130,6 +136,30 @@ public class LikesServiceImpl implements LikesService {
         try {
             likeFolderRepository.changeFolderName(changeLikesFolderDto.getFolderSeq(), changeLikesFolderDto.getFolderName());
         } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<UserCategoryLikesResponseVo> userCategoryLikes(UserCategoryLikesDto userCategoryLikesDto) {
+        try {
+            User user = memberRepository.findByUuid(userCategoryLikesDto.getUuid()).orElseThrow(
+                    () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
+
+            List<LikeCategory> categories = likeCategoryRepository.findByUser(user);
+            List<UserCategoryLikesResponseVo> responseVos = new ArrayList<>();
+            for (LikeCategory likeCategory : categories) {
+                Category category = likeCategory.getCategory();
+                UserCategoryLikesResponseVo categoryLikesResponseVo = UserCategoryLikesResponseVo.builder()
+                        .categorySeq(category.getCategorySeq())
+                        .categoryName(category.getCategoryName())
+                        .build();
+                responseVos.add(categoryLikesResponseVo);
+            }
+            return responseVos;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
