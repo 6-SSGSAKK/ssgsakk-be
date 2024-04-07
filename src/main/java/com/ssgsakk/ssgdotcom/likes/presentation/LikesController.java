@@ -8,6 +8,7 @@ import com.ssgsakk.ssgdotcom.likes.dto.*;
 import com.ssgsakk.ssgdotcom.likes.vo.AddProductOrCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.likes.vo.DeleteProductOrCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
+import com.ssgsakk.ssgdotcom.likes.vo.UserProductLikesResponseVo;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -111,11 +112,13 @@ public class LikesController {
 
     @Operation(summary = "찜 상품 목록 조회", description = "찜 상품 목록 조회")
     @GetMapping("/user/product")
-    public BaseResponse<?> userProductLikes(@RequestHeader("Authorization") String accessToken) {
+    public BaseResponse<List<UserProductLikesResponseVo>> userProductLikes(@RequestHeader("Authorization") String accessToken) {
         String uuid = getUuid(accessToken);
 
-
-        return new BaseResponse<>("User Product Likes List", null);
+        List<UserProductLikesResponseVo> userProductLikesList = likesService.userProductLikes(UserProductLikesDto.builder()
+                .uuid(uuid)
+                .build());
+        return new BaseResponse<>("User Product Likes List", userProductLikesList);
     }
 
     @Operation(summary = "찜 카테고리 목록 조회", description = "찜 카테고리 목록 조회")

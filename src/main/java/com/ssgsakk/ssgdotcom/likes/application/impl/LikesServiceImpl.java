@@ -13,6 +13,7 @@ import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeCategoryRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeFolderRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeProductRepository;
 import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
+import com.ssgsakk.ssgdotcom.likes.vo.UserProductLikesResponseVo;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
@@ -159,7 +160,37 @@ public class LikesServiceImpl implements LikesService {
             }
             return responseVos;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<UserProductLikesResponseVo> userProductLikes(UserProductLikesDto userProductLikesDto) {
+        try {
+            User user = memberRepository.findByUuid(userProductLikesDto.getUuid()).orElseThrow(
+                    () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
+
+            List<LikeProduct> products = likeProductRepository.findByUser(user);
+            List<UserProductLikesResponseVo> responseVos = new ArrayList<>();
+            List<ContentsUrl> contentsUrls = new ArrayList<>();
+            for (LikeProduct likeProduct : products) {
+                Product product = likeProduct.getProduct();
+
+
+
+                UserProductLikesResponseVo productLikesResponseVo = UserProductLikesResponseVo.builder()
+                        .productName(product.getProductName())
+                        .productPrice(product.getProductPrice())
+                        .discountPercent(product.getDiscountPercent())
+                        .vendor(product.getVendor().getVendorName())
+                        .deliveryType(product.getDeliveryType().name())
+//                        .contents(contentsUrl)
+                        .build();
+                responseVos.add(productLikesResponseVo);
+            }
+            return responseVos;
+        } catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }

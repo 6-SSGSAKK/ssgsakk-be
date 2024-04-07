@@ -2,6 +2,7 @@ package com.ssgsakk.ssgdotcom.likes.application;
 
 import com.ssgsakk.ssgdotcom.likes.dto.*;
 import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
+import com.ssgsakk.ssgdotcom.likes.vo.UserProductLikesResponseVo;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface LikesService {
     void changeFolderName(ChangeLikesFolderDto changeLikesFolderDto);
 
     List<UserCategoryLikesResponseVo> userCategoryLikes(UserCategoryLikesDto userCategoryLikesDto);
+
+    List<UserProductLikesResponseVo> userProductLikes(UserProductLikesDto userProductLikesDto);
 }
