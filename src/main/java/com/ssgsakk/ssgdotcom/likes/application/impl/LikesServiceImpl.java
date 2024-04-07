@@ -4,6 +4,8 @@ import com.ssgsakk.ssgdotcom.category.domain.Category;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepository;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
+import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
+import com.ssgsakk.ssgdotcom.contents.infrastructure.ProductContentsRepository;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeCategory;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeFolder;
@@ -37,6 +39,7 @@ public class LikesServiceImpl implements LikesService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final LikeFolderRepository likeFolderRepository;
+    private final ProductContentsRepository productContentsRepository;
 
 
     @Override
@@ -173,11 +176,22 @@ public class LikesServiceImpl implements LikesService {
 
             List<LikeProduct> products = likeProductRepository.findByUser(user);
             List<UserProductLikesResponseVo> responseVos = new ArrayList<>();
-            List<ContentsUrl> contentsUrls = new ArrayList<>();
+
             for (LikeProduct likeProduct : products) {
                 Product product = likeProduct.getProduct();
+                List<ContentsUrl> contentsUrls = new ArrayList<>();
 
+                // ProductContents 획득
+                ProductContents productContents = productContentsRepository.findByProductAndPriority(product, 1).orElseThrow(
+                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
 
+                ContentsUrl contentsUrl = ContentsUrl.builder()
+                        .priority(productContents.getPriority())
+                        .contentUrl(productContents.getContents().getContentUrl())
+                        .contentDescription(productContents.getContents().getContentDescription())
+                        .build();
+
+                contentsUrls.add(contentsUrl);
 
                 UserProductLikesResponseVo productLikesResponseVo = UserProductLikesResponseVo.builder()
                         .productName(product.getProductName())
@@ -185,7 +199,7 @@ public class LikesServiceImpl implements LikesService {
                         .discountPercent(product.getDiscountPercent())
                         .vendor(product.getVendor().getVendorName())
                         .deliveryType(product.getDeliveryType().name())
-//                        .contents(contentsUrl)
+                        .contents(contentsUrls)
                         .build();
                 responseVos.add(productLikesResponseVo);
             }

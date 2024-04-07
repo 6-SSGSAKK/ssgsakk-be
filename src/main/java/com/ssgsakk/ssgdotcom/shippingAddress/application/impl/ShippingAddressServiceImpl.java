@@ -98,8 +98,6 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
     public List<FindDetailShippingAddressInfoResponseVo> findAllDetailShippingAddressInfo(FindAllDetailShippingAddressInfoDto findAllDetailShippingAddressInfoDto) {
         try {
             List<ShippingAddress> shippingAddresses = shippingAddressRepository.findAllByUuid(findAllDetailShippingAddressInfoDto.getUuid());
-            log.info("uuid: {}", findAllDetailShippingAddressInfoDto.getUuid());
-            log.info("shippingAddresses: {}", shippingAddresses);
             List<FindDetailShippingAddressInfoResponseVo> findDetailShippingAddressInfoResponseVos = new ArrayList<>();
             for (ShippingAddress shippingAddress : shippingAddresses) {
                 FindDetailShippingAddressInfoResponseVo findDetailShippingAddressInfoResponseVo = FindDetailShippingAddressInfoResponseVo.builder()
