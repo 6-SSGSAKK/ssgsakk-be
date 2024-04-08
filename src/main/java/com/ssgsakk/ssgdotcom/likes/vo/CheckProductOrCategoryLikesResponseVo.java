@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class AddProductOrCategoryLikesResponseVo {
+public class CheckProductOrCategoryLikesResponseVo {
     private Long productSeq;
     private Long categorySeq;
-    private String likeState;
+    private Integer likeState;
 
     @Builder
-    public AddProductOrCategoryLikesResponseVo(Long productSeq, Long categorySeq, String likeState) {
+    public CheckProductOrCategoryLikesResponseVo(Long productSeq, Long categorySeq, Integer likeState) {
         this.productSeq = productSeq;
         this.categorySeq = categorySeq;
         this.likeState = likeState;

@@ -23,4 +23,11 @@ public interface LikeProductRepository extends JpaRepository<LikeProduct, Long> 
 
 
     Optional<LikeProduct> findByLikeProductSeq(Long likeProductSeq);
+
+    Optional<LikeProduct> findByUserAndProduct(User user, Product product);
+
+    @Modifying
+    @Query("UPDATE LikeProduct lp SET lp.likeState = :i WHERE lp.user = :user AND lp.product = :product")
+    void changeLikeState(@Param("user")User user, @Param("product") Product product, int i);
+
 }

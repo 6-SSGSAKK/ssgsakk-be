@@ -24,4 +24,10 @@ public interface LikeCategoryRepository extends JpaRepository<LikeCategory, Long
     List<LikeCategory> findByUser(User user);
 
     Optional<LikeCategory> findByLikeCategorySeq(Long likeCategorySeq);
+
+    Optional<LikeCategory> findByUserAndCategory(User user, Category category);
+
+    @Modifying
+    @Query("UPDATE LikeCategory lc SET lc.categoryState = :i WHERE lc.user = :user AND lc.category = :category")
+    void changeCategoryState(User user, Category category, int i);
 }
