@@ -43,11 +43,12 @@ public class LikesController {
         return new BaseResponse<>("Add Product Or Category Likes Success", AddProductOrCategoryLikesResponseVo.builder()
                 .productSeq(productSeq)
                 .categorySeq(categorySeq)
+                .likeState("like")
                 .build());
     }
 
     @Operation(summary = "상품 또는 카테고리 찜 삭제", description = "상품 또는 카테고리 찜 삭제")
-    @DeleteMapping("/delete")
+    @GetMapping("/delete")
     public BaseResponse<DeleteProductOrCategoryLikesResponseVo> deleteProductLikes(@RequestHeader("Authorization") String accessToken
             , @RequestParam(value = "product-seq", required = false) Long productSeq
             , @RequestParam(value = "category-seq", required = false) Long categorySeq) {
@@ -62,6 +63,7 @@ public class LikesController {
         return new BaseResponse<>("Delete Product Or Category Likes Success", DeleteProductOrCategoryLikesResponseVo.builder()
                 .productSeq(productSeq)
                 .categorySeq(categorySeq)
+                .likeState("unlike")
                 .build());
     }
 

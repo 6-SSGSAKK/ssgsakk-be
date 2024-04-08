@@ -9,10 +9,12 @@ import lombok.NoArgsConstructor;
 public class DeleteProductOrCategoryLikesResponseVo {
     private Long productSeq;
     private Long categorySeq;
+    private String likeState;
 
     @Builder
-    public DeleteProductOrCategoryLikesResponseVo(Long productSeq, Long categorySeq) {
+    public DeleteProductOrCategoryLikesResponseVo(Long productSeq, Long categorySeq, String likeState) {
         this.productSeq = productSeq;
         this.categorySeq = categorySeq;
+        this.likeState = likeState;
     }
 }
