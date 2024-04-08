@@ -65,7 +65,7 @@ public class CartController {
     @PutMapping("/{cartId}/pin")
     public BaseResponse<?> updateCartPin(@RequestHeader("Authorization") String accessToken,
                                          @PathVariable("cartId") Long cartId,
-                                         @RequestParam Short fixItem) {
+                                         @RequestParam Integer fixItem) {
         cartService.updateCartPin(cartId, fixItem, getUuid(accessToken));
         return new BaseResponse<>("update pin success","");
     }
@@ -73,7 +73,7 @@ public class CartController {
     @PutMapping("/{cartId}/checkbox")
     public BaseResponse<?> updateCheckbox(@RequestHeader("Authorization") String accessToken,
                                           @PathVariable("cartId") Long cartId,
-                                          @RequestParam Short checkbox) {
+                                          @RequestParam Integer checkbox) {
         cartService.updateCheckbox(cartId, checkbox, getUuid(accessToken));
         return new BaseResponse<>("update checkbox success","");
     }

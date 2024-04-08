@@ -83,7 +83,7 @@ public class CartServiceImpl implements CartService {
 
     @Transactional
     @Override
-    public void updateCartPin(Long cartSeq, Short fixItem, String uuid) {
+    public void updateCartPin(Long cartSeq, Integer fixItem, String uuid) {
         Cart cart = checkcart(cartSeq);
         checkUserCart(cart, uuid);
         updateCartPinInEntity(cart,fixItem);
@@ -91,7 +91,7 @@ public class CartServiceImpl implements CartService {
 
     @Transactional
     @Override
-    public void updateCheckbox(Long cartSeq, Short checkbox, String uuid) {
+    public void updateCheckbox(Long cartSeq, Integer checkbox, String uuid) {
         Cart cart = checkcart(cartSeq);
         checkUserCart(cart, uuid);
         updateCartCheckInEntity(cart,checkbox);
@@ -172,7 +172,7 @@ public class CartServiceImpl implements CartService {
                 .build();
     }
 
-    private void updateCartPinInEntity(Cart cart, Short fixItem) {
+    private void updateCartPinInEntity(Cart cart, Integer fixItem) {
         Cart.builder()
                 .cartSeq(cart.getCartSeq())
                 .user(cart.getUser())
@@ -184,7 +184,7 @@ public class CartServiceImpl implements CartService {
                 .build();
     }
 
-    private void updateCartCheckInEntity(Cart cart, Short checkbox) {
+    private void updateCartCheckInEntity(Cart cart, Integer checkbox) {
         Cart.builder()
                 .cartSeq(cart.getCartSeq())
                 .user(cart.getUser())
