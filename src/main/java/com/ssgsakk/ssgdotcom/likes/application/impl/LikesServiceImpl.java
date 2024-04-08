@@ -118,6 +118,7 @@ public class LikesServiceImpl implements LikesService {
     }
 
     @Override
+    @Transactional
     public void addFolder(AddLikesFolderDto addLikesFolderDto) {
         try {
             likeFolderRepository.save(LikeFolder.builder()
