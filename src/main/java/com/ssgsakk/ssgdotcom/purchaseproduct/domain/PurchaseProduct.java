@@ -18,7 +18,7 @@ public class PurchaseProduct {
     private Purchase purchaseSeq; //주문ID
 
     @Column(length = 50)
-    private Long productId; //상품ID
+    private Long productSeq; //상품ID
 
     @Column(length = 50)
     private String purchaseProductName; //주문상품명
@@ -27,10 +27,13 @@ public class PurchaseProduct {
     private String purchaseProductVendor; //주문상품 벤더
 
     @Column(length = 50)
-    private String purchaseProductOption;//주문상품 옵션
+    private Long productOptionSeq;//상품옵션 번호
 
     @Column(length = 50)
     private Integer purchaseProductCount;// 주문상품수량
+
+    @Column(length = 50)
+    private String purchaseProductOptionName;//주문상품옵션상세사항
 
     @Column(length = 50)
     private Integer purchaseProductPrice; //주문상품금액
@@ -48,20 +51,21 @@ public class PurchaseProduct {
     private String productState; //주문상품 주문배송상태
 
     @Builder
-
-    public PurchaseProduct(Long purchaseProductSeq, Purchase purchaseSeq, Long productId,
+    public PurchaseProduct(Long purchaseProductSeq, Purchase purchaseSeq, Long productSeq,
                            String purchaseProductName, String purchaseProductVendor,
-                           String purchaseProductOption, Integer purchaseProductCount,
-                           Integer purchaseProductPrice, Integer purchaseProductDiscountPrice,
-                           String productThumbnail, String deliveryType, String productState) {
+                           Long productOptionSeq, Integer purchaseProductCount,
+                           String purchaseProductOptionName, Integer purchaseProductPrice,
+                           Integer purchaseProductDiscountPrice, String productThumbnail,
+                           String deliveryType, String productState) {
 
         this.purchaseProductSeq = purchaseProductSeq;
         this.purchaseSeq = purchaseSeq;
-        this.productId = productId;
+        this.productSeq = productSeq;
         this.purchaseProductName = purchaseProductName;
         this.purchaseProductVendor = purchaseProductVendor;
-        this.purchaseProductOption = purchaseProductOption;
+        this.productOptionSeq = productOptionSeq;
         this.purchaseProductCount = purchaseProductCount;
+        this.purchaseProductOptionName = purchaseProductOptionName;
         this.purchaseProductPrice = purchaseProductPrice;
         this.purchaseProductDiscountPrice = purchaseProductDiscountPrice;
         this.productThumbnail = productThumbnail;

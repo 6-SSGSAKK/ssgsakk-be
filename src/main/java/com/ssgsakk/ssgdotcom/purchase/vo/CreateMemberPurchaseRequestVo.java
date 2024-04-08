@@ -3,7 +3,6 @@ import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,12 +50,13 @@ public class CreateMemberPurchaseRequestVo {
         List<PurchaseProductDto> purchaseProductDtoList = new ArrayList<>();
         for (PurchaseProductDto purchaseProduct : purchaseProductList) {
             PurchaseProductDto purchaseProductDto = PurchaseProductDto.builder()
-                    .productId(purchaseProduct.getProductId())
+                    .productSeq(purchaseProduct.getProductSeq())
                     .purchaseProductName(purchaseProduct.getPurchaseProductName())
                     .purchaseProductVendor(purchaseProduct.getPurchaseProductVendor())
-                    .purchaseProductOption(purchaseProduct.getPurchaseProductOption())
+                    .productOptionSeq(purchaseProduct.getProductOptionSeq())
                     .purchaseProductCount(purchaseProduct.getPurchaseProductCount())
                     .purchaseProductPrice(purchaseProduct.getPurchaseProductPrice())
+                    .purchaseProductOptionName(purchaseProduct.getPurchaseProductOptionName())
                     .purchaseProductDiscountPrice(purchaseProduct.getPurchaseProductDiscountPrice())
                     .productThumbnail(purchaseProduct.getProductThumbnail())
                     .deliveryType(purchaseProduct.getDeliveryType())

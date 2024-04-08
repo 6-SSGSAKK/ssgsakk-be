@@ -1,5 +1,4 @@
 package com.ssgsakk.ssgdotcom.purchaseproduct.application;
-import com.ssgsakk.ssgdotcom.purchase.application.PurchaseService;
 import com.ssgsakk.ssgdotcom.purchase.domain.Purchase;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
@@ -25,12 +24,13 @@ public class PurchaseProductServiceImp implements PurchaseProductService {
         for (PurchaseProductDto purchaseProductDto : purchaseProductDtoList) {//주문상품이 여러개일수도 있기 때문에 FOR 로 담아줌
             PurchaseProduct purchaseProduct = PurchaseProduct.builder()
                     .purchaseSeq(purchase) //Purchase의 PK
-                    .productId(purchaseProductDto.getProductId())
+                    .productSeq(purchaseProductDto.getProductSeq())
                     .purchaseProductName(purchaseProductDto.getPurchaseProductName())
                     .purchaseProductVendor(purchaseProductDto.getPurchaseProductVendor())
-                    .purchaseProductOption(purchaseProductDto.getPurchaseProductOption())
+                    .productOptionSeq(purchaseProductDto.getProductOptionSeq())
                     .purchaseProductCount(purchaseProductDto.getPurchaseProductCount())
                     .purchaseProductPrice(purchaseProductDto.getPurchaseProductPrice())
+                    .purchaseProductOptionName(purchaseProductDto.getPurchaseProductOptionName())
                     .purchaseProductDiscountPrice(purchaseProductDto.getPurchaseProductDiscountPrice())
                     .productThumbnail(purchaseProductDto.getProductThumbnail())
                     .deliveryType(String.valueOf(purchaseProductDto.getDeliveryType()))

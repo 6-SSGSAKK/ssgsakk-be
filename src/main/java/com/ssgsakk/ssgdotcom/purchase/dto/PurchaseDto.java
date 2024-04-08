@@ -2,9 +2,6 @@ package com.ssgsakk.ssgdotcom.purchase.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 
 @Getter
