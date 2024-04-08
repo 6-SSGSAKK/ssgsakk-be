@@ -22,6 +22,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+
     @PostMapping() //카테고리 생성, categoryName,parentCategorySeq,level 생성가능.
     public void createCategory(@RequestBody CreateCategoryRequestVo createCategoryRequestVo) {
 
@@ -32,7 +33,6 @@ public class CategoryController {
                 .build());
 
     }
-
     @PutMapping("update/{categorySeq}") // categorySeq를 기준으로 수정가능, 수정 가능한 값 categoryName,level,parentCategorySeq
     public void updateCategory(@PathVariable Long categorySeq,
                                @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
@@ -68,6 +68,7 @@ public class CategoryController {
             return new BaseResponse<>("대카테고리조회 성공했습니다.", bigCategories);
         } else {
             return new BaseResponse<>("No big category found", null);
+
         }
     }
     @GetMapping("/mid-by-big") //대카테고리별 중카테고리 조회
@@ -82,13 +83,15 @@ public class CategoryController {
 
     }
     @GetMapping("/small-by-mid") //중카테고리별 소카테고리 조회
-    public  BaseResponse<List<CategoryCustomDto>> getSmallCategoryByMid(@RequestParam Long parentCategoryId) {
+    public BaseResponse<List<CategoryCustomDto>> getSmallCategoryByMid(@RequestParam Long parentCategoryId) {
         List<CategoryCustomDto> smallCategories = categoryService.getSmallCategoryByMid(parentCategoryId);
+
         if (smallCategories != null) {
-            return new BaseResponse<>("중카테고리별 소카테고리 조회 성공했습니다.", smallCategories);
+            return new BaseResponse<>("중카테고리별 소카테고리조회 성공했습니다.", smallCategories);
         } else {
-            return new BaseResponse<>("No small category found", null);
+            return new BaseResponse<>("No category found", null);
         }
     }
+
 }
 

@@ -1,9 +1,13 @@
 package com.ssgsakk.ssgdotcom.purchase.presentation;
+import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
+import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
+import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.purchase.application.PurchaseService;
+import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseCodeDto;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
-import com.ssgsakk.ssgdotcom.purchase.dto.UpdateCancelltionDto;
-import com.ssgsakk.ssgdotcom.purchase.vo.CreatePurchaseRequestVo;
-import com.ssgsakk.ssgdotcom.purchase.vo.UpdateCancelltionStatusRequestVo;
+import com.ssgsakk.ssgdotcom.purchase.vo.CreateMemberPurchaseRequestVo;
+import com.ssgsakk.ssgdotcom.purchase.vo.PurchaseCodeResponseVo;
+import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,37 +15,37 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/purchase")
 @RequiredArgsConstructor
 public class PurchaseController {
-
+    private final JWTUtil jwtUtil;
     private final PurchaseService purchaseService;
 
 
-    @PostMapping      //주문생성
-    public void createorder(@RequestBody CreatePurchaseRequestVo createPurchaseRequestVo){
+    @PostMapping("/member-purchase") //회원 주문생성 VO로 PurchseDto, List<PurchaseProductDto> 받기
+    public BaseResponse<PurchaseCodeResponseVo> createMemberPurchase(@RequestBody CreateMemberPurchaseRequestVo createMemberPurchaseRequestVo, //VO값 받기
+                                             @RequestHeader("Authorization") String accessToken ) { //Header 로 Authorization 받고 UUID 생성
+        String uuid = getUuid(accessToken); //uuid생성
+        PurchaseCodeDto purchaseCodeDto = purchaseService.createMemberPurchase(CreateMemberPurchaseRequestVo.voToPurchaseDto(createMemberPurchaseRequestVo,uuid),
+                CreateMemberPurchaseRequestVo.voListToPurchaseProductDtoList(createMemberPurchaseRequestVo.getPurchaseProductDtoList()));
+                //CreatePurchseRequestVo.voTOPurchseDto에 Vo,uuid 전달
+                //voListToPurchseProductDtoList에 Vo,PurchaseProductDtoList 전달
 
-
-        purchaseService.createpurchase(PurchaseDto.builder()
-                .purchaser(createPurchaseRequestVo.getPurchaser())
-                .purchaseEmail(createPurchaseRequestVo.getPurchaseEmail())
-                .purchaserPhoneNum(createPurchaseRequestVo.getPurchaserPhoneNum())
-                .recipient(createPurchaseRequestVo.getRecipient())
-                .recipientEmail(createPurchaseRequestVo.getRecipientEmail())
-                .recipientPhoneNum(createPurchaseRequestVo.getRecipientPhoneNum())
-                .address(createPurchaseRequestVo.getAddress())
-                .roadAddress(createPurchaseRequestVo.getRoadAddress())
-                .jibunAddress(createPurchaseRequestVo.getJibunAddress())
-                .detailAddress(createPurchaseRequestVo.getDetailAddress())
-                .deliverymessage(createPurchaseRequestVo.getDeliverymessage())
-                .cancelltionStatus(createPurchaseRequestVo.getCancelltionStatus())
-                .build());
-    }
-    @PutMapping("/update/cacelltionstatus/{purchaseSeq}") //취소여부 수정
-    public void updateCancelltion(@PathVariable Long purchaseSeq,
-                                  @RequestBody UpdateCancelltionStatusRequestVo updateCancelltionStatusRequestVo){
-        purchaseService.updateCancelltion(UpdateCancelltionDto.builder()
-                .purchaseSeq(purchaseSeq)
-                .cancelltionStatus(updateCancelltionStatusRequestVo.getCancelltionStatus())
-                .build());
-
+        return new BaseResponse<>("주문ID", PurchaseCodeResponseVo.builder()
+                .purchaseCode(purchaseCodeDto.getPurchaseCode())
+                .build()); //PurchaseCode에 담겨있는 purcaseCode를 DTO -> VO 로 Response
     }
 
+    // JWT에서 UUID 추출 메서드
+    public String getUuid(String jwt) {
+        String uuid;
+        uuid = jwtUtil.getUuid(jwt.split(" ")[1]);
+        checkUuid(uuid);
+        return uuid;
+    }
+
+    // UUID 확인
+    // 정상이면 true 반환
+    public void checkUuid(String uuid) {
+        if (uuid == null) {
+            throw new BusinessException(ErrorCode.TOKEN_NOT_VALID);
+        }
+    }
 }

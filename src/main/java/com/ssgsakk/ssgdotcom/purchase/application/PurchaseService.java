@@ -1,11 +1,13 @@
 package com.ssgsakk.ssgdotcom.purchase.application;
 
+import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseCodeDto;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
-import com.ssgsakk.ssgdotcom.purchase.dto.UpdateCancelltionDto;
+import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
+
+import java.util.List;
 
 public interface PurchaseService {
-    void createpurchase (PurchaseDto purchaseDto);
 
-    void updateCancelltion(UpdateCancelltionDto updateCancelltionDto);
 
+    PurchaseCodeDto createMemberPurchase(PurchaseDto purchaseDto, List<PurchaseProductDto> purchaseProductDto);
 }
