@@ -217,6 +217,7 @@ public class CartServiceImpl implements CartService {
                 .productName(cart.getProduct().getProductName())
                 .quantity(cart.getQuantity())
                 .productImage(getContents(cart.getProduct().getProductSeq()))
+                .discountPercent(cart.getProduct().getDiscountPercent())
                 .build();
     }
     private String getContents(Long productSeq) {

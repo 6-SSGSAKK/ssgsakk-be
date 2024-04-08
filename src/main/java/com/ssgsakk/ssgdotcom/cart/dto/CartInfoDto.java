@@ -13,5 +13,5 @@ public class CartInfoDto {
     private String productName;
     private Integer quantity;
     private String productImage;
-
+    private Integer discountPercent;
 }
