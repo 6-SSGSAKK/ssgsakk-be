@@ -60,7 +60,7 @@ public class CreateMemberPurchaseRequestVo {
                     .purchaseProductDiscountPrice(purchaseProduct.getPurchaseProductDiscountPrice())
                     .productThumbnail(purchaseProduct.getProductThumbnail())
                     .deliveryType(purchaseProduct.getDeliveryType())
-                    .productState(purchaseProduct.getProductState())
+                    .productState(purchaseProduct.getProductState()) 
                     .build();
             purchaseProductDtoList.add(purchaseProductDto);
         }
