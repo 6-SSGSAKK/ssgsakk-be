@@ -14,6 +14,7 @@ public class CartInfoResponseVo {
     private String productName;
     private Integer quantity;
     private String productImage;
+    private Integer discountPercent;
 
     public static CartInfoResponseVo InfoDtoToVo(CartInfoDto cartInfoDto) {
         return CartInfoResponseVo.builder()
@@ -24,6 +25,7 @@ public class CartInfoResponseVo {
                 .productName(cartInfoDto.getProductName())
                 .quantity(cartInfoDto.getQuantity())
                 .productImage(cartInfoDto.getProductImage())
+                .discountPercent(cartInfoDto.getDiscountPercent())
                 .build();
     }
 }

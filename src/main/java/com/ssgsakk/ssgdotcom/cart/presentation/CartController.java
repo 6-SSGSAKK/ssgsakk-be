@@ -58,16 +58,16 @@ public class CartController {
     @PutMapping("/{cartId}/option")
     public BaseResponse<?> updateOption(@RequestHeader("Authorization") String accessToken,
                                         @PathVariable("cartId") Long cartId,
-                                        @RequestParam Long optionAndStockSeq) {
-        cartService.updateOption(cartId, optionAndStockSeq, getUuid(accessToken));
+                                        @RequestParam Long option) {
+        cartService.updateOption(cartId, option, getUuid(accessToken));
         return new BaseResponse<>("update option success","");
     }
 
     @PutMapping("/{cartId}/pin")
     public BaseResponse<?> updateCartPin(@RequestHeader("Authorization") String accessToken,
                                          @PathVariable("cartId") Long cartId,
-                                         @RequestParam Integer fixItem) {
-        cartService.updateCartPin(cartId, fixItem, getUuid(accessToken));
+                                         @RequestParam Integer fix) {
+        cartService.updateCartPin(cartId, fix, getUuid(accessToken));
         return new BaseResponse<>("update pin success","");
     }
 
