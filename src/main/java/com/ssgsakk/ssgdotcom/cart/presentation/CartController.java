@@ -3,6 +3,7 @@ package com.ssgsakk.ssgdotcom.cart.presentation;
 import com.ssgsakk.ssgdotcom.cart.application.CartService;
 
 import com.ssgsakk.ssgdotcom.cart.dto.CartDto;
+import com.ssgsakk.ssgdotcom.cart.vo.CartInfoResponseVo;
 import com.ssgsakk.ssgdotcom.cart.vo.CartRequestVo;
 import com.ssgsakk.ssgdotcom.cart.vo.CartResponseVo;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
@@ -10,7 +11,6 @@ import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 
 import static com.ssgsakk.ssgdotcom.cart.dto.CartDto.VoToDto;
-import static com.ssgsakk.ssgdotcom.cart.vo.CartResponseVo.DtoToVo;
 
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
@@ -40,10 +40,11 @@ public class CartController {
     }
 
     @GetMapping("/{cartId}")
-    public BaseResponse<CartResponseVo> getCart(@RequestHeader("Authorization") String accessToken,
-                                                @PathVariable("cartId") Long cartId) {
+    public BaseResponse<CartInfoResponseVo> getCart(@RequestHeader("Authorization") String accessToken,
+                                                    @PathVariable("cartId") Long cartId) {
 
-        return new BaseResponse<>("get cart success", DtoToVo(cartService.getCart(cartId, getUuid(accessToken))));
+        return new BaseResponse<>("get cart success",
+                CartInfoResponseVo.InfoDtoToVo(cartService.getCart(cartId, getUuid(accessToken))));
     }
 
     @PutMapping("/{cartId}/quantity")
