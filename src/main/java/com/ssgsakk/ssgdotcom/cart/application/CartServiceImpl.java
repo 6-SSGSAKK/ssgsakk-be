@@ -2,7 +2,10 @@ package com.ssgsakk.ssgdotcom.cart.application;
 
 import com.ssgsakk.ssgdotcom.cart.domain.Cart;
 import com.ssgsakk.ssgdotcom.cart.dto.CartDto;
+import com.ssgsakk.ssgdotcom.cart.dto.CartInfoDto;
 import com.ssgsakk.ssgdotcom.cart.infrastructure.CartRepository;
+import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
+import com.ssgsakk.ssgdotcom.contents.infrastructure.ProductContentsRepository;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.option.domain.OptionAndStock;
@@ -17,8 +20,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ssgsakk.ssgdotcom.cart.dto.CartDto.EntityToDto;
-
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
@@ -27,6 +28,7 @@ public class CartServiceImpl implements CartService {
     private final OptionAndStockRepository optionAndStockRepository;
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
+    private final ProductContentsRepository productContentsRepository;
 
     @Transactional
     @Override
@@ -46,10 +48,10 @@ public class CartServiceImpl implements CartService {
 
     @Transactional
     @Override
-    public CartDto getCart(Long cartSeq, String uuid) {
+    public CartInfoDto getCart(Long cartSeq, String uuid) {
         Cart cart = checkcart(cartSeq);
         checkUserCart(cart, uuid);
-        return EntityToDto(cart);
+        return toCartInfoDto(cart);
     }
 
     @Transactional
@@ -148,7 +150,7 @@ public class CartServiceImpl implements CartService {
                 .build();
     }
     private void updateQuantityInEntity(Cart cart, Integer quantity) {
-        Cart.builder()
+        Cart updatedCart = Cart.builder()
                 .cartSeq(cart.getCartSeq())
                 .user(cart.getUser())
                 .optionAndStock(cart.getOptionAndStock())
@@ -157,10 +159,11 @@ public class CartServiceImpl implements CartService {
                 .checkbox(cart.getCheckbox())
                 .fixItem(cart.getFixItem())
                 .build();
+        cartRepository.save(updatedCart);
     }
 
     private void updateOptionInEntity(Cart cart, Long optionAndStockSeq) {
-        Cart.builder()
+        Cart updatedCart = Cart.builder()
                 .cartSeq(cart.getCartSeq())
                 .user(cart.getUser())
                 .optionAndStock(optionAndStockRepository.findById(optionAndStockSeq)
@@ -170,10 +173,11 @@ public class CartServiceImpl implements CartService {
                 .checkbox(cart.getCheckbox())
                 .fixItem(cart.getFixItem())
                 .build();
+        cartRepository.save(updatedCart);
     }
 
     private void updateCartPinInEntity(Cart cart, Integer fixItem) {
-        Cart.builder()
+        Cart updatedCart = Cart.builder()
                 .cartSeq(cart.getCartSeq())
                 .user(cart.getUser())
                 .optionAndStock(cart.getOptionAndStock())
@@ -182,10 +186,11 @@ public class CartServiceImpl implements CartService {
                 .checkbox(cart.getCheckbox())
                 .fixItem(fixItem)
                 .build();
+        cartRepository.save(updatedCart);
     }
 
     private void updateCartCheckInEntity(Cart cart, Integer checkbox) {
-        Cart.builder()
+        Cart updatedCart = Cart.builder()
                 .cartSeq(cart.getCartSeq())
                 .user(cart.getUser())
                 .optionAndStock(cart.getOptionAndStock())
@@ -194,5 +199,36 @@ public class CartServiceImpl implements CartService {
                 .checkbox(checkbox)
                 .fixItem(cart.getFixItem())
                 .build();
+        cartRepository.save(updatedCart);
     }
+
+    private CartInfoDto toCartInfoDto(Cart cart) {
+        String option = (cart.getOptionAndStock().getColor() != null ?
+                cart.getOptionAndStock().getColor().getColorData() + " " : "") +
+                (cart.getOptionAndStock().getSize() != null ?
+                        cart.getOptionAndStock().getSize().getSizeData()  + " ": "") +
+                (cart.getOptionAndStock().getCustomizationOption() != null ?
+                        cart.getOptionAndStock().getCustomizationOption().getCustomizationData() : "");
+        return CartInfoDto.builder()
+                .productSeq(cart.getProduct().getProductSeq())
+                .productOption(option)
+                .productVendor(cart.getProduct().getVendor().getVendorName())
+                .productPrice(cart.getProduct().getProductPrice())
+                .productName(cart.getProduct().getProductName())
+                .quantity(cart.getQuantity())
+                .productImage(getContents(cart.getProduct().getProductSeq()))
+                .build();
+    }
+    private String getContents(Long productSeq) {
+        List<ProductContents> contents = productContentsRepository.findByProduct_ProductSeq(productSeq);
+        if (contents != null) {
+            for (ProductContents content : contents) {
+                if (content.getPriority() == 1) {
+                    return content.getContents() != null ? content.getContents().getContentUrl() : null;
+                }
+            }
+        }
+        return null;
+    }
+
 }

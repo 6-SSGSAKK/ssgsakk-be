@@ -1,6 +1,7 @@
 package com.ssgsakk.ssgdotcom.cart.application;
 
 import com.ssgsakk.ssgdotcom.cart.dto.CartDto;
+import com.ssgsakk.ssgdotcom.cart.dto.CartInfoDto;
 
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface CartService {
 
     List<CartDto> getCartList(String uuid);
 
-    CartDto getCart(Long cartSeq, String uuid);
+    CartInfoDto getCart(Long cartSeq, String uuid);
 
     void deleteCart(Long cartSeq, String uuid);
 
