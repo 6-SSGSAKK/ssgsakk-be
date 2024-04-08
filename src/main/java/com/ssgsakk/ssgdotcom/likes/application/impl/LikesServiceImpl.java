@@ -16,9 +16,7 @@ import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeCategoryRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeFolderRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeProductRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikedConnectRepository;
-import com.ssgsakk.ssgdotcom.likes.vo.CheckProductOrCategoryLikesResponseVo;
-import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
-import com.ssgsakk.ssgdotcom.likes.vo.UserProductLikesResponseVo;
+import com.ssgsakk.ssgdotcom.likes.vo.*;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
@@ -31,7 +29,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -337,63 +334,156 @@ public class LikesServiceImpl implements LikesService {
         }
     }
 
+//    @Override
+//    @Transactional
+//    public CheckProductLikesResponseVo checkProductOrCategoryLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto) {
+//
+//        // 상품 찜 확인
+//        if (checkProductOrCategoryLikesDto.getProductSeq() != null) {
+//            try {
+//                User user = memberRepository.findByUuid(checkProductOrCategoryLikesDto.getUuid()).orElseThrow(
+//                        () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
+//                Product product = productRepository.findByProductSeq(checkProductOrCategoryLikesDto.getProductSeq()).orElseThrow(
+//                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+//
+//                LikeProduct likeProduct = likeProductRepository.findByUserAndProduct(user, product).orElse(null);
+//
+//                // likeProduct가 있는 경우
+//                if (likeProduct != null) {
+//                    return CheckProductLikesResponseVo.builder()
+//                            .productSeq(checkProductOrCategoryLikesDto.getProductSeq())
+//                            .likeState(likeProduct.getLikeState())
+//                            .build();
+//                } else {
+//                    return CheckProductLikesResponseVo.builder()
+//                            .productSeq(checkProductOrCategoryLikesDto.getProductSeq())
+//                            .likeState(0)
+//                            .build();
+//                }
+//
+//            } catch (Exception e) {
+//                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+//            }
+//        }
+//
+//        // 카테고리 찜 확인
+//        else {
+//            try {
+//                User user = memberRepository.findByUuid(checkProductOrCategoryLikesDto.getUuid()).orElseThrow(
+//                        () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
+//                Category category = categoryRepository.findByCategorySeq(checkProductOrCategoryLikesDto.getCategorySeq()).orElseThrow(
+//                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
+//
+//                LikeCategory likeCategory = likeCategoryRepository.findByUserAndCategory(user, category).orElse(null);
+//
+//                // likeCategory가 없는 경우
+//                if (likeCategory != null) {
+//                    return CheckProductLikesResponseVo.builder()
+//                            .categorySeq(checkProductOrCategoryLikesDto.getCategorySeq())
+//                            .likeState(likeCategory.getCategoryState())
+//                            .build();
+//                } else {
+//                    return CheckProductLikesResponseVo.builder()
+//                            .categorySeq(checkProductOrCategoryLikesDto.getCategorySeq())
+//                            .likeState(0)
+//                            .build();
+//                }
+//            } catch (Exception e) {
+//                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+//            }
+//        }
+//    }
+
     @Override
     @Transactional
-    public CheckProductOrCategoryLikesResponseVo checkProductOrCategoryLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto) {
+    public List<SelectAllFoldersResponseVo> selectAllFolders(SelectAllFoldersDto selectAllFoldersDto) {
+//        try {
+//            User user = memberRepository.findByUuid(selectAllFoldersDto.getUuid()).orElseThrow(
+//                    () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
+//
+//            List<LikeFolder> likeFolders = likeFolderRepository.findAllByUser(user);
+//
+//            List<SelectAllFoldersResponseVo> responseVos = new ArrayList<>();
+//            for (LikeFolder likeFolder : likeFolders) {
+//                // folderThumbnailUrl은 폴더에 포함된 상품 중 가장 최근 상품의 썸네일을 들고온다.
+//
+//                LikeProduct likeProduct = likedConnectRepository.findByUser(user).orElseThrow(
+//                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT)
+//                );
+//
+//                Product product = likeProduct.getProduct();
+//
+//                ProductContents productContents = productContentsRepository.findByProduct(product).orElseThrow(
+//                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+//
+//                responseVos.add(SelectAllFoldersResponseVo.builder()
+//                        .folderSeq(likeFolder.getLikeFolderSeq())
+//                        .folderName(likeFolder.getLikeFolderName())
+//                        .folderThumbnailUrl(productContents.getContents().getContentUrl())
+//                        .build());
+//            }
+//            return responseVos;
+//
+//        } catch (Exception e) {
+//            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+//        }
+        return null;
+    }
 
-        // 상품 찜 확인
-        if (checkProductOrCategoryLikesDto.getProductSeq() != null) {
-            try {
-                User user = memberRepository.findByUuid(checkProductOrCategoryLikesDto.getUuid()).orElseThrow(
-                        () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
-                Product product = productRepository.findByProductSeq(checkProductOrCategoryLikesDto.getProductSeq()).orElseThrow(
-                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+    @Override
+    @Transactional
+    public CheckProductLikesResponseVo checkProductLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto) {
+        try {
+            User user = memberRepository.findByUuid(checkProductOrCategoryLikesDto.getUuid()).orElseThrow(
+                    () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
+            Product product = productRepository.findByProductSeq(checkProductOrCategoryLikesDto.getProductSeq()).orElseThrow(
+                    () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
 
-                LikeProduct likeProduct = likeProductRepository.findByUserAndProduct(user, product).orElse(null);
+            LikeProduct likeProduct = likeProductRepository.findByUserAndProduct(user, product).orElse(null);
 
-                // likeProduct가 있는 경우
-                if (likeProduct != null) {
-                    return CheckProductOrCategoryLikesResponseVo.builder()
-                            .productSeq(checkProductOrCategoryLikesDto.getProductSeq())
-                            .likeState(likeProduct.getLikeState())
-                            .build();
-                } else {
-                    return CheckProductOrCategoryLikesResponseVo.builder()
-                            .productSeq(checkProductOrCategoryLikesDto.getProductSeq())
-                            .likeState(0)
-                            .build();
-                }
-
-            } catch (Exception e) {
-                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            // likeProduct가 있는 경우
+            if (likeProduct != null) {
+                return CheckProductLikesResponseVo.builder()
+                        .productSeq(checkProductOrCategoryLikesDto.getProductSeq())
+                        .likeState(likeProduct.getLikeState())
+                        .build();
+            } else {
+                return CheckProductLikesResponseVo.builder()
+                        .productSeq(checkProductOrCategoryLikesDto.getProductSeq())
+                        .likeState(0)
+                        .build();
             }
+
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
+    }
 
-        // 카테고리 찜 확인
-        else {
-            try {
-                User user = memberRepository.findByUuid(checkProductOrCategoryLikesDto.getUuid()).orElseThrow(
-                        () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
-                Category category = categoryRepository.findByCategorySeq(checkProductOrCategoryLikesDto.getCategorySeq()).orElseThrow(
-                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
+    @Override
+    @Transactional
+    public CheckCategoryLikesResponseVo checkCategoryLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto) {
+        try {
+            User user = memberRepository.findByUuid(checkProductOrCategoryLikesDto.getUuid()).orElseThrow(
+                    () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
+            Category category = categoryRepository.findByCategorySeq(checkProductOrCategoryLikesDto.getCategorySeq()).orElseThrow(
+                    () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
 
-                LikeCategory likeCategory = likeCategoryRepository.findByUserAndCategory(user, category).orElse(null);
+            LikeCategory likeCategory = likeCategoryRepository.findByUserAndCategory(user, category).orElse(null);
 
-                // likeCategory가 없는 경우
-                if (likeCategory != null) {
-                    return CheckProductOrCategoryLikesResponseVo.builder()
-                            .categorySeq(checkProductOrCategoryLikesDto.getCategorySeq())
-                            .likeState(likeCategory.getCategoryState())
-                            .build();
-                } else {
-                    return CheckProductOrCategoryLikesResponseVo.builder()
-                            .categorySeq(checkProductOrCategoryLikesDto.getCategorySeq())
-                            .likeState(0)
-                            .build();
-                }
-            } catch (Exception e) {
-                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            // likeCategory가 없는 경우
+            if (likeCategory != null) {
+                return CheckCategoryLikesResponseVo.builder()
+                        .categorySeq(checkProductOrCategoryLikesDto.getCategorySeq())
+                        .likeState(likeCategory.getCategoryState())
+                        .build();
+            } else {
+                return CheckCategoryLikesResponseVo.builder()
+                        .categorySeq(checkProductOrCategoryLikesDto.getCategorySeq())
+                        .likeState(0)
+                        .build();
             }
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 }

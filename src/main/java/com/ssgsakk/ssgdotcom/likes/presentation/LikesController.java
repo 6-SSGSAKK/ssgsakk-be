@@ -22,21 +22,34 @@ public class LikesController {
     private final LikesService likesService;
     private final JWTUtil jwtUtil;
 
-    @Operation(summary = "상품 또는 카테고리 찜 확인", description = "상품 또는 카테고리 찜 확인")
-    @GetMapping("/check")
-    public BaseResponse<CheckProductOrCategoryLikesResponseVo> checkProductOrCategoryLikes(@RequestHeader("Authorization") String accessToken
-            , @RequestParam(value = "product-seq", required = false) Long productSeq
-            , @RequestParam(value = "category-seq", required = false) Long categorySeq) {
+    @Operation(summary = "상품 찜 확인", description = "상품 또는 카테고리 찜 확인")
+    @GetMapping("/check/product-seq/{productSeq}")
+    public BaseResponse<CheckProductLikesResponseVo> checkProductLikes(@RequestHeader("Authorization") String accessToken
+            , @PathVariable("productSeq") Long productSeq){
         String uuid = getUuid(accessToken);
 
 
-        CheckProductOrCategoryLikesResponseVo checkProductOrCategoryLikesResponseVo = likesService.checkProductOrCategoryLikes(CheckProductOrCategoryLikesDto.builder()
+        CheckProductLikesResponseVo checkProductOrCategoryLikesResponseVo = likesService.checkProductLikes(CheckProductOrCategoryLikesDto.builder()
                 .uuid(uuid)
                 .productSeq(productSeq)
-                .categorySeq(categorySeq)
                 .build());
 
         return new BaseResponse<>("Check Product Or Category Likes Success", checkProductOrCategoryLikesResponseVo);
+    }
+
+    @Operation(summary = "상품 또는 카테고리 찜 확인", description = "상품 또는 카테고리 찜 확인")
+    @GetMapping("/check/category-seq/{categorySeq}")
+    public BaseResponse<CheckCategoryLikesResponseVo> checkCategoryLikes(@RequestHeader("Authorization") String accessToken
+            , @PathVariable("categorySeq") Long categorySeq) {
+        String uuid = getUuid(accessToken);
+
+
+        CheckCategoryLikesResponseVo checkCategoryLikesResponseVo = likesService.checkCategoryLikes(CheckProductOrCategoryLikesDto.builder()
+                .uuid(uuid)
+                .categorySeq(categorySeq)
+                .build());
+
+        return new BaseResponse<>("Check Product Or Category Likes Success", checkCategoryLikesResponseVo);
     }
 
     @Operation(summary = "상품 또는 카테고리 찜 추가", description = "상품 또는 카테고리 찜 추가")
@@ -78,6 +91,18 @@ public class LikesController {
                 .categorySeq(categorySeq)
                 .likeState("unlike")
                 .build());
+    }
+
+    @Operation(summary = "전체 찜 폴더 조회", description = "전체 찜 폴더 조회")
+    @GetMapping("/user/folder")
+    public BaseResponse<List<SelectAllFoldersResponseVo>> selectAllFolders(@RequestHeader("Authorization") String accessToken) {
+        String uuid = getUuid(accessToken);
+
+        List<SelectAllFoldersResponseVo> selectAllFoldersResponseVos = likesService.selectAllFolders(SelectAllFoldersDto.builder()
+                .uuid(uuid)
+                .build());
+
+        return new BaseResponse<>("Select All Folders Success", selectAllFoldersResponseVos);
     }
 
     @Operation(summary = "찜 폴더 생성", description = "찜 폴더 생성")

@@ -1,9 +1,7 @@
 package com.ssgsakk.ssgdotcom.likes.application;
 
 import com.ssgsakk.ssgdotcom.likes.dto.*;
-import com.ssgsakk.ssgdotcom.likes.vo.CheckProductOrCategoryLikesResponseVo;
-import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
-import com.ssgsakk.ssgdotcom.likes.vo.UserProductLikesResponseVo;
+import com.ssgsakk.ssgdotcom.likes.vo.*;
 
 import java.util.List;
 
@@ -24,5 +22,11 @@ public interface LikesService {
 
     void addFolderProductOrCategory(AddFolderProductOrCategoryDto addFolderProductOrCategoryDto);
 
-    CheckProductOrCategoryLikesResponseVo checkProductOrCategoryLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto);
+//    CheckProductLikesResponseVo checkProductOrCategoryLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto);
+
+    List<SelectAllFoldersResponseVo> selectAllFolders(SelectAllFoldersDto selectAllFoldersDto);
+
+    CheckProductLikesResponseVo checkProductLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto);
+
+    CheckCategoryLikesResponseVo checkCategoryLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto);
 }

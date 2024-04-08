@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class EventContents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long evnetContentsSeq;
+    private Long eventContentsSeq;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_seq")
