@@ -18,12 +18,13 @@ public class PurchaseProductServiceImp implements PurchaseProductService {
 
     private final PurchaseProductRepository purchaseProductRepository;
     @Override
-    @Transactional
+    @Transactional //주문상품리스트를 생성하는 메소드
     public void savePurchaseProductList(List<PurchaseProductDto> purchaseProductDtoList, Purchase purchase) {
+        //List<PurchaseProductDto>, Purchase를 불러옴 Purchase는 purchaseSeq를 담기 위함
         List<PurchaseProduct> purchaseProductList = new ArrayList<>();
-        for (PurchaseProductDto purchaseProductDto : purchaseProductDtoList) {
+        for (PurchaseProductDto purchaseProductDto : purchaseProductDtoList) {//주문상품이 여러개일수도 있기 때문에 FOR 로 담아줌
             PurchaseProduct purchaseProduct = PurchaseProduct.builder()
-                    .purchaseSeq(purchase)
+                    .purchaseSeq(purchase) //Purchase의 PK
                     .productId(purchaseProductDto.getProductId())
                     .purchaseProductName(purchaseProductDto.getPurchaseProductName())
                     .purchaseProductVendor(purchaseProductDto.getPurchaseProductVendor())
@@ -37,6 +38,6 @@ public class PurchaseProductServiceImp implements PurchaseProductService {
                     .build();
             purchaseProductList.add(purchaseProduct);
         }
-        purchaseProductRepository.saveAll(purchaseProductList);
+        purchaseProductRepository.saveAll(purchaseProductList); //저장
     }
 }

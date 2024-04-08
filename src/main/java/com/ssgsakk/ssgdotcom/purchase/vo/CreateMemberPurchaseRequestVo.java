@@ -1,10 +1,9 @@
 package com.ssgsakk.ssgdotcom.purchase.vo;
-import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
-import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +29,11 @@ public class CreateMemberPurchaseRequestVo {
 
     private List<PurchaseProductDto> purchaseProductDtoList; //주문상품리스트
 
-
     public static PurchaseDto voToPurchaseDto
-            (CreateMemberPurchaseRequestVo createMemberPurchaseRequestVo) {
+            (CreateMemberPurchaseRequestVo createMemberPurchaseRequestVo, String uuid) {
         return PurchaseDto.builder()
                 .purchaser(createMemberPurchaseRequestVo.getPurchaser())
-                .purchaseuuid(createMemberPurchaseRequestVo.getPurchaseuuid())
+                .purchaseuuid(uuid)
                 .purchaserPhoneNum(createMemberPurchaseRequestVo.getPurchaserPhoneNum())
                 .purchaseEmail(createMemberPurchaseRequestVo.getPurchaseEmail())
                 .recipient(createMemberPurchaseRequestVo.getRecipient())
@@ -48,7 +46,7 @@ public class CreateMemberPurchaseRequestVo {
                 .deliverymessage(createMemberPurchaseRequestVo.getDeliverymessage())
                 .shippingFee(createMemberPurchaseRequestVo.getShippingFee())
                 .build();
-    }
+    } //Vo->PurchaseDto
     public static List<PurchaseProductDto> voListToPurchaseProductDtoList(List<PurchaseProductDto> purchaseProductList) {
         List<PurchaseProductDto> purchaseProductDtoList = new ArrayList<>();
         for (PurchaseProductDto purchaseProduct : purchaseProductList) {
@@ -66,7 +64,7 @@ public class CreateMemberPurchaseRequestVo {
                     .build();
             purchaseProductDtoList.add(purchaseProductDto);
         }
-        return purchaseProductDtoList;
+        return purchaseProductDtoList; //Vo->PurchaseProductDto
     }
 
 }

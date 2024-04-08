@@ -19,16 +19,18 @@ public class PurchaseController {
     private final PurchaseService purchaseService;
 
 
-    @PostMapping("/member-purchase")
-    public BaseResponse<PurchaseCodeResponseVo> createMemberPurchase(@RequestBody CreateMemberPurchaseRequestVo createMemberPurchaseRequestVo,
-                                             @RequestHeader("Authorization") String accessToken ) {
-        String uuid = getUuid(accessToken);
-        PurchaseCodeDto purchaseCodeDto = purchaseService.createMemberPurchase(CreateMemberPurchaseRequestVo.voToPurchaseDto(createMemberPurchaseRequestVo),
-                CreateMemberPurchaseRequestVo
-                        .voListToPurchaseProductDtoList(createMemberPurchaseRequestVo.getPurchaseProductDtoList()));
+    @PostMapping("/member-purchase") //회원 주문생성 VO로 PurchseDto, List<PurchaseProductDto> 받기
+    public BaseResponse<PurchaseCodeResponseVo> createMemberPurchase(@RequestBody CreateMemberPurchaseRequestVo createMemberPurchaseRequestVo, //VO값 받기
+                                             @RequestHeader("Authorization") String accessToken ) { //Header 로 Authorization 받고 UUID 생성
+        String uuid = getUuid(accessToken); //uuid생성
+        PurchaseCodeDto purchaseCodeDto = purchaseService.createMemberPurchase(CreateMemberPurchaseRequestVo.voToPurchaseDto(createMemberPurchaseRequestVo,uuid),
+                CreateMemberPurchaseRequestVo.voListToPurchaseProductDtoList(createMemberPurchaseRequestVo.getPurchaseProductDtoList()));
+                //CreatePurchseRequestVo.voTOPurchseDto에 Vo,uuid 전달
+                //voListToPurchseProductDtoList에 Vo,PurchaseProductDtoList 전달
+
         return new BaseResponse<>("주문ID", PurchaseCodeResponseVo.builder()
                 .purchaseCode(purchaseCodeDto.getPurchaseCode())
-                .build());
+                .build()); //PurchaseCode에 담겨있는 purcaseCode를 DTO -> VO 로 Response
     }
 
     // JWT에서 UUID 추출 메서드

@@ -32,12 +32,12 @@ public class PurchaseServiceImp implements PurchaseService {
         StringBuilder randomCodeBuilder = new StringBuilder();
         Random random = new Random();
 
-        for(int i=0; i<6; i++){
+        for(int i=0; i<6; i++){  //0~9까지 난수생성
             randomCodeBuilder.append(random.nextInt(10));
         }
 
         makedpurchaseCode += randomCodeBuilder.toString();
-        return makedpurchaseCode;
+        return makedpurchaseCode; //purchseCode 생성
     }
 
 
@@ -45,8 +45,8 @@ public class PurchaseServiceImp implements PurchaseService {
     @Transactional
     public PurchaseCodeDto createMemberPurchase(PurchaseDto purchaseDto, List<PurchaseProductDto> purchaseProductDto) {
         // 주문정보 생성
+        //PurchaseProductService에 있는 메소드를 사용하기 위해 필요한 List<PurchaseProductDto> 도 받아옴
         Purchase purchase = Purchase.builder()
-                .purchaser(purchaseDto.getPurchaser())
                 .purchaser(purchaseDto.getPurchaser())
                 .purchaseCode(createdMemberPurchaseCode())
                 .purchaseuuid(purchaseDto.getPurchaseuuid())
@@ -69,7 +69,7 @@ public class PurchaseServiceImp implements PurchaseService {
 
         PurchaseCodeDto purchaseCodeDto = PurchaseCodeDto.builder()
                         .purchaseCode(purchase.getPurchaseCode())
-                        .build();
+                        .build(); //purchaseCode는 return해야하니깐 purchseCodeDTO에 담음.
 
         return purchaseCodeDto;
 
