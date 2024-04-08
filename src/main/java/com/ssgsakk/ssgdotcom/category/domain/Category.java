@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
-@ToString
+//@ToString
 @Getter
 @Entity
 @NoArgsConstructor

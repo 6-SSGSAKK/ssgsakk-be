@@ -4,6 +4,8 @@ import com.ssgsakk.ssgdotcom.shippingAddress.dto.*;
 import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindDetailShippingAddressInfoResponseVo;
 import com.ssgsakk.ssgdotcom.shippingAddress.vo.FindShippingAddressSeqsResponseVo;
 
+import java.util.List;
+
 public interface ShippingAddressService {
     void changeDefaultAddress(ChangeDefaultAddressDto changeDefaultAddressDto);
 
@@ -16,4 +18,6 @@ public interface ShippingAddressService {
     void changeShippingAddress(ChangeShippingAddressDto changeShippingAddressDto);
 
     void deleteShippingAddress(DeleteShippingAddressDto deleteShippingAddressDto);
+
+    List<FindDetailShippingAddressInfoResponseVo> findAllDetailShippingAddressInfo(FindAllDetailShippingAddressInfoDto findAllDetailShippingAddressInfoDto);
 }
