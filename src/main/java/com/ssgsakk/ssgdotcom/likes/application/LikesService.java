@@ -1,6 +1,7 @@
 package com.ssgsakk.ssgdotcom.likes.application;
 
 import com.ssgsakk.ssgdotcom.likes.dto.*;
+import com.ssgsakk.ssgdotcom.likes.vo.CheckProductOrCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.likes.vo.UserProductLikesResponseVo;
 
@@ -22,4 +23,6 @@ public interface LikesService {
     List<UserProductLikesResponseVo> userProductLikes(UserProductLikesDto userProductLikesDto);
 
     void addFolderProductOrCategory(AddFolderProductOrCategoryDto addFolderProductOrCategoryDto);
+
+    CheckProductOrCategoryLikesResponseVo checkProductOrCategoryLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto);
 }

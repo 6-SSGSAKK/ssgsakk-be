@@ -16,6 +16,7 @@ import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeCategoryRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeFolderRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikeProductRepository;
 import com.ssgsakk.ssgdotcom.likes.infrastructure.LikedConnectRepository;
+import com.ssgsakk.ssgdotcom.likes.vo.CheckProductOrCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
 import com.ssgsakk.ssgdotcom.likes.vo.UserProductLikesResponseVo;
 import com.ssgsakk.ssgdotcom.member.domain.User;
@@ -186,7 +187,7 @@ public class LikesServiceImpl implements LikesService {
     public List<UserCategoryLikesResponseVo> userCategoryLikes(UserCategoryLikesDto userCategoryLikesDto) {
         try {
             // 전체 조회
-            if(userCategoryLikesDto.getFolderSeq() == null) {
+            if (userCategoryLikesDto.getFolderSeq() == null) {
                 User user = memberRepository.findByUuid(userCategoryLikesDto.getUuid()).orElseThrow(
                         () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
 
@@ -209,7 +210,7 @@ public class LikesServiceImpl implements LikesService {
 
             List<LikedConnect> likedConnects = likedConnectRepository.findByLikeFolder(folder);
             List<LikeCategory> categories = new ArrayList<>();
-            for(LikedConnect likedConnect : likedConnects) {
+            for (LikedConnect likedConnect : likedConnects) {
                 categories.add(likedConnect.getLikeCategory());
             }
 
@@ -333,6 +334,66 @@ public class LikesServiceImpl implements LikesService {
                     .build());
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional
+    public CheckProductOrCategoryLikesResponseVo checkProductOrCategoryLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto) {
+
+        // 상품 찜 확인
+        if (checkProductOrCategoryLikesDto.getProductSeq() != null) {
+            try {
+                User user = memberRepository.findByUuid(checkProductOrCategoryLikesDto.getUuid()).orElseThrow(
+                        () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
+                Product product = productRepository.findByProductSeq(checkProductOrCategoryLikesDto.getProductSeq()).orElseThrow(
+                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+
+                LikeProduct likeProduct = likeProductRepository.findByUserAndProduct(user, product).orElse(null);
+
+                // likeProduct가 있는 경우
+                if (likeProduct != null) {
+                    return CheckProductOrCategoryLikesResponseVo.builder()
+                            .productSeq(checkProductOrCategoryLikesDto.getProductSeq())
+                            .likeState(likeProduct.getLikeState())
+                            .build();
+                } else {
+                    return CheckProductOrCategoryLikesResponseVo.builder()
+                            .productSeq(checkProductOrCategoryLikesDto.getProductSeq())
+                            .likeState(0)
+                            .build();
+                }
+
+            } catch (Exception e) {
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        // 카테고리 찜 확인
+        else {
+            try {
+                User user = memberRepository.findByUuid(checkProductOrCategoryLikesDto.getUuid()).orElseThrow(
+                        () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
+                Category category = categoryRepository.findByCategorySeq(checkProductOrCategoryLikesDto.getCategorySeq()).orElseThrow(
+                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
+
+                LikeCategory likeCategory = likeCategoryRepository.findByUserAndCategory(user, category).orElse(null);
+
+                // likeCategory가 없는 경우
+                if (likeCategory != null) {
+                    return CheckProductOrCategoryLikesResponseVo.builder()
+                            .categorySeq(checkProductOrCategoryLikesDto.getCategorySeq())
+                            .likeState(likeCategory.getCategoryState())
+                            .build();
+                } else {
+                    return CheckProductOrCategoryLikesResponseVo.builder()
+                            .categorySeq(checkProductOrCategoryLikesDto.getCategorySeq())
+                            .likeState(0)
+                            .build();
+                }
+            } catch (Exception e) {
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            }
         }
     }
 }

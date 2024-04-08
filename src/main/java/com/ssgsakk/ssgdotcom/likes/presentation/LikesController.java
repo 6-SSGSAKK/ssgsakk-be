@@ -5,10 +5,7 @@ import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
 import com.ssgsakk.ssgdotcom.likes.dto.*;
-import com.ssgsakk.ssgdotcom.likes.vo.AddProductOrCategoryLikesResponseVo;
-import com.ssgsakk.ssgdotcom.likes.vo.DeleteProductOrCategoryLikesResponseVo;
-import com.ssgsakk.ssgdotcom.likes.vo.UserCategoryLikesResponseVo;
-import com.ssgsakk.ssgdotcom.likes.vo.UserProductLikesResponseVo;
+import com.ssgsakk.ssgdotcom.likes.vo.*;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +22,22 @@ public class LikesController {
     private final LikesService likesService;
     private final JWTUtil jwtUtil;
 
+    @Operation(summary = "상품 또는 카테고리 찜 확인", description = "상품 또는 카테고리 찜 확인")
+    @GetMapping("/check")
+    public BaseResponse<CheckProductOrCategoryLikesResponseVo> checkProductOrCategoryLikes(@RequestHeader("Authorization") String accessToken
+            , @RequestParam(value = "product-seq", required = false) Long productSeq
+            , @RequestParam(value = "category-seq", required = false) Long categorySeq) {
+        String uuid = getUuid(accessToken);
+
+
+        CheckProductOrCategoryLikesResponseVo checkProductOrCategoryLikesResponseVo = likesService.checkProductOrCategoryLikes(CheckProductOrCategoryLikesDto.builder()
+                .uuid(uuid)
+                .productSeq(productSeq)
+                .categorySeq(categorySeq)
+                .build());
+
+        return new BaseResponse<>("Check Product Or Category Likes Success", checkProductOrCategoryLikesResponseVo);
+    }
 
     @Operation(summary = "상품 또는 카테고리 찜 추가", description = "상품 또는 카테고리 찜 추가")
     @GetMapping("/add")
