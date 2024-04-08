@@ -4,6 +4,7 @@ import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
+import com.ssgsakk.ssgdotcom.likes.domain.LikedConnect;
 import com.ssgsakk.ssgdotcom.likes.dto.*;
 import com.ssgsakk.ssgdotcom.likes.vo.*;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
@@ -22,22 +23,22 @@ public class LikesController {
     private final LikesService likesService;
     private final JWTUtil jwtUtil;
 
-    @Operation(summary = "상품 찜 확인", description = "상품 또는 카테고리 찜 확인")
+    @Operation(summary = "상품 찜 확인", description = "상품 찜 확인")
     @GetMapping("/check/product-seq/{productSeq}")
     public BaseResponse<CheckProductLikesResponseVo> checkProductLikes(@RequestHeader("Authorization") String accessToken
             , @PathVariable("productSeq") Long productSeq){
         String uuid = getUuid(accessToken);
 
 
-        CheckProductLikesResponseVo checkProductOrCategoryLikesResponseVo = likesService.checkProductLikes(CheckProductOrCategoryLikesDto.builder()
+        CheckProductLikesResponseVo checkProductLikesResponseVo = likesService.checkProductLikes(CheckProductOrCategoryLikesDto.builder()
                 .uuid(uuid)
                 .productSeq(productSeq)
                 .build());
 
-        return new BaseResponse<>("Check Product Or Category Likes Success", checkProductOrCategoryLikesResponseVo);
+        return new BaseResponse<>("Check Product Likes Success", checkProductLikesResponseVo);
     }
 
-    @Operation(summary = "상품 또는 카테고리 찜 확인", description = "상품 또는 카테고리 찜 확인")
+    @Operation(summary = "카테고리 찜 확인", description = "카테고리 찜 확인")
     @GetMapping("/check/category-seq/{categorySeq}")
     public BaseResponse<CheckCategoryLikesResponseVo> checkCategoryLikes(@RequestHeader("Authorization") String accessToken
             , @PathVariable("categorySeq") Long categorySeq) {
@@ -49,7 +50,7 @@ public class LikesController {
                 .categorySeq(categorySeq)
                 .build());
 
-        return new BaseResponse<>("Check Product Or Category Likes Success", checkCategoryLikesResponseVo);
+        return new BaseResponse<>("Check Category Likes Success", checkCategoryLikesResponseVo);
     }
 
     @Operation(summary = "상품 또는 카테고리 찜 추가", description = "상품 또는 카테고리 찜 추가")
