@@ -4,7 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'com.ssgsakk'
+group = 'com.spharos'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -34,15 +34,34 @@ dependencies {
 
 	// 스프링 시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	// 부트페이
 	implementation 'io.github.bootpay:backend:+'
 
-	//jwt
+
+	// jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5','io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// OAuth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	// mail
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	// redis
+	 implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+
+	// querydsl
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+
 }
 
 tasks.named('bootBuildImage') {
