@@ -1,16 +1,20 @@
 package com.ssgsakk.ssgdotcom.purchase.vo;
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
+import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
 public class CreateMemberPurchaseRequestVo {
 
     private String purchaser; //주문자이름
-    private String purchaseUuid; //UUID
+    private String purchaseuuid; //UUID
     private String purchaserPhoneNum; //주문자 전화번호
     private String purchaseEmail; //주문자 이메일
     private String recipient; //수령자 이름
@@ -24,65 +28,45 @@ public class CreateMemberPurchaseRequestVo {
     private Long shippingFee; //배송비
     // 여기까지가 PurchaseDTO로
 
-    private Long purchaseProductSeq; //주문상품ID
-    private Long productId; //상품ID
-    private String purchaseProductName; //주문상품명
-    private String purchaseProductVendor; //주문상품 벤더
-    private String purchaseProductOption;//주문상품 옵션
-    private Integer purchaseProductCount;// 주문상품수량
-    private Integer purchaseProductPrice; //주문상품금액
-    private Integer purchaseProductDiscountPrice; //주문상품할인액
-    private String productThumbnail; //주문상품이미지
-    private String deliveryType; //주문상품배송타입
-    private String productState; //주문상품 주문배송상태
-    //여기까지는 PurchaseProductDTO로
+    private List<PurchaseProductDto> purchaseProductDtoList; //주문상품리스트
 
 
     public static PurchaseDto voToPurchaseDto
-            (String purchaser, String purchaseUuid, String purchaserPhoneNum,
-             String purchaseEmail, String recipient, String recipientPhoneNum,
-             String recipientEmail, String purchaseZipcode, String purchaseRoadAddress,
-             String purchaseJibunAddress, String purchaseDetailAddress,
-             String deliverymessage, Long shippingFee) {
-
+            (CreateMemberPurchaseRequestVo createMemberPurchaseRequestVo) {
         return PurchaseDto.builder()
-                .purchaser(purchaser)
-                .purchaseUuid(purchaseUuid)
-                .purchaserPhoneNum(purchaserPhoneNum)
-                .purchaseEmail(purchaseEmail)
-                .recipient(recipient)
-                .recipientPhoneNum(recipientPhoneNum)
-                .recipientEmail(recipientEmail)
-                .purchaseZipcode(purchaseZipcode)
-                .purchaseRoadAddress(purchaseRoadAddress)
-                .purchaseJibunAddress(purchaseJibunAddress)
-                .purchaseDetailAddress(purchaseDetailAddress)
-                .deliverymessage(deliverymessage)
-                .shippingFee(shippingFee)
+                .purchaser(createMemberPurchaseRequestVo.getPurchaser())
+                .purchaseuuid(createMemberPurchaseRequestVo.getPurchaseuuid())
+                .purchaserPhoneNum(createMemberPurchaseRequestVo.getPurchaserPhoneNum())
+                .purchaseEmail(createMemberPurchaseRequestVo.getPurchaseEmail())
+                .recipient(createMemberPurchaseRequestVo.getRecipient())
+                .recipientPhoneNum(createMemberPurchaseRequestVo.getRecipientPhoneNum())
+                .recipientEmail(createMemberPurchaseRequestVo.getRecipientEmail())
+                .purchaseZipcode(createMemberPurchaseRequestVo.getPurchaseZipcode())
+                .purchaseRoadAddress(createMemberPurchaseRequestVo.getPurchaseRoadAddress())
+                .purchaseJibunAddress(createMemberPurchaseRequestVo.getPurchaseJibunAddress())
+                .purchaseDetailAddress(createMemberPurchaseRequestVo.getPurchaseDetailAddress())
+                .deliverymessage(createMemberPurchaseRequestVo.getDeliverymessage())
+                .shippingFee(createMemberPurchaseRequestVo.getShippingFee())
                 .build();
-
     }
-    public static PurchaseProductDto purchaseProductDto
-            (Long productId, String purchaseProductName,String purchaseProductVendor,
-             String purchaseProductOption,Integer purchaseProductCount,Integer purchaseProductPrice,
-             Integer purchaseProductDiscountPrice,String productThumbnail,String deliveryType,
-             String productState){
-
-        return PurchaseProductDto.builder()
-                .productId(productId)
-                .purchaseProductName(purchaseProductName)
-                .purchaseProductVendor(purchaseProductVendor)
-                .purchaseProductOption(purchaseProductOption)
-                .purchaseProductCount(purchaseProductCount)
-                .purchaseProductPrice(purchaseProductPrice)
-                .purchaseProductDiscountPrice(purchaseProductDiscountPrice)
-                .productThumbnail(productThumbnail)
-                .deliveryType(DeliveryType.valueOf(deliveryType))
-                .productState(productState)
-                .build();
-
+    public static List<PurchaseProductDto> voListToPurchaseProductDtoList(List<PurchaseProductDto> purchaseProductList) {
+        List<PurchaseProductDto> purchaseProductDtoList = new ArrayList<>();
+        for (PurchaseProductDto purchaseProduct : purchaseProductList) {
+            PurchaseProductDto purchaseProductDto = PurchaseProductDto.builder()
+                    .productId(purchaseProduct.getProductId())
+                    .purchaseProductName(purchaseProduct.getPurchaseProductName())
+                    .purchaseProductVendor(purchaseProduct.getPurchaseProductVendor())
+                    .purchaseProductOption(purchaseProduct.getPurchaseProductOption())
+                    .purchaseProductCount(purchaseProduct.getPurchaseProductCount())
+                    .purchaseProductPrice(purchaseProduct.getPurchaseProductPrice())
+                    .purchaseProductDiscountPrice(purchaseProduct.getPurchaseProductDiscountPrice())
+                    .productThumbnail(purchaseProduct.getProductThumbnail())
+                    .deliveryType(purchaseProduct.getDeliveryType())
+                    .productState(purchaseProduct.getProductState())
+                    .build();
+            purchaseProductDtoList.add(purchaseProductDto);
+        }
+        return purchaseProductDtoList;
     }
-
-
 
 }

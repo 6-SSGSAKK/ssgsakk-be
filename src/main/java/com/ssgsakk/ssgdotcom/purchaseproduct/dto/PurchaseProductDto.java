@@ -44,4 +44,5 @@ public class PurchaseProductDto {
         this.productState = productState;
 
     }
+
 }

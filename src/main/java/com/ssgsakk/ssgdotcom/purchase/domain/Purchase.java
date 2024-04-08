@@ -17,11 +17,12 @@ public class Purchase extends BaseTimeEntity {
     @Column(length = 50)
     private String purchaser; //주문자이름
 
-    @Column(length = 20)
+//    @Column(columnDefinition = "text")
+    @Column(length = 50)
     private String purchaseCode; //주문코드
 
     @Column(length = 50)
-    private String purchaseUuid; //UUID
+    private String purchaseuuid; //UUID
 
     @Column(length = 50)
     private String purchaserPhoneNum; //주문자 전화번호
@@ -57,7 +58,7 @@ public class Purchase extends BaseTimeEntity {
     private Long shippingFee; //배송비
 
     @Builder
-    public Purchase(Long purchaseSeq, String purchaser, String purchaseCode, String purchaseUuid,
+    public Purchase(Long purchaseSeq, String purchaser, String purchaseCode, String purchaseuuid,
                     String purchaserPhoneNum, String purchaseEmail, String recipient,
                     String recipientPhoneNum, String recipientEmail, String purchaseZipcode,
                     String purchaseRoadAddress, String purchaseJibunAddress, String purchaseDetailAddress,
@@ -66,7 +67,7 @@ public class Purchase extends BaseTimeEntity {
         this.purchaseSeq = purchaseSeq;
         this.purchaser = purchaser;
         this.purchaseCode = purchaseCode;
-        this.purchaseUuid = purchaseUuid;
+        this.purchaseuuid = purchaseuuid;
         this.purchaserPhoneNum = purchaserPhoneNum;
         this.purchaseEmail = purchaseEmail;
         this.recipient = recipient;

@@ -2,6 +2,9 @@ package com.ssgsakk.ssgdotcom.purchase.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 
 @Getter
@@ -11,7 +14,7 @@ public class PurchaseDto {
 
     private String purchaser; //주문자이름
     private String purchaseCode; //주문코드
-    private String purchaseUuid; //UUID
+    private String purchaseuuid; //UUID
     private String purchaserPhoneNum; //주문자 전화번호
     private String purchaseEmail; //주문자 이메일
     private String recipient; //수령자 이름
@@ -26,7 +29,7 @@ public class PurchaseDto {
 
 
     @Builder
-    public PurchaseDto( String purchaser, String purchaseCode, String purchaseUuid,
+    public PurchaseDto( String purchaser, String purchaseCode, String purchaseuuid,
                        String purchaserPhoneNum, String purchaseEmail, String recipient,
                        String recipientPhoneNum, String recipientEmail, String purchaseZipcode,
                        String purchaseRoadAddress, String purchaseJibunAddress, String purchaseDetailAddress,
@@ -35,7 +38,7 @@ public class PurchaseDto {
 
         this.purchaser = purchaser;
         this.purchaseCode = purchaseCode;
-        this.purchaseUuid = purchaseUuid;
+        this.purchaseuuid = purchaseuuid;
         this.purchaserPhoneNum = purchaserPhoneNum;
         this.purchaseEmail = purchaseEmail;
         this.recipient = recipient;

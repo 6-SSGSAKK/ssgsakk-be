@@ -13,7 +13,7 @@ public class PurchaseProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long purchaseProductSeq; //주문상품ID
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchaseSeq")
     private Purchase purchaseSeq; //주문ID
 
