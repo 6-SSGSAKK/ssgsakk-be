@@ -13,11 +13,11 @@ public class EventProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long EventProductSeq;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_seq")
     private Event event;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_seq")
     private Product product;
 }

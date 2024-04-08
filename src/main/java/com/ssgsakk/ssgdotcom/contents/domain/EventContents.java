@@ -1,8 +1,10 @@
 package com.ssgsakk.ssgdotcom.contents.domain;
 
-import com.ssgsakk.ssgdotcom.product.domain.Product;
+import com.ssgsakk.ssgdotcom.event.domain.Event;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,17 +15,19 @@ import lombok.NoArgsConstructor;
 public class EventContents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long evnetContentsSeq;
+    private Long eventContentsSeq;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_seq")
-    private Product product;
+    @JoinColumn(name = "event_seq")
+    private Event event;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contents_seq")
     private Contents contents;
 
-    private String productContentsType;
-
-    private String productContentsIdx;
+    @Builder
+    public EventContents(Event event, Contents contents){
+        this.event = event;
+        this.contents = contents;
+    }
 }

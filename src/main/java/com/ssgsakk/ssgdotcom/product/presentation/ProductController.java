@@ -44,6 +44,24 @@ public class ProductController {
                 .collect(Collectors.toList()));
     }
 
+    @GetMapping("/filter")
+    @Operation(summary = "상품 필터링", description = "상품 필터링", tags = { "Product Filtering" })
+    public BaseResponse<?> filterProducts(@RequestParam(value = "keyword", required = false) String keyword,
+                                          @RequestParam(value = "deliveryType", required = false) DeliveryType deliveryType,
+                                          @RequestParam(value = "minPrice", required = false) Integer minPrice,
+                                          @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
+                                          @RequestParam(value = "categorySeq", required = false) Long categorySeq) {
+        ProductFilterDto productFilterDto = ProductFilterDto.ToDto(keyword, deliveryType, minPrice, maxPrice, categorySeq);
+        List<SearchProductDto> searchProductDto = productService.filterProducts(productFilterDto);
+
+        return new BaseResponse<>("filtering product success", searchProductDto.stream()
+                .map(productDto -> SearchProductResponseVo.builder()
+                        .productSeq(productDto.getProductSeq())
+                        .build())
+
+                .collect(Collectors.toList()));
+    }
+
 
     // 상품 상세 정보 조회
     @GetMapping("/{id}")

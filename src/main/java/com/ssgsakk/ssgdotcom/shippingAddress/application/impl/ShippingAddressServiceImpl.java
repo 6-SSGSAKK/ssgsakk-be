@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -88,5 +91,31 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
     @Transactional
     public void deleteShippingAddress(DeleteShippingAddressDto deleteShippingAddressDto) {
         shippingAddressRepository.deleteByShippingAddressSeq(deleteShippingAddressDto.getShippingAddressSeq());
+    }
+
+    @Override
+    @Transactional
+    public List<FindDetailShippingAddressInfoResponseVo> findAllDetailShippingAddressInfo(FindAllDetailShippingAddressInfoDto findAllDetailShippingAddressInfoDto) {
+        try {
+            List<ShippingAddress> shippingAddresses = shippingAddressRepository.findAllByUuid(findAllDetailShippingAddressInfoDto.getUuid());
+            List<FindDetailShippingAddressInfoResponseVo> findDetailShippingAddressInfoResponseVos = new ArrayList<>();
+            for (ShippingAddress shippingAddress : shippingAddresses) {
+                FindDetailShippingAddressInfoResponseVo findDetailShippingAddressInfoResponseVo = FindDetailShippingAddressInfoResponseVo.builder()
+                        .shippingAddressSeq(shippingAddress.getShippingAddressSeq())
+                        .addressNickname(shippingAddress.getAddressNickname())
+                        .receiverName(shippingAddress.getReceiverName())
+                        .receiverMobileNum(shippingAddress.getReceiverMobileNum())
+                        .zipCode(shippingAddress.getZipCode())
+                        .roadAddress(shippingAddress.getRoadAddress())
+                        .jibunAddress(shippingAddress.getJibunAddress())
+                        .detailAddress(shippingAddress.getDetailAddress())
+                        .defaultAddressCheck(shippingAddress.getDefaultAddressCheck())
+                        .build();
+                findDetailShippingAddressInfoResponseVos.add(findDetailShippingAddressInfoResponseVo);
+            }
+            return findDetailShippingAddressInfoResponseVos;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 }

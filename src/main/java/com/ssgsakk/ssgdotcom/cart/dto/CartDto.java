@@ -9,8 +9,8 @@ import lombok.Getter;
 @Builder
 public class CartDto {
         private Long cartSeq;
-        private Short checkbox;
-        private Short fixItem;
+        private Integer checkbox;
+        private Integer fixItem;
         private Long optionAndStockSeq;
         private Integer quantity;
         private Long productSeq;
@@ -19,6 +19,8 @@ public class CartDto {
                     .optionAndStockSeq(cartRequestVo.getOptionAndStockSeq())
                     .quantity(cartRequestVo.getQuantity())
                     .productSeq(cartRequestVo.getProductSeq())
+                    .fixItem(cartRequestVo.getFixItem())
+                    .checkbox(cartRequestVo.getCheckbox())
                     .build();
         }
         public static CartDto EntityToDto(Cart cart) {

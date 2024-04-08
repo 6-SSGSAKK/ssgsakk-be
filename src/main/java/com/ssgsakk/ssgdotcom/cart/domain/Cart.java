@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Entity
@@ -33,17 +32,15 @@ public class Cart extends BaseTimeEntity {
     @Column(nullable = false, length = 3)
     private Integer quantity;
 
-    @Column(nullable = false, length = 1)
-    @ColumnDefault("0")
-    private Short checkbox;
+    @Column(columnDefinition = "integer default 0" ,length = 1)
+    private Integer checkbox;
 
-    @Column(nullable = false, length = 1)
-    @ColumnDefault("0")
-    private Short fixItem;
+    @Column(columnDefinition = "integer default 0" , length = 1)
+    private Integer fixItem;
 
     @Builder
     public Cart(Long cartSeq, User user, OptionAndStock optionAndStock, Product product,
-                Integer quantity, Short checkbox, Short fixItem){
+                Integer quantity, Integer checkbox, Integer fixItem){
         this.user = user;
         this.cartSeq = cartSeq;
         this.optionAndStock = optionAndStock;

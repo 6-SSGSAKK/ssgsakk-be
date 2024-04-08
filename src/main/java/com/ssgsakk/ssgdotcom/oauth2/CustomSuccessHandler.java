@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 
 @Component
@@ -45,20 +46,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             String uuid = user.getUuid();
             String token = jwtUtil.createJwt(uuid, 864000000L);
 
-            OauthResponseVo oauthResponseVo = OauthResponseVo.builder()
-                    .token("Bearer " + token)
-                    .state(0)
-                    .userName(user.getName())
-                    .userEmail(customUserDetails.getEmail())
-                    .build();
+            // 적절한 HTTP 상태 코드 설정
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.sendRedirect("http://localhost:3000/login/social?token=" + "Bearer " + token + "&state=0&userName=" + URLEncoder.encode(user.getName(), "UTF-8") + "&userEmail=" + customUserDetails.getEmail());
+//            response.sendRedirect("http://localhost:3000/login/social" + "?state=2&userEmail=" + customUserDetails.getEmail() + "&oAuthId=" + oauthId);
 
-            String result = objectMapper.writeValueAsString(oauthResponseVo);
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json; charset=UTF-8");
-            response.getWriter().print(result);
-
-            // test
-            response.sendRedirect("http://localhost:3000/login/social?token=" + "Bearer " + token + "&state=0&userName=" + user.getName() + "&userEmail=" + customUserDetails.getEmail());
         }
         // oauthId가 없는 사람들 중, user 테이블에 동일 이메일이 있는 지 확인
         catch (BusinessException e) {
@@ -75,37 +67,17 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 String uuid = user.getUuid();
                 String token = jwtUtil.createJwt(uuid, 864000000L);
 
-                OauthResponseVo oauthResponseVo = OauthResponseVo.builder()
-                        .token("Bearer " + token)
-                        .state(1)
-                        .userName(user.getName())
-                        .userEmail(customUserDetails.getEmail())
-                        .build();
+                // 적절한 HTTP 상태 코드 설정
+                response.setStatus(HttpServletResponse.SC_ACCEPTED);
+                response.sendRedirect("http://localhost:3000/login/social" + "?token=" + "Bearer " + token + "&state=1&userName=" + URLEncoder.encode(user.getName(), "UTF-8") + "&userEmail=" + customUserDetails.getEmail());
+//                response.sendRedirect("http://localhost:3000/login/social" + "?state=2&userEmail=" + customUserDetails.getEmail() + "&oAuthId=" + oauthId);
 
-                String result = objectMapper.writeValueAsString(oauthResponseVo);
-                response.setCharacterEncoding("UTF-8");
-                response.setContentType("application/json; charset=UTF-8");
-                response.getWriter().print(result);
-
-                // test
-                response.sendRedirect("http://localhost:3000/login/social" + "?token=" + "Bearer " + token + "&state=1&userName=" + user.getName() + "&userEmail=" + customUserDetails.getEmail());
             }
             // 동일 이메일이 없는 경우
             catch (BusinessException e1) {
-                OauthResponseVo oauthResponseVo = OauthResponseVo.builder()
-                        .state(2)
-                        .userEmail(customUserDetails.getEmail())
-                        .oAuthId(oauthId)
-                        .build();
 
-                String result = objectMapper.writeValueAsString(oauthResponseVo);
-                response.setCharacterEncoding("UTF-8");
-                response.setContentType("application/json; charset=UTF-8");
-                response.getWriter().print(result);
                 // 적절한 HTTP 상태 코드 설정
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-                // test
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 response.sendRedirect("http://localhost:3000/login/social" + "?state=2&userEmail=" + customUserDetails.getEmail() + "&oAuthId=" + oauthId);
             }
         }

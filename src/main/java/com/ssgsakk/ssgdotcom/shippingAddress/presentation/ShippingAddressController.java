@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/shipping-addr")
@@ -55,16 +57,27 @@ public class ShippingAddressController {
             , @PathVariable("shippingAddressSeq") Long shippingAddressSeq) {
         String uuid = getUuid(accessToken);
 
-//        FindDetailShippingAddressInfoResponseVo findDetailShippingAddressInfoResponseVo = shippingAddressService.findDetailShippingAddressInfo(FindDetailShippingAddressInfoDto.builder()
-//                .shippingAddressSeq(shippingAddressSeq)
-//                .build());
-
         return new BaseResponse<>("배송지 상세 정보 조회", shippingAddressService.findDetailShippingAddressInfo(
                 FindDetailShippingAddressInfoDto.builder()
                         .shippingAddressSeq(shippingAddressSeq)
                         .build()
         ));
     }
+
+    @Operation(summary = "전체 배송지 목록 조회", description = "전체 배송지 목록 조회")
+    @GetMapping("/all")
+    public BaseResponse<List<FindDetailShippingAddressInfoResponseVo>> findAllDetailShippingAddressInfo(@RequestHeader("Authorization") String accessToken) {
+        String uuid = getUuid(accessToken);
+
+        List<FindDetailShippingAddressInfoResponseVo> findDetailShippingAddressInfoResponseVos = shippingAddressService.findAllDetailShippingAddressInfo(
+                FindAllDetailShippingAddressInfoDto.builder()
+                        .uuid(uuid)
+                        .build()
+        );
+
+        return new BaseResponse<>("전체 배송지 목록 조회", findDetailShippingAddressInfoResponseVos);
+    }
+
 
     @Operation(summary = "배송지 추가", description = "배송지 추가", tags = {"Add Shipping Address"})
     @PostMapping("")

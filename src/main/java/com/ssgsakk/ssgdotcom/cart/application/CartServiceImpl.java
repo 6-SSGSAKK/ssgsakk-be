@@ -2,22 +2,23 @@ package com.ssgsakk.ssgdotcom.cart.application;
 
 import com.ssgsakk.ssgdotcom.cart.domain.Cart;
 import com.ssgsakk.ssgdotcom.cart.dto.CartDto;
+import com.ssgsakk.ssgdotcom.cart.dto.CartInfoDto;
 import com.ssgsakk.ssgdotcom.cart.infrastructure.CartRepository;
+import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
+import com.ssgsakk.ssgdotcom.contents.infrastructure.ProductContentsRepository;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.option.domain.OptionAndStock;
 import com.ssgsakk.ssgdotcom.option.infrastructure.OptionAndStockRepository;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
-import com.ssgsakk.ssgdotcom.security.JWTUtil;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.ssgsakk.ssgdotcom.cart.dto.CartDto.EntityToDto;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +28,12 @@ public class CartServiceImpl implements CartService {
     private final OptionAndStockRepository optionAndStockRepository;
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
-    private final JWTUtil jwtUtil;
+    private final ProductContentsRepository productContentsRepository;
 
     @Transactional
     @Override
-    public String addCart(CartDto cartDto, String accessToken) {
-        Cart existingCart = cartRepository.checkCart(cartDto.getOptionAndStockSeq(), checkUser(accessToken).getUserSeq())
+    public String addCart(CartDto cartDto, String uuid) {
+        Cart existingCart = cartRepository.checkCart(cartDto.getOptionAndStockSeq(), checkUser(uuid).getUserSeq())
                 .orElse(null);
 
         if (existingCart != null) {
@@ -40,68 +41,68 @@ public class CartServiceImpl implements CartService {
             updateQuantityInEntity(existingCart, updatedQuantity);
             return String.format("한번 더 담으셨네요!\n담긴 수량이 %d개가 되었습니다.", updatedQuantity);
         } else {
-            cartRepository.save(convertToEntity(cartDto, accessToken));
+            cartRepository.save(convertToEntity(cartDto, uuid));
             return("success");
         }
     }
 
     @Transactional
     @Override
-    public CartDto getCart(Long cartSeq, String accessToken) {
+    public CartInfoDto getCart(Long cartSeq, String uuid) {
         Cart cart = checkcart(cartSeq);
-        checkUserCart(cart, accessToken);
-        return EntityToDto(cart);
+        checkUserCart(cart, uuid);
+        return toCartInfoDto(cart);
     }
 
     @Transactional
     @Override
-    public void deleteCart(Long cartSeq, String accessToken) {
-        checkUserCart(checkcart(cartSeq), accessToken);
+    public void deleteCart(Long cartSeq, String uuid) {
+        checkUserCart(checkcart(cartSeq), uuid);
         cartRepository.deleteById(cartSeq);
     }
 
     @Transactional
     @Override
-    public void updateQuantity(Long cartSeq, Integer quantity, String accessToken) {
+    public void updateQuantity(Long cartSeq, Integer quantity, String uuid) {
         Cart cart = checkcart(cartSeq) ;
-        checkUserCart(cart, accessToken);
+        checkUserCart(cart, uuid);
         updateQuantityInEntity(cart,quantity);
     }
 
     @Transactional
     @Override
-    public void updateOption(Long cartSeq, Long optionAndStockSeq, String accessToken) {
+    public void updateOption(Long cartSeq, Long optionAndStockSeq, String uuid) {
         Cart cart = checkcart(cartSeq);
-        checkUserCart(cart, accessToken);
+        checkUserCart(cart, uuid);
         updateOptionInEntity(cart,optionAndStockSeq);
     }
 
     @Transactional
     @Override
-    public Integer getCartCount(String accessToken) {
-        return cartRepository.countByUser_UserSeq(checkUser(accessToken).getUserSeq());
+    public Integer getCartCount(String uuid) {
+        return cartRepository.countByUser_UserSeq(checkUser(uuid).getUserSeq());
     }
 
     @Transactional
     @Override
-    public void updateCartPin(Long cartSeq, Short fixItem, String accessToken) {
+    public void updateCartPin(Long cartSeq, Integer fixItem, String uuid) {
         Cart cart = checkcart(cartSeq);
-        checkUserCart(cart, accessToken);
+        checkUserCart(cart, uuid);
         updateCartPinInEntity(cart,fixItem);
     }
 
     @Transactional
     @Override
-    public void updateCheckbox(Long cartSeq, Short checkbox, String accessToken) {
+    public void updateCheckbox(Long cartSeq, Integer checkbox, String uuid) {
         Cart cart = checkcart(cartSeq);
-        checkUserCart(cart, accessToken);
+        checkUserCart(cart, uuid);
         updateCartCheckInEntity(cart,checkbox);
     }
 
     @Transactional
     @Override
-    public List<CartDto> getCartList(String accessToken) {
-        return convertToDto(cartRepository.findByUser_UserSeq(checkUser(accessToken).getUserSeq()));
+    public List<CartDto> getCartList(String uuid) {
+        return convertToDto(cartRepository.findByUser_UserSeq(checkUser(uuid).getUserSeq()));
     }
     private List<CartDto> convertToDto(List<Cart> cartList) {
         return cartList.stream()
@@ -121,26 +122,26 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new IllegalArgumentException("Cart not found"));
     }
 
-    private User checkUser(String accessToken) {
-        return memberRepository.findByUuid(jwtUtil.getUuid(accessToken))
+    private User checkUser(String uuid) {
+        return memberRepository.findByUuid(uuid)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
-    private void checkUserCart(Cart cart, String accessToken) {
+    private void checkUserCart(Cart cart, String uuid) {
         User user = cart.getUser();
 
-        if (!user.getUuid().equals(jwtUtil.getUuid(accessToken))) {
+        if (!user.getUuid().equals(uuid)) {
             throw new IllegalArgumentException("User not authorized");
         }
     }
 
-    private Cart convertToEntity(CartDto cartDto, String accessToken) {
+    private Cart convertToEntity(CartDto cartDto, String uuid) {
         OptionAndStock optionAndStock = optionAndStockRepository.findById(cartDto.getOptionAndStockSeq())
                 .orElseThrow(() -> new IllegalArgumentException("OptionAndStock not found"));
         Product product = productRepository.findById(cartDto.getProductSeq())
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
         return Cart.builder()
-                .user(checkUser(accessToken))
+                .user(checkUser(uuid))
                 .optionAndStock(optionAndStock)
                 .product(product)
                 .quantity(cartDto.getQuantity())
@@ -149,7 +150,7 @@ public class CartServiceImpl implements CartService {
                 .build();
     }
     private void updateQuantityInEntity(Cart cart, Integer quantity) {
-        Cart.builder()
+        Cart updatedCart = Cart.builder()
                 .cartSeq(cart.getCartSeq())
                 .user(cart.getUser())
                 .optionAndStock(cart.getOptionAndStock())
@@ -158,10 +159,11 @@ public class CartServiceImpl implements CartService {
                 .checkbox(cart.getCheckbox())
                 .fixItem(cart.getFixItem())
                 .build();
+        cartRepository.save(updatedCart);
     }
 
     private void updateOptionInEntity(Cart cart, Long optionAndStockSeq) {
-        Cart.builder()
+        Cart updatedCart = Cart.builder()
                 .cartSeq(cart.getCartSeq())
                 .user(cart.getUser())
                 .optionAndStock(optionAndStockRepository.findById(optionAndStockSeq)
@@ -171,10 +173,11 @@ public class CartServiceImpl implements CartService {
                 .checkbox(cart.getCheckbox())
                 .fixItem(cart.getFixItem())
                 .build();
+        cartRepository.save(updatedCart);
     }
 
-    private void updateCartPinInEntity(Cart cart, Short fixItem) {
-        Cart.builder()
+    private void updateCartPinInEntity(Cart cart, Integer fixItem) {
+        Cart updatedCart = Cart.builder()
                 .cartSeq(cart.getCartSeq())
                 .user(cart.getUser())
                 .optionAndStock(cart.getOptionAndStock())
@@ -183,10 +186,11 @@ public class CartServiceImpl implements CartService {
                 .checkbox(cart.getCheckbox())
                 .fixItem(fixItem)
                 .build();
+        cartRepository.save(updatedCart);
     }
 
-    private void updateCartCheckInEntity(Cart cart, Short checkbox) {
-        Cart.builder()
+    private void updateCartCheckInEntity(Cart cart, Integer checkbox) {
+        Cart updatedCart = Cart.builder()
                 .cartSeq(cart.getCartSeq())
                 .user(cart.getUser())
                 .optionAndStock(cart.getOptionAndStock())
@@ -195,5 +199,37 @@ public class CartServiceImpl implements CartService {
                 .checkbox(checkbox)
                 .fixItem(cart.getFixItem())
                 .build();
+        cartRepository.save(updatedCart);
     }
+
+    private CartInfoDto toCartInfoDto(Cart cart) {
+        String option = (cart.getOptionAndStock().getColor() != null ?
+                cart.getOptionAndStock().getColor().getColorData() + " " : "") +
+                (cart.getOptionAndStock().getSize() != null ?
+                        cart.getOptionAndStock().getSize().getSizeData()  + " ": "") +
+                (cart.getOptionAndStock().getCustomizationOption() != null ?
+                        cart.getOptionAndStock().getCustomizationOption().getCustomizationData() : "");
+        return CartInfoDto.builder()
+                .productSeq(cart.getProduct().getProductSeq())
+                .productOption(option)
+                .productVendor(cart.getProduct().getVendor().getVendorName())
+                .productPrice(cart.getProduct().getProductPrice())
+                .productName(cart.getProduct().getProductName())
+                .quantity(cart.getQuantity())
+                .productImage(getContents(cart.getProduct().getProductSeq()))
+                .discountPercent(cart.getProduct().getDiscountPercent())
+                .build();
+    }
+    private String getContents(Long productSeq) {
+        List<ProductContents> contents = productContentsRepository.findByProduct_ProductSeq(productSeq);
+        if (contents != null) {
+            for (ProductContents content : contents) {
+                if (content.getPriority() == 1) {
+                    return content.getContents() != null ? content.getContents().getContentUrl() : null;
+                }
+            }
+        }
+        return null;
+    }
+
 }
