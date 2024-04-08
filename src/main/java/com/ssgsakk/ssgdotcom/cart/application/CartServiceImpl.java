@@ -203,9 +203,10 @@ public class CartServiceImpl implements CartService {
     }
 
     private CartInfoDto toCartInfoDto(Cart cart) {
-        String option = (cart.getOptionAndStock().getColor() != null ? cart.getOptionAndStock().getColor().getColorData() : "") +
+        String option = (cart.getOptionAndStock().getColor() != null ?
+                cart.getOptionAndStock().getColor().getColorData() + " " : "") +
                 (cart.getOptionAndStock().getSize() != null ?
-                        cart.getOptionAndStock().getSize().getSizeData() : "") +
+                        cart.getOptionAndStock().getSize().getSizeData()  + " ": "") +
                 (cart.getOptionAndStock().getCustomizationOption() != null ?
                         cart.getOptionAndStock().getCustomizationOption().getCustomizationData() : "");
         return CartInfoDto.builder()
