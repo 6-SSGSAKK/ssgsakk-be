@@ -1,6 +1,7 @@
 package com.ssgsakk.ssgdotcom.contents.infrastructure;
 
 import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
+import com.ssgsakk.ssgdotcom.likes.domain.LikeFolder;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +13,6 @@ public interface ProductContentsRepository extends JpaRepository<ProductContents
     List<ProductContents> findByProduct_ProductSeq(Long productSeq);
 
     Optional<ProductContents> findByProductAndPriority(Product product, Integer priority);
+
+    Optional<ProductContents> findByProduct(Product product);
 }
