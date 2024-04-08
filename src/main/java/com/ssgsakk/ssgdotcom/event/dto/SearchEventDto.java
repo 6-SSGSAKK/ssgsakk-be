@@ -11,4 +11,7 @@ public class SearchEventDto {
     private Long eventSeq;
     private String eventName;
     private LocalDateTime eventEndDate;
+    private Integer eventLowestPrice;
+    private String eventThumbnail;
+    private String eventVendor;
 }

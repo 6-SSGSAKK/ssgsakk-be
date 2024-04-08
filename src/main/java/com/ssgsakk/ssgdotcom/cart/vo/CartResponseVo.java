@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 @Builder
 public class CartResponseVo {
     private Long cartSeq;
-    private Short checkbox;
-    private Short fixItem;
+    private Integer checkbox;
+    private Integer fixItem;
     private Long optionAndStockSeq;
     private Integer quantity;
     private Long productSeq;

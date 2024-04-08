@@ -20,7 +20,7 @@ public interface CartService {
 
     Integer getCartCount(String uuid);
 
-    void updateCartPin(Long cartSeq, Short fixItem, String uuid);
+    void updateCartPin(Long cartSeq, Integer fixItem, String uuid);
 
-    void updateCheckbox(Long cartSeq, Short checkbox, String uuid);
+    void updateCheckbox(Long cartSeq, Integer checkbox, String uuid);
 }
