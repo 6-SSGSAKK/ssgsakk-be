@@ -33,7 +33,7 @@ public class PurchaseProduct {
     private Integer purchaseProductCount;// 주문상품수량
 
     @Column(length = 50)
-    private String purchaseProductOptionName;//주문상품옵션상세사항
+    private String purchaseProductOptionName;//주문상품옵션사항
 
     @Column(length = 50)
     private Integer purchaseProductPrice; //주문상품금액
