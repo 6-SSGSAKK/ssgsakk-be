@@ -2,7 +2,7 @@ package com.ssgsakk.ssgdotcom.event.presentation;
 
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
-import com.ssgsakk.ssgdotcom.event.Vo.SearchEventResponseVo;
+import com.ssgsakk.ssgdotcom.event.vo.SearchEventResponseVo;
 import com.ssgsakk.ssgdotcom.event.application.EventService;
 import com.ssgsakk.ssgdotcom.event.dto.EventDto;
 import com.ssgsakk.ssgdotcom.event.dto.SearchEventDto;

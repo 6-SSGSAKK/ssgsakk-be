@@ -3,7 +3,7 @@ package com.ssgsakk.ssgdotcom.contents.domain;
 
 import com.ssgsakk.ssgdotcom.review.domain.Review;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,11 +17,11 @@ public class ReviewContents {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewContentsSeq;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_seq")
     private Review review;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contents_seq")
     private Contents contents;
 

@@ -35,11 +35,13 @@ public class ContentsServiceImpl implements ContentsService {
 
     @Override
     @Transactional
-    public void createReviewContents(String contentUrl) {
-        Contents contents = Contents.builder().contentUrl(contentUrl).build();
-        ReviewContents reviewContents = ReviewContents.builder().contents(contents).build();
-        contentsRepository.save(contents);
-        reviewContentsRepository.save(reviewContents);
+    public void createReviewContents(List<String> contentUrl) {
+        for (String url : contentUrl) {
+            Contents contents = Contents.builder().contentUrl(url).build();
+            contentsRepository.save(contents);
+            ReviewContents reviewContents = ReviewContents.builder().contents(contents).build();
+            reviewContentsRepository.save(reviewContents);
+        }
     }
 
     @Override

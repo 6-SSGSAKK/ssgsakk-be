@@ -18,7 +18,9 @@ public class EventServiceImpl implements EventService{
     public List<SearchEventDto> getEvents(EventDto eventDto) {
         return eventRepositoryImpl.getEvent(eventDto).stream()
                 .map(event -> SearchEventDto.builder()
-                        .eventSeq(event)
+                        .eventSeq(event.getEventSeq())
+                        .eventName(event.getEventName())
+                        .eventEndDate(event.getEventEndDate())
                         .build()).toList();
     }
 }

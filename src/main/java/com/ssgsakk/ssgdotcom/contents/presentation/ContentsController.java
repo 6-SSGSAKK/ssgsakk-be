@@ -17,8 +17,8 @@ public class ContentsController {
     private ContentsService contentsService;
     // 특정 ID의 컨텐츠 조회
     @GetMapping("/{productseq}")
-    public BaseResponse<?> getContentById(@PathVariable("productseq") Long productseq) {
-        List<ProductContents> contents = contentsService.productContentsList(productseq);
+    public BaseResponse<?> getContentById(@PathVariable("productseq") Long productSeq) {
+        List<ProductContents> contents = contentsService.productContentsList(productSeq);
         if (contents != null) {
             List<ProductContentsVo> contentVos = new ArrayList<>();
             for (ProductContents content : contents) {

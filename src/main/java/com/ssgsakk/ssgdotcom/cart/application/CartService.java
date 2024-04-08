@@ -6,21 +6,21 @@ import com.ssgsakk.ssgdotcom.cart.dto.CartDto;
 import java.util.List;
 
 public interface CartService {
-    String addCart(CartDto cartDto, String accessToken);
+    String addCart(CartDto cartDto, String uuid);
 
-    List<CartDto> getCartList(String accessToken);
+    List<CartDto> getCartList(String uuid);
 
-    CartDto getCart(Long cartSeq, String accessToken);
+    CartDto getCart(Long cartSeq, String uuid);
 
-    void deleteCart(Long cartSeq, String accessToken);
+    void deleteCart(Long cartSeq, String uuid);
 
-    void updateQuantity(Long cartSeq, Integer quantity, String accessToken);
+    void updateQuantity(Long cartSeq, Integer quantity, String uuid);
 
-    void updateOption(Long cartSeq, Long optionAndStockSeq, String accessToken);
+    void updateOption(Long cartSeq, Long optionAndStockSeq, String uuid);
 
-    Integer getCartCount(String accessToken);
+    Integer getCartCount(String uuid);
 
-    void updateCartPin(Long cartSeq, Short fixItem, String accessToken);
+    void updateCartPin(Long cartSeq, Short fixItem, String uuid);
 
-    void updateCheckbox(Long cartSeq, Short checkbox, String accessToken);
+    void updateCheckbox(Long cartSeq, Short checkbox, String uuid);
 }

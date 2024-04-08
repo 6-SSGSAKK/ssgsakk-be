@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
-//    @PutMapping
-//    @Operation(summary = "리뷰 작성", description = "리뷰를 작성합니다.", tags = {"Review"})
-//    public BaseResponse<?> createReview(ReviewVo reviewVo) {
-//        reviewService.createReview(ReviewDto.VoToDto(reviewVo));
-//        return new BaseResponse<>("createReview Success","");
-//    }
+    @PutMapping("/write")
+    @Operation(summary = "리뷰 작성", description = "리뷰를 작성합니다.", tags = {"Review"})
+    public BaseResponse<?> createReview(ReviewVo reviewVo) {
+        reviewService.createReview(ReviewDto.VoToDto(reviewVo));
+        return new BaseResponse<>("createReview Success","");
+    }
+
 }
