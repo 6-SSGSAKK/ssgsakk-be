@@ -20,10 +20,12 @@ public class LikeFolder {
     private Long likeFolderSeq;
 
     private String likeFolderName;
+    private String folderThumbnailUrl;
 
     @Builder
-    public LikeFolder(Long likeFolderSeq, String likeFolderName) {
+    public LikeFolder(Long likeFolderSeq, String likeFolderName, String folderThumbnailUrl) {
+        this.likeFolderSeq = likeFolderSeq;
         this.likeFolderName = likeFolderName;
-        this.likeFolderName = likeFolderName;
+        this.folderThumbnailUrl = folderThumbnailUrl;
     }
 }

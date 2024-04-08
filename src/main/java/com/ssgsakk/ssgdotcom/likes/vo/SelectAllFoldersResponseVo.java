@@ -7,14 +7,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class SelectAllFoldersResponseVo {
-    private Long folderSeq;
-    private String folderName;
-    private String folderThumbnailUrl;
+    private Long likeFolderSeq;
+    private String likeFolderName;
 
     @Builder
-    public SelectAllFoldersResponseVo(Long folderSeq, String folderName, String folderThumbnailUrl) {
-        this.folderSeq = folderSeq;
-        this.folderName = folderName;
-        this.folderThumbnailUrl = folderThumbnailUrl;
+    public SelectAllFoldersResponseVo(Long likeFolderSeq, String likeFolderName) {
+        this.likeFolderSeq = likeFolderSeq;
+        this.likeFolderName = likeFolderName;
     }
 }

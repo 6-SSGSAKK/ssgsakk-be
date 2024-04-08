@@ -4,6 +4,7 @@ import com.ssgsakk.ssgdotcom.category.domain.Category;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepository;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
+import com.ssgsakk.ssgdotcom.contents.domain.Contents;
 import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
 import com.ssgsakk.ssgdotcom.contents.infrastructure.ProductContentsRepository;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
@@ -334,100 +335,16 @@ public class LikesServiceImpl implements LikesService {
         }
     }
 
-//    @Override
-//    @Transactional
-//    public CheckProductLikesResponseVo checkProductOrCategoryLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto) {
-//
-//        // 상품 찜 확인
-//        if (checkProductOrCategoryLikesDto.getProductSeq() != null) {
-//            try {
-//                User user = memberRepository.findByUuid(checkProductOrCategoryLikesDto.getUuid()).orElseThrow(
-//                        () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
-//                Product product = productRepository.findByProductSeq(checkProductOrCategoryLikesDto.getProductSeq()).orElseThrow(
-//                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
-//
-//                LikeProduct likeProduct = likeProductRepository.findByUserAndProduct(user, product).orElse(null);
-//
-//                // likeProduct가 있는 경우
-//                if (likeProduct != null) {
-//                    return CheckProductLikesResponseVo.builder()
-//                            .productSeq(checkProductOrCategoryLikesDto.getProductSeq())
-//                            .likeState(likeProduct.getLikeState())
-//                            .build();
-//                } else {
-//                    return CheckProductLikesResponseVo.builder()
-//                            .productSeq(checkProductOrCategoryLikesDto.getProductSeq())
-//                            .likeState(0)
-//                            .build();
-//                }
-//
-//            } catch (Exception e) {
-//                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
-//            }
-//        }
-//
-//        // 카테고리 찜 확인
-//        else {
-//            try {
-//                User user = memberRepository.findByUuid(checkProductOrCategoryLikesDto.getUuid()).orElseThrow(
-//                        () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
-//                Category category = categoryRepository.findByCategorySeq(checkProductOrCategoryLikesDto.getCategorySeq()).orElseThrow(
-//                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
-//
-//                LikeCategory likeCategory = likeCategoryRepository.findByUserAndCategory(user, category).orElse(null);
-//
-//                // likeCategory가 없는 경우
-//                if (likeCategory != null) {
-//                    return CheckProductLikesResponseVo.builder()
-//                            .categorySeq(checkProductOrCategoryLikesDto.getCategorySeq())
-//                            .likeState(likeCategory.getCategoryState())
-//                            .build();
-//                } else {
-//                    return CheckProductLikesResponseVo.builder()
-//                            .categorySeq(checkProductOrCategoryLikesDto.getCategorySeq())
-//                            .likeState(0)
-//                            .build();
-//                }
-//            } catch (Exception e) {
-//                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
-//            }
-//        }
-//    }
-
     @Override
     @Transactional
     public List<SelectAllFoldersResponseVo> selectAllFolders(SelectAllFoldersDto selectAllFoldersDto) {
-//        try {
-//            User user = memberRepository.findByUuid(selectAllFoldersDto.getUuid()).orElseThrow(
-//                    () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
-//
-//            List<LikeFolder> likeFolders = likeFolderRepository.findAllByUser(user);
-//
-//            List<SelectAllFoldersResponseVo> responseVos = new ArrayList<>();
-//            for (LikeFolder likeFolder : likeFolders) {
-//                // folderThumbnailUrl은 폴더에 포함된 상품 중 가장 최근 상품의 썸네일을 들고온다.
-//
-//                LikeProduct likeProduct = likedConnectRepository.findByUser(user).orElseThrow(
-//                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT)
-//                );
-//
-//                Product product = likeProduct.getProduct();
-//
-//                ProductContents productContents = productContentsRepository.findByProduct(product).orElseThrow(
-//                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
-//
-//                responseVos.add(SelectAllFoldersResponseVo.builder()
-//                        .folderSeq(likeFolder.getLikeFolderSeq())
-//                        .folderName(likeFolder.getLikeFolderName())
-//                        .folderThumbnailUrl(productContents.getContents().getContentUrl())
-//                        .build());
-//            }
-//            return responseVos;
-//
-//        } catch (Exception e) {
-//            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
-//        }
-        return null;
+
+        try {
+            List<SelectAllFoldersResponseVo> likedConnects = likedConnectRepository.selectAllFolders(selectAllFoldersDto.getUuid());
+            return likedConnects;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override

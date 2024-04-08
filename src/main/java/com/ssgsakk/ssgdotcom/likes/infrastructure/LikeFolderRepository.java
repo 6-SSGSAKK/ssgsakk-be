@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.likes.infrastructure;
 
+import com.ssgsakk.ssgdotcom.likes.domain.LikeCategory;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeFolder;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeProduct;
 import com.ssgsakk.ssgdotcom.member.domain.User;
