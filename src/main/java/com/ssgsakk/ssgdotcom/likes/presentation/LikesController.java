@@ -153,6 +153,18 @@ public class LikesController {
         return new BaseResponse<>("User Category Likes List", userCategoryLikesList);
     }
 
+    @Operation(summary = "찜 폴더에서 상품 또는 카테고리 삭제", description = "찜 폴더에서 상품 또는 카테고리 삭제")
+    @DeleteMapping("/user/folder-delete/{folderSeq}")
+    public BaseResponse<Void> userCategoryLikes(@RequestHeader("Authorization") String accessToken
+            , @PathVariable("folderSeq") Long folderSeq
+            , @RequestParam(value = "product-seq", required = false) Long productSeq
+            , @RequestParam(value = "category-seq", required = false) Long categorySeq) {
+        String uuid = getUuid(accessToken);
+
+
+        return new BaseResponse<>("Delete Product Or Category Likes In a Specific Folder Success", null);
+    }
+
 
     // JWT에서 UUID 추출 메서드
     public String getUuid(String jwt) {
