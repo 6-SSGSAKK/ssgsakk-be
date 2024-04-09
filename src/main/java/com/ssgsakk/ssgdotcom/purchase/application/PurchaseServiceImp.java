@@ -5,6 +5,7 @@ import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
 import com.ssgsakk.ssgdotcom.purchase.infrastructure.PurchaseRepository;
 import com.ssgsakk.ssgdotcom.purchaseproduct.application.PurchaseProductService;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
+import com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure.PurchaseProductRepositoryImp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class PurchaseServiceImp implements PurchaseService {
 
     private final PurchaseRepository purchaseRepository;
     private final PurchaseProductService purchaseProductService;
+
 
     public String createdMemberPurchaseCode(){  //주문번호 생성 메소드  회원 주문번호 메소드
 
@@ -66,6 +68,7 @@ public class PurchaseServiceImp implements PurchaseService {
         purchaseRepository.save(purchase);
 
         purchaseProductService.savePurchaseProductList(purchaseProductDto, purchase);
+
 
         PurchaseCodeDto purchaseCodeDto = PurchaseCodeDto.builder()
                         .purchaseCode(purchase.getPurchaseCode())
