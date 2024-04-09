@@ -4,7 +4,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
-import com.ssgsakk.ssgdotcom.product.domain.QProduct;
 import com.ssgsakk.ssgdotcom.product.domain.QProductList;
 import com.ssgsakk.ssgdotcom.product.dto.ProductFilterDto;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -16,7 +15,6 @@ import java.util.List;
 public class ProductRepositoryImpl extends QuerydslRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
     private final QProductList qProductList = QProductList.productList;
-    private final QProduct qProduct = QProduct.product;
 
 
     public ProductRepositoryImpl(JPAQueryFactory jpaQueryFactory) {

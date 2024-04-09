@@ -4,6 +4,8 @@ import com.ssgsakk.ssgdotcom.cart.domain.Cart;
 import com.ssgsakk.ssgdotcom.cart.dto.CartDto;
 import com.ssgsakk.ssgdotcom.cart.dto.CartInfoDto;
 import com.ssgsakk.ssgdotcom.cart.infrastructure.CartRepository;
+import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
+import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
 import com.ssgsakk.ssgdotcom.contents.infrastructure.ProductContentsRepository;
 import com.ssgsakk.ssgdotcom.member.domain.User;
@@ -99,6 +101,14 @@ public class CartServiceImpl implements CartService {
         updateCartCheckInEntity(cart,checkbox);
     }
 
+    @Override
+    public void updateAllCheck(Integer checkbox, String uuid) {
+        List<Cart> carts = cartRepository.findByUser_UserSeq(checkUser(uuid).getUserSeq());
+        for (Cart cart : carts) {
+            updateCartCheckInEntity(cart, checkbox);
+        }
+    }
+
     @Transactional
     @Override
     public List<CartDto> getCartList(String uuid) {
@@ -119,26 +129,26 @@ public class CartServiceImpl implements CartService {
 
     private Cart checkcart(Long cartSeq){
         return cartRepository.findById(cartSeq)
-                .orElseThrow(() -> new IllegalArgumentException("Cart not found"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_CART));
     }
 
     private User checkUser(String uuid) {
         return memberRepository.findByUuid(uuid)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
     }
     private void checkUserCart(Cart cart, String uuid) {
         User user = cart.getUser();
 
         if (!user.getUuid().equals(uuid)) {
-            throw new IllegalArgumentException("User not authorized");
+            throw new BusinessException(ErrorCode.JWT_VALID_FAILED);
         }
     }
 
     private Cart convertToEntity(CartDto cartDto, String uuid) {
         OptionAndStock optionAndStock = optionAndStockRepository.findById(cartDto.getOptionAndStockSeq())
-                .orElseThrow(() -> new IllegalArgumentException("OptionAndStock not found"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_OPTION));
         Product product = productRepository.findById(cartDto.getProductSeq())
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
 
         return Cart.builder()
                 .user(checkUser(uuid))
@@ -167,7 +177,7 @@ public class CartServiceImpl implements CartService {
                 .cartSeq(cart.getCartSeq())
                 .user(cart.getUser())
                 .optionAndStock(optionAndStockRepository.findById(optionAndStockSeq)
-                        .orElseThrow(() -> new IllegalArgumentException("OptionAndStock not found")))
+                        .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_OPTION)))
                 .product(cart.getProduct())
                 .quantity(cart.getQuantity())
                 .checkbox(cart.getCheckbox())
@@ -222,6 +232,7 @@ public class CartServiceImpl implements CartService {
     }
     private String getContents(Long productSeq) {
         List<ProductContents> contents = productContentsRepository.findByProduct_ProductSeq(productSeq);
+
         if (contents != null) {
             for (ProductContents content : contents) {
                 if (content.getPriority() == 1) {

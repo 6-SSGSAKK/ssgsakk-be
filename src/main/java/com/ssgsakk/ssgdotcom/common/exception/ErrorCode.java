@@ -1,8 +1,6 @@
 package com.ssgsakk.ssgdotcom.common.exception;
 
 import lombok.Getter;
-import org.hibernate.Internal;
-import org.webjars.NotFoundException;
 
 @Getter
 public enum ErrorCode {
@@ -39,7 +37,7 @@ public enum ErrorCode {
     CANNOT_FOUND_CATEGORY(404,"ERROR-CATEGORY-001","카테고리를 찾을 수 없습니다."),
 
     // Purchase
-    CANNOT_FOUND_PURCHASE(404,"ERRROE-PURCHASE-001","주문을 찾을 수 없습니다."),
+    CANNOT_FOUND_PURCHASE(404,"ERROR-PURCHASE-001","주문을 찾을 수 없습니다."),
 
     // Product
     CANNOT_FOUND_PRODUCT(404,"ERROR-PRODUCT-001","상품을 찾을 수 없습니다."),
@@ -47,6 +45,21 @@ public enum ErrorCode {
     // Folder
     CANNOT_FOUND_FOLDER(404, "ERROR-FOLDER-001", "찜 폴더를 찾을 수 없습니다."),
 
+    // Cart
+    CANNOT_FOUND_CART(404, "ERROR-CART-001", "장바구니를 찾을 수 없습니다."),
+
+    // Option
+    CANNOT_FOUND_OPTION(404, "ERROR-OPTION-001", "선택가 지정된 옵션을 찾을 수 없습니다."),
+
+    // Event
+    CANNOT_FOUND_EVENT(404, "ERROR-EVENT-001", "이벤트을 찾을 수 없습니다."),
+
+    // Content
+    CANNOT_FOUND_CONTENT(404, "ERROR-CONTENT-001", "컨텐츠를 찾을 수 없습니다."),
+    CANNOT_FOUND_PRODUCT_CONTENTS(404, "ERROR-CONTENT-002", "상품의 컨텐츠를 찾을 수 없습니다."),
+
+    // Review
+    CANNOT_FOUND_REVIEW(404, "ERROR-REVIEW-001", "리뷰을 찾을 수 없습니다."),
     // 500 번대 에러
     INTERNAL_SERVER_ERROR(500, "ERROR-SERVER-001", "서버에서 요청을 처리하지 못했습니다."),
     REDIS_SERVER_ERROR(500, "ERROR-SERVER-002", "레디스 서버에서 요청을 처리하지 못했습니다.");

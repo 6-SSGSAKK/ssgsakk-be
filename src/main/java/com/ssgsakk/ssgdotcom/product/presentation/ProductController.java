@@ -58,7 +58,6 @@ public class ProductController {
                 .map(productDto -> SearchProductResponseVo.builder()
                         .productSeq(productDto.getProductSeq())
                         .build())
-
                 .collect(Collectors.toList()));
     }
 

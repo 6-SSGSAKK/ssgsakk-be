@@ -1,18 +1,20 @@
 package com.ssgsakk.ssgdotcom.review.application;
 
 import com.ssgsakk.ssgdotcom.review.dto.ReviewDto;
+import com.ssgsakk.ssgdotcom.review.dto.ReviewInfoDto;
 import com.ssgsakk.ssgdotcom.review.dto.ReviewListDto;
+import com.ssgsakk.ssgdotcom.review.dto.UpdateReviewDto;
 
 import java.util.Optional;
 
 public interface ReviewService {
+    void updateReview(Long reviewSeq,UpdateReviewDto updateReviewDto, String uuid);
 
-
-    void updateReview(Long reviewSeq, String reviewParagraph, Short reviewScore);
-
-    void deleteReview(Long productId,Long reviewSeq);
+    void deleteReview(Long reviewSeq);
 
     Optional<ReviewListDto> getReviewList(Long productId);
 
-    void createReview(ReviewDto reviewDto);
+    void createReview(ReviewDto reviewDto, String uuid);
+
+    ReviewInfoDto getReviewInfo(Long reviewSeq);
 }

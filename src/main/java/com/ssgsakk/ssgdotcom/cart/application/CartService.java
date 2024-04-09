@@ -24,4 +24,6 @@ public interface CartService {
     void updateCartPin(Long cartSeq, Integer fixItem, String uuid);
 
     void updateCheckbox(Long cartSeq, Integer checkbox, String uuid);
+
+    void updateAllCheck(Integer checkbox, String uuid);
 }

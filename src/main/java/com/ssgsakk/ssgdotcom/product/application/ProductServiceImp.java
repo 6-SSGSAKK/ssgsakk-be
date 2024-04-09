@@ -1,5 +1,7 @@
 package com.ssgsakk.ssgdotcom.product.application;
 
+import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
+import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.contents.application.ContentsService;
 import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
 import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
@@ -38,7 +40,7 @@ public class ProductServiceImp implements ProductService{
     @Transactional
     public ProductDto productInfo(Long productSeq) {
         Product product = productRepository.findById(productSeq)
-                .orElseThrow(() -> new RuntimeException("찾으시는 상품이 없습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
         List<ProductContents> contents = contentsService.productContentsList(productSeq);
         List<ProductContentsVo> contentVos = getProductContentsVos(contents);
         return getProductInfoDto(product, contentVos);
@@ -49,7 +51,7 @@ public class ProductServiceImp implements ProductService{
     @Transactional
     public ProductListInfoDto productListInfo(Long productSeq) {
         Product product = productRepository.findById(productSeq)
-                .orElseThrow(() -> new RuntimeException("찾으시는 상품이 없습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
         List<ProductContents> contents = contentsService.productContentsList(productSeq);
         ProductContentsVo contentVo = getProductContentsVo(contents);
         return getProductListInfoDto(product, contentVo);
@@ -76,7 +78,7 @@ public class ProductServiceImp implements ProductService{
     @Override
     @Transactional
     public List<SearchProductDto> productEvent(Long eventSeq) {
-        eventRepository.findById(eventSeq).orElseThrow(() -> new RuntimeException("존재하지 않는 이벤트 입니다."));
+        eventRepository.findById(eventSeq).orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_EVENT));
         List<EventProduct> eventProductList = eventProductRepository.findByEvent_EventSeq(eventSeq);
         return getSearchProductDtoListEvent(eventProductList);
     }
