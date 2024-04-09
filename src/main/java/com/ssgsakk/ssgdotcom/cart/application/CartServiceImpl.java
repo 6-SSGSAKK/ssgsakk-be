@@ -220,6 +220,11 @@ public class CartServiceImpl implements CartService {
                 (cart.getOptionAndStock().getCustomizationOption() != null ?
                         cart.getOptionAndStock().getCustomizationOption().getCustomizationData() : "");
         return CartInfoDto.builder()
+                .OptionAndStockSeq(cart.getOptionAndStock().getOptionAndStockSeq())
+                .stock(cart.getOptionAndStock().getStock())
+                .fixItem(cart.getFixItem())
+                .checkbox(cart.getCheckbox())
+                .cartSeq(cart.getCartSeq())
                 .productSeq(cart.getProduct().getProductSeq())
                 .productOption(option)
                 .productVendor(cart.getProduct().getVendor().getVendorName())
