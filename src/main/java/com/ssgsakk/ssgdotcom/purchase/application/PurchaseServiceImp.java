@@ -5,7 +5,6 @@ import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
 import com.ssgsakk.ssgdotcom.purchase.infrastructure.PurchaseRepository;
 import com.ssgsakk.ssgdotcom.purchaseproduct.application.PurchaseProductService;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
-import com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure.PurchaseProductRepositoryImp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -40,6 +39,25 @@ public class PurchaseServiceImp implements PurchaseService {
 
         makedpurchaseCode += randomCodeBuilder.toString();
         return makedpurchaseCode; //purchseCode 생성
+    }
+
+    public String createNonMemberPurchaseCode(){
+
+       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+       String currentDate = dateFormat.format(new Date()); //현재 날짜 시간.
+       String makepurchaseCode = currentDate + "-N-"; //비회원은 날짜 + N으로 시작
+
+       Random random = new Random();
+
+       StringBuilder randomCodeBuilder = new StringBuilder();
+
+       for (int i = 0; i < 6; i++) { //0~9까지 난수생성
+           randomCodeBuilder.append(random.nextInt(10));
+       }
+
+        makepurchaseCode += randomCodeBuilder.toString();
+       return makepurchaseCode;
+
     }
 
 
@@ -77,6 +95,38 @@ public class PurchaseServiceImp implements PurchaseService {
         return purchaseCodeDto;
 
 
+    }
+
+    @Override
+    @Transactional
+    public PurchaseCodeDto createNonMemberPurchase(PurchaseDto purchaseDto, List<PurchaseProductDto> purchaseProductDto) {
+        //비회원 주문저장 메소드
+        Purchase purchase = Purchase.builder()
+                .purchaser(purchaseDto.getPurchaser())
+                .purchaseCode(createNonMemberPurchaseCode())
+                .purchaseuuid(null)
+                .purchaserPhoneNum(purchaseDto.getPurchaserPhoneNum())
+                .purchaseEmail(purchaseDto.getPurchaseEmail())
+                .recipient(purchaseDto.getRecipient())
+                .recipientPhoneNum(purchaseDto.getRecipientPhoneNum())
+                .recipientEmail(purchaseDto.getRecipientEmail())
+                .purchaseZipcode(purchaseDto.getPurchaseZipcode())
+                .purchaseRoadAddress(purchaseDto.getPurchaseRoadAddress())
+                .purchaseJibunAddress(purchaseDto.getPurchaseJibunAddress())
+                .purchaseDetailAddress(purchaseDto.getPurchaseDetailAddress())
+                .deliverymessage(purchaseDto.getDeliverymessage())
+                .shippingFee(purchaseDto.getShippingFee())
+                .build();
+
+        purchaseRepository.save(purchase);
+
+        purchaseProductService.savePurchaseProductList(purchaseProductDto, purchase);
+
+        PurchaseCodeDto purchaseCodeDto = PurchaseCodeDto.builder()
+                .purchaseCode(purchase.getPurchaseCode())
+                .build(); //위와동일
+
+        return purchaseCodeDto;
     }
 
 

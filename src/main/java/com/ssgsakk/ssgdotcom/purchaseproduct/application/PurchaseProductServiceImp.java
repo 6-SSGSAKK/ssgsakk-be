@@ -47,5 +47,40 @@ public class PurchaseProductServiceImp implements PurchaseProductService {
         }
         purchaseProductRepository.saveAll(purchaseProductList); //저장
         purchaseProductRepositoryImp.decreaseProductStock(productseq, purchaseProductCount);
+
+
     }
+
+    @Override
+    @Transactional
+    public void savedNonMemberPurchaseProductList(List<PurchaseProductDto> purchaseProductDtoList, Purchase purchase) {
+
+        List<PurchaseProduct> purchaseProductList = new ArrayList<>();
+        Long productseq = null;
+        Integer purchaseProductCount = null;
+        for (PurchaseProductDto purchaseProductDto : purchaseProductDtoList) {//주문상품이 여러개일수도 있기 때문에 FOR 로 담아줌
+            PurchaseProduct purchaseProduct = PurchaseProduct.builder()
+                    .purchaseSeq(purchase) //Purchase의 PK
+                    .productSeq(purchaseProductDto.getProductSeq())
+                    .purchaseProductName(purchaseProductDto.getPurchaseProductName())
+                    .purchaseProductVendor(purchaseProductDto.getPurchaseProductVendor())
+                    .productOptionSeq(purchaseProductDto.getProductOptionSeq())
+                    .purchaseProductCount(purchaseProductDto.getPurchaseProductCount())
+                    .purchaseProductPrice(purchaseProductDto.getPurchaseProductPrice())
+                    .purchaseProductOptionName(purchaseProductDto.getPurchaseProductOptionName())
+                    .purchaseProductDiscountPrice(purchaseProductDto.getPurchaseProductDiscountPrice())
+                    .productThumbnail(purchaseProductDto.getProductThumbnail())
+                    .deliveryType(String.valueOf(purchaseProductDto.getDeliveryType()))
+                    .productState(purchaseProductDto.getProductState())
+                    .build();
+            purchaseProductList.add(purchaseProduct);
+
+            productseq = purchaseProductDto.getProductSeq();
+            purchaseProductCount = purchaseProductDto.getPurchaseProductCount();
+        }
+        purchaseProductRepository.saveAll(purchaseProductList); //저장
+        purchaseProductRepositoryImp.decreaseProductStock(productseq, purchaseProductCount);
+
+    }
+
 }

@@ -4,8 +4,8 @@ import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.purchase.application.PurchaseService;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseCodeDto;
-import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
 import com.ssgsakk.ssgdotcom.purchase.vo.CreateMemberPurchaseRequestVo;
+import com.ssgsakk.ssgdotcom.purchase.vo.CreateNonMemberPurchaseRequestVo;
 import com.ssgsakk.ssgdotcom.purchase.vo.PurchaseCodeResponseVo;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/purchase")
 @RequiredArgsConstructor
 public class PurchaseController {
+
     private final JWTUtil jwtUtil;
     private final PurchaseService purchaseService;
 
@@ -31,6 +32,15 @@ public class PurchaseController {
         return new BaseResponse<>("주문ID", PurchaseCodeResponseVo.builder()
                 .purchaseCode(purchaseCodeDto.getPurchaseCode())
                 .build()); //PurchaseCode에 담겨있는 purcaseCode를 DTO -> VO 로 Response
+    }
+
+    @PostMapping("non-member-purchase") //비회원 주문 생성
+    public BaseResponse<PurchaseCodeResponseVo> createNonMemberPurchase(@RequestBody CreateNonMemberPurchaseRequestVo createNonMemberPurchaseRequestVo) {
+        PurchaseCodeDto purchaseCodeDto = purchaseService.createNonMemberPurchase(CreateNonMemberPurchaseRequestVo.voToPurchaseDto(createNonMemberPurchaseRequestVo)
+                , CreateNonMemberPurchaseRequestVo.voToPurchaseProductDtoList(createNonMemberPurchaseRequestVo.getPurchaseProductDtoList()));
+        return new BaseResponse<>("주문ID", PurchaseCodeResponseVo.builder()
+                .purchaseCode(purchaseCodeDto.getPurchaseCode())
+                .build());
     }
 
     // JWT에서 UUID 추출 메서드
