@@ -21,11 +21,13 @@ public class LikeFolder {
 
     private String likeFolderName;
     private String folderThumbnailUrl;
+    private String uuid;
 
     @Builder
-    public LikeFolder(Long likeFolderSeq, String likeFolderName, String folderThumbnailUrl) {
+    public LikeFolder(Long likeFolderSeq, String likeFolderName, String folderThumbnailUrl, String uuid) {
         this.likeFolderSeq = likeFolderSeq;
         this.likeFolderName = likeFolderName;
         this.folderThumbnailUrl = folderThumbnailUrl;
+        this.uuid = uuid;
     }
 }

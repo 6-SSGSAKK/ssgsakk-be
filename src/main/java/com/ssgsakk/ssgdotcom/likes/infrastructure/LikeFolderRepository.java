@@ -3,6 +3,7 @@ package com.ssgsakk.ssgdotcom.likes.infrastructure;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeCategory;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeFolder;
 import com.ssgsakk.ssgdotcom.likes.domain.LikeProduct;
+import com.ssgsakk.ssgdotcom.likes.vo.SelectAllFoldersResponseVo;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,4 +21,6 @@ public interface LikeFolderRepository extends JpaRepository<LikeFolder, Long> {
     void changeFolderName(@Param("folderSeq") Long folderSeq,@Param("folderName") String folderName);
 
     Optional<LikeFolder> findByLikeFolderSeq(Long likeFolderSeq);
+
+    List<LikeFolder> findByUuid(String uuid);
 }

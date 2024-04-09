@@ -17,7 +17,14 @@ public class UserProductLikesResponseVo {
     private String deliveryType;
     private List<ContentsUrl> contents;
 
-    @Builder
+    public UserProductLikesResponseVo(String productName, Integer productPrice, Integer discountPercent, String vendor, String deliveryType) {
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.discountPercent = discountPercent;
+        this.vendor = vendor;
+        this.deliveryType = deliveryType;
+    }
+
     public UserProductLikesResponseVo(String productName, Integer productPrice, Integer discountPercent, String vendor, String deliveryType, List<ContentsUrl> contents) {
         this.productName = productName;
         this.productPrice = productPrice;

@@ -106,6 +106,19 @@ public class LikesController {
         return new BaseResponse<>("Select All Folders Success", selectAllFoldersResponseVos);
     }
 
+//    @Operation(summary = "전체 찜 폴더의 썸네일 조회", description = "전체 찜 폴더의 썸네일 조회")
+//    @PostMapping("/user/folder/thumbnail")
+//    public BaseResponse<?> selectAllFoldersThumbNail(@RequestHeader("Authorization") String accessToken
+//    , @RequestBody List<SelectAllFoldersThumbNailRequestVo> selectAllFoldersThumbNailRequestVos) {
+//        String uuid = getUuid(accessToken);
+//
+//        List<SelectAllFoldersResponseVo> selectAllFoldersResponseVos = likesService.selectAllFolders(SelectAllFoldersDto.builder()
+//                .uuid(uuid)
+//                .build());
+//
+//        return new BaseResponse<>("Select All Folders Success", selectAllFoldersResponseVos);
+//    }
+
     @Operation(summary = "찜 폴더 생성", description = "찜 폴더 생성")
     @GetMapping("/folder/add")
     public BaseResponse<Void> addFolder(@RequestHeader("Authorization") String accessToken
