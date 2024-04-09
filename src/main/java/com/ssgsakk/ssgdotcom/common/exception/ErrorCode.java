@@ -1,8 +1,6 @@
 package com.ssgsakk.ssgdotcom.common.exception;
 
 import lombok.Getter;
-import org.hibernate.Internal;
-import org.webjars.NotFoundException;
 
 @Getter
 public enum ErrorCode {
