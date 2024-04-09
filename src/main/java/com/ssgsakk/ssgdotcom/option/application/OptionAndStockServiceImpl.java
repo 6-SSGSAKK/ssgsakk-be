@@ -1,5 +1,7 @@
 package com.ssgsakk.ssgdotcom.option.application;
 
+import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
+import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.option.domain.*;
 import com.ssgsakk.ssgdotcom.option.dto.OptionDto;
 import com.ssgsakk.ssgdotcom.option.dto.StockDto;
@@ -21,7 +23,9 @@ public class OptionAndStockServiceImpl implements OptionAndStockService {
     @Override
     public OptionDto getOptionList(Long productSeq) {
         List<OptionAndStock> options = optionAndStockRepository.findByProductSeq(productSeq);
-
+        if (options.isEmpty()) {
+            throw new BusinessException(ErrorCode.CANNOT_FOUND_OPTION);
+        }
         OptionDto.OptionDtoBuilder builder = OptionDto.builder();
 
         List<String> depthNames = new ArrayList<>();
@@ -56,7 +60,9 @@ public class OptionAndStockServiceImpl implements OptionAndStockService {
     }
     public List<StockDto> getStocks(Long productSeq, Integer depthLevel) {
         List<OptionAndStock> options = optionAndStockRepository.findByProductSeq(productSeq);
-
+        if (options.isEmpty()) {
+            throw new BusinessException(ErrorCode.CANNOT_FOUND_OPTION);
+        }
         return options.stream()
                 .map(option -> {
                     StockDto.StockDtoBuilder builder = StockDto.builder();

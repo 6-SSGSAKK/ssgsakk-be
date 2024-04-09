@@ -78,6 +78,13 @@ public class CartController {
         cartService.updateCheckbox(cartId, checkbox, getUuid(accessToken));
         return new BaseResponse<>("update checkbox success","");
     }
+
+    @PutMapping("/allcheck")
+    public BaseResponse<?> updateAllCheck(@RequestHeader("Authorization") String accessToken,
+                                          @RequestParam Integer checkbox) {
+        cartService.updateAllCheck(checkbox, getUuid(accessToken));
+        return new BaseResponse<>("update all check success","");
+    }
     @GetMapping("count")
     public BaseResponse<?> getCartCount(@RequestHeader("Authorization") String accessToken) {
         return new BaseResponse<>("get count success", cartService.getCartCount(getUuid(accessToken)));

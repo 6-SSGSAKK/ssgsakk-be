@@ -7,10 +7,11 @@ import java.util.List;
 
 @Getter
 @Builder
-public class ReviewVo {
+public class ReviewRequestVo {
+    private Long purchaseProductSeq;
     private Long productSeq;
     private String reviewParagraph;
     private Short reviewScore;
     private List<String> contentsUrl;
-
+    private String purchaseProductOption;
 }

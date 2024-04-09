@@ -1,6 +1,5 @@
-package com.ssgsakk.ssgdotcom.contents.application.impl;
+package com.ssgsakk.ssgdotcom.contents.application;
 
-import com.ssgsakk.ssgdotcom.contents.application.ContentsService;
 import com.ssgsakk.ssgdotcom.contents.domain.Contents;
 import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
 import com.ssgsakk.ssgdotcom.contents.domain.ReviewContents;
