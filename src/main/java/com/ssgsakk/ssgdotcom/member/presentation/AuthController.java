@@ -38,7 +38,6 @@ public class AuthController {
 
         return new BaseResponse<>("SignIn Success", SignInResponseVo.builder()
                 .userName(servicedSignInDto.getUserName())
-                .uuid(servicedSignInDto.getUuid())
                 .token(servicedSignInDto.getToken())
                 .build());
     }

@@ -40,9 +40,7 @@ public class AuthServiceImpl implements AuthService {
         // 아이디를 통해 Member 객체 생성
         User member = memberRepository.findByUserId(signInDto.getUserId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.FAILED_TO_LOGIN));
-
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
         // 비밀번호 매칭
         if (!(encoder.matches(signInDto.getUserPassword(), member.getPassword()))) {
             throw new BusinessException(ErrorCode.FAILED_TO_LOGIN);
@@ -50,18 +48,14 @@ public class AuthServiceImpl implements AuthService {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-
                         member.getUsername(),
-                        // 입력 비밀번호? 아니면 암호화된 비밀번호?
                         signInDto.getUserPassword()
-
                 )
         );
 
         // 토큰 값 발행
         String token = "Bearer " + createToken(member);
         return SignInDto.builder()
-                .uuid(member.getUuid())
                 .userName(member.getName())
                 .token(token)
                 .build();
