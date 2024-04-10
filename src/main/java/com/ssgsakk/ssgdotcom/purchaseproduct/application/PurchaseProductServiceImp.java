@@ -2,6 +2,7 @@ package com.ssgsakk.ssgdotcom.purchaseproduct.application;
 import com.ssgsakk.ssgdotcom.purchase.domain.Purchase;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
+import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductStateDto;
 import com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure.PurchaseProductRepository;
 import com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure.PurchaseProductRepositoryImp;
 import lombok.AllArgsConstructor;
@@ -82,5 +83,14 @@ public class PurchaseProductServiceImp implements PurchaseProductService {
         purchaseProductRepositoryImp.decreaseProductStock(productseq, purchaseProductCount);
 
     }
+
+
+    @Transactional
+    @Override
+    public void updatePurchaseProductState(Long purchaseProductSeq, PurchaseProductStateDto purchaseProductStateDto) {
+        purchaseProductRepositoryImp.updateProductState(purchaseProductSeq, purchaseProductStateDto);
+    }
+
+
 
 }

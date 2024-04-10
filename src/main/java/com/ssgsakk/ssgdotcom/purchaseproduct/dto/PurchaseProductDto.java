@@ -21,7 +21,7 @@ public class PurchaseProductDto {
     private Integer purchaseProductDiscountPrice; //주문상품할인인
     private String productThumbnail; //주문상품이미지
     private DeliveryType deliveryType; //주문상품배송타입
-    private String productState; //주문상품 주문배송상태
+    private Integer productState; //주문상품 주문배송상태
 
 
 
@@ -29,7 +29,7 @@ public class PurchaseProductDto {
     @Builder
     public PurchaseProductDto(Purchase purchaseSeq, Long productSeq, String purchaseProductName, String purchaseProductVendor,
                               Long productOptionSeq, Integer purchaseProductCount, Integer purchaseProductPrice, Integer purchaseProductDiscountPrice,
-                              String purchaseProductOptionName, String productThumbnail, DeliveryType deliveryType, String productState) {
+                              String purchaseProductOptionName, String productThumbnail, DeliveryType deliveryType, Integer productState) {
 
 
         this.purchaseSeq = purchaseSeq;
