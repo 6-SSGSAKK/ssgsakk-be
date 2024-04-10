@@ -14,8 +14,8 @@ public class PurchaseProductController {
     private final PurchaseProductService purchaseProductService;
 
 
-    @PutMapping("/update/purchaseProductState/{purchaseProductSeq}")
-    public void updatePurchaseProducState(@PathVariable Long purchaseProductSeq
+    @PutMapping("/update/purchaseProductState/{purchaseProductSeq}") //주문상태 변경 Controller
+    public void updatePurchaseProducState(@PathVariable Long purchaseProductSeq //PurchaseProduct의 PK받음
                                            , @RequestBody PurchaseProductStateRequestVo purchaseProductStateRequestVo) {
 
         PurchaseProductStateDto purchaseProductStateDto = PurchaseProductStateDto.builder()
