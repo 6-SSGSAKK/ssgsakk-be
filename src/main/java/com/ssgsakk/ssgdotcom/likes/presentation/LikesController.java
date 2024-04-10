@@ -218,19 +218,19 @@ public class LikesController {
         return new BaseResponse<>("Delete Product from likes Success", null);
     }
 
-//    @Operation(summary = "전체 찜에서 상품 삭제", description = "전체 찜에서 상품 삭제")
-//    @DeleteMapping("/folder-delete/product")
-//    public BaseResponse<Void> deleteProduct(@RequestHeader("Authorization") String accessToken
-//            , @RequestBody DeleteProductRequestVo deleteProductRequestVo) {
-//        String uuid = getUuid(accessToken);
-//
-//        likesService.deleteProduct(DeleteProductDto.builder()
-//                .uuid(uuid)
-//                .productSeqs(deleteProductRequestVo.getProductSeqs())
-//                .build());
-//
-//        return new BaseResponse<>("Delete Product from likes Success", null);
-//    }
+    @Operation(summary = "전체 찜에서 카테고리 삭제", description = "전체 찜에서 카테고리 삭제")
+    @DeleteMapping("/folder-delete/category")
+    public BaseResponse<Void> deleteCategory(@RequestHeader("Authorization") String accessToken
+            , @RequestBody DeleteLikeCategoryRequestVo deleteLikeCategoryRequestVo) {
+        String uuid = getUuid(accessToken);
+
+        likesService.deleteCategory(DeleteLikeCategoryDto.builder()
+                .uuid(uuid)
+                .likeCategoryList(deleteLikeCategoryRequestVo.getLikeCategorySeqList())
+                .build());
+
+        return new BaseResponse<>("Delete Category from likes Success", null);
+    }
 
     // JWT에서 UUID 추출 메서드
     public String getUuid(String jwt) {

@@ -505,6 +505,19 @@ public class LikesServiceImpl implements LikesService {
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
+    }
 
+    @Override
+    @Transactional
+    public void deleteCategory(DeleteLikeCategoryDto deleteLikeCategoryDto) {
+        try {
+            for (Long likeCategorySeq : deleteLikeCategoryDto.getLikeCategoryList()) {
+                LikeCategory likeCategory = likeCategoryRepository.findByLikeCategorySeq(likeCategorySeq).orElseThrow(
+                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_CATEGORY));
+                likeCategoryRepository.deleteByLikeCategorySeq(likeCategorySeq);
+            }
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 }
