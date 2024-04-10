@@ -1,27 +1,30 @@
 package com.ssgsakk.ssgdotcom.purchase.application;
 import com.ssgsakk.ssgdotcom.purchase.domain.Purchase;
+import com.ssgsakk.ssgdotcom.purchase.domain.QPurchase;
+import com.ssgsakk.ssgdotcom.purchase.dto.MemberPurchaseSeqListDto;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseCodeDto;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
 import com.ssgsakk.ssgdotcom.purchase.infrastructure.PurchaseRepository;
+import com.ssgsakk.ssgdotcom.purchase.infrastructure.PurchaseRepositoryImp;
 import com.ssgsakk.ssgdotcom.purchaseproduct.application.PurchaseProductService;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class PurchaseServiceImp implements PurchaseService {
 
     private final PurchaseRepository purchaseRepository;
     private final PurchaseProductService purchaseProductService;
-
+    private final PurchaseRepositoryImp purchaseRepositoryImp;
 
     public String createdMemberPurchaseCode(){  //주문번호 생성 메소드  회원 주문번호 메소드
 
@@ -130,5 +133,27 @@ public class PurchaseServiceImp implements PurchaseService {
     }
 
 
+
+    //checkMemeberPurchase 에서 리턴으로 받은 튜플 리스트를 DTO로 전달
+    private MemberPurchaseSeqListDto mapTupleToDto(com.querydsl.core.Tuple tuple){
+        Long purchaseSeq = tuple.get(QPurchase.purchase.purchaseSeq);
+        String uuid = tuple.get(QPurchase.purchase.purchaseuuid);
+        return new MemberPurchaseSeqListDto(purchaseSeq, uuid);
+    }
+
+    @Transactional
+    @Override
+    public List<MemberPurchaseSeqListDto> checkMemberPurchase(String uuid) { //회원별 purchaseSeq 를 조회하는 메소드
+
+        List<com.querydsl.core.Tuple> tuples = purchaseRepositoryImp.checkMemberPurchase(uuid);
+
+        //튜플에서 꺼내온 값들로 이루어진 DTO를 다시 List 형태로 변환해서 리턴함
+        List<MemberPurchaseSeqListDto> memberPurchaseSeqListDto = tuples.stream()
+                .map(this::mapTupleToDto)
+                .collect(Collectors.toList());
+
+        return memberPurchaseSeqListDto;
+
+    }
 
 }

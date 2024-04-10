@@ -3,6 +3,7 @@ import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.purchase.application.PurchaseService;
+import com.ssgsakk.ssgdotcom.purchase.dto.MemberPurchaseSeqListDto;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseCodeDto;
 import com.ssgsakk.ssgdotcom.purchase.vo.CreateMemberPurchaseRequestVo;
 import com.ssgsakk.ssgdotcom.purchase.vo.CreateNonMemberPurchaseRequestVo;
@@ -10,6 +11,8 @@ import com.ssgsakk.ssgdotcom.purchase.vo.PurchaseCodeResponseVo;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/purchase")
@@ -59,6 +62,19 @@ public class PurchaseController {
                 .build());
     }
 
+    @GetMapping("/member-purchase-check")//토큰을 받고 uuid 별 purchaseSeq 를 return
+    public BaseResponse<List<MemberPurchaseSeqListDto>> memberPurchaseCheck(@RequestHeader("Authorization") String accessToken) {
+        String uuid = getUuid(accessToken);
+
+        List<MemberPurchaseSeqListDto> memberPurchaseSeqListDto = purchaseService.checkMemberPurchase(uuid);
+        //주문을 여러개 하기때문에 리스트 형태로 전달.
+
+        if (memberPurchaseSeqListDto != null){
+            return new BaseResponse<>("주문번호 조회 성공", memberPurchaseSeqListDto );
+        } else {
+            return new BaseResponse<>("주문번호 조회 실패",null);
+        }
+    }
 
 
 
