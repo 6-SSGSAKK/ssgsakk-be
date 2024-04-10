@@ -4,7 +4,6 @@ import com.ssgsakk.ssgdotcom.purchase.domain.QPurchase;
 import com.ssgsakk.ssgdotcom.purchase.dto.MemberPurchaseSeqListDto;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseCodeDto;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseDto;
-import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseListDto;
 import com.ssgsakk.ssgdotcom.purchase.infrastructure.PurchaseRepository;
 import com.ssgsakk.ssgdotcom.purchase.infrastructure.PurchaseRepositoryImp;
 import com.ssgsakk.ssgdotcom.purchaseproduct.application.PurchaseProductService;
@@ -156,13 +155,6 @@ public class PurchaseServiceImp implements PurchaseService {
 
     }
 
-    @Override
-    public List<PurchaseListDto> memberPurchaseList (Long purchaseSeq){ //회원 주문 상세조회
-
-        List<PurchaseListDto> purchaseListDto = purchaseRepositoryImp.memberPurchaseDetail(purchaseSeq);
-        return purchaseListDto;
-
-    }
 
 
 
