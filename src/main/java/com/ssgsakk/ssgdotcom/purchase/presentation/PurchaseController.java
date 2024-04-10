@@ -19,6 +19,22 @@ public class PurchaseController {
     private final JWTUtil jwtUtil;
     private final PurchaseService purchaseService;
 
+    // JWT에서 UUID 추출 메서드
+    public String getUuid(String jwt) {
+        String uuid;
+        uuid = jwtUtil.getUuid(jwt.split(" ")[1]);
+        checkUuid(uuid);
+        return uuid;
+    }
+
+    // UUID 확인
+    // 정상이면 true 반환
+    public void checkUuid(String uuid) {
+        if (uuid == null) {
+            throw new BusinessException(ErrorCode.TOKEN_NOT_VALID);
+        }
+    }
+
 
     @PostMapping("/member-purchase") //회원 주문생성 VO로 PurchseDto, List<PurchaseProductDto> 받기
     public BaseResponse<PurchaseCodeResponseVo> createMemberPurchase(@RequestBody CreateMemberPurchaseRequestVo createMemberPurchaseRequestVo, //VO값 받기
@@ -43,19 +59,8 @@ public class PurchaseController {
                 .build());
     }
 
-    // JWT에서 UUID 추출 메서드
-    public String getUuid(String jwt) {
-        String uuid;
-        uuid = jwtUtil.getUuid(jwt.split(" ")[1]);
-        checkUuid(uuid);
-        return uuid;
-    }
 
-    // UUID 확인
-    // 정상이면 true 반환
-    public void checkUuid(String uuid) {
-        if (uuid == null) {
-            throw new BusinessException(ErrorCode.TOKEN_NOT_VALID);
-        }
-    }
+
+
+
 }

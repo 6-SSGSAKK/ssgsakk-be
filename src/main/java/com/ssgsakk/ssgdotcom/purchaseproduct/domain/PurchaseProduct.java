@@ -48,7 +48,7 @@ public class PurchaseProduct {
     private String deliveryType ; //주문상품배송타입
 
     @Column(length = 50)
-    private String productState; //주문상품 주문배송상태
+    private Integer productState; //주문상품 주문배송상태
 
     @Builder
     public PurchaseProduct(Long purchaseProductSeq, Purchase purchaseSeq, Long productSeq,
@@ -56,7 +56,7 @@ public class PurchaseProduct {
                            Long productOptionSeq, Integer purchaseProductCount,
                            String purchaseProductOptionName, Integer purchaseProductPrice,
                            Integer purchaseProductDiscountPrice, String productThumbnail,
-                           String deliveryType, String productState) {
+                           String deliveryType, Integer productState) {
 
         this.purchaseProductSeq = purchaseProductSeq;
         this.purchaseSeq = purchaseSeq;

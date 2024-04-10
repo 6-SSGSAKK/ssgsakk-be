@@ -1,17 +1,20 @@
 package com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssgsakk.ssgdotcom.option.domain.OptionAndStock;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.QPurchaseProduct;
+import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductStateDto;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import static com.ssgsakk.ssgdotcom.option.domain.QOptionAndStock.optionAndStock;
 
 @Repository
 public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
     private final QPurchaseProduct qPurchaseProduct = QPurchaseProduct.purchaseProduct;
+
+
     public PurchaseProductRepositoryImp(JPAQueryFactory jpaQueryFactory) {
         super(PurchaseProduct.class);
         this.jpaQueryFactory = jpaQueryFactory;
@@ -29,4 +32,27 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
         }
 
     }
+
+    @Transactional
+    public void updateProductState(Long purchaseProductSeq, PurchaseProductStateDto purchaseProductStateDto)  {
+
+        long updateProductState = jpaQueryFactory.update(qPurchaseProduct)
+                .set(qPurchaseProduct.productState, purchaseProductStateDto.getPurchaseProductState())
+                .where(qPurchaseProduct.purchaseProductSeq.eq(purchaseProductSeq))
+                .execute();
+
+        if (updateProductState > 8){
+            throw new RuntimeException("존재하지 않는 상태번호");
+
+        } else if (updateProductState == 5){
+            increaseProductStock(purchaseProductSeq);
+        }
+    }
+
+    public void increaseProductStock(Long purchaseProductSeq){
+
+        }
+    }
+
+
 }
