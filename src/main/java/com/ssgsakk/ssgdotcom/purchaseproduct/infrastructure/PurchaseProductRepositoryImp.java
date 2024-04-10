@@ -46,11 +46,14 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
         if (purchaseProductStateDto.getPurchaseProductState() > 8){
             throw new RuntimeException("존재하지 않는 상태번호");
 
-        } else if (purchaseProductStateDto.getPurchaseProductState() == 5){
+        } else if (purchaseProductStateDto.getPurchaseProductState() == 5) {
             crateproductSeqAndPurchaseProductCount(purchaseProductSeq);
         }
 
-        log.info("{}",updateProductState);
+        if (purchaseProductStateDto.getPurchaseProductState() < 0){
+            throw new RuntimeException("존재하지 않는 상태번호");
+        }
+
     }
 
     @Transactional //if주문상태5(주문상태) purchaseProductSeq 별 productSeq,PurchaseProductCount 값 추출
@@ -68,10 +71,6 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
         Long productSeq = purchaseProduct.getProductSeq(); //PathVariable로 받은 purchaseProductSeq 에 해당하는 productSeq
         Integer purchaseProductCount = purchaseProduct.getPurchaseProductCount();
         //PathVariable로 받은 purchaseProductSeq 에 해당하는 PurchaseProductCount
-
-        log.info("{}", productSeq);
-        log.info("{}", purchaseProductCount);
-
         increaseStock(productSeq, purchaseProductCount);
         //productSeq, purchaseProductCount 인자값으로 넘겨줌
 

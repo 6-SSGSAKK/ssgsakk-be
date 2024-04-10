@@ -14,8 +14,8 @@ public class PurchaseProductController {
     private final PurchaseProductService purchaseProductService;
 
 
-    @PutMapping("/update/purchaseProductState/{purchaseProductSeq}") //주문상태 변경 Controller
-    public void updatePurchaseProducState(@PathVariable Long purchaseProductSeq //PurchaseProduct의 PK받음
+    @PutMapping("/update/purchaseProductState/{purchaseProductSeq}")
+    public BaseResponse<?> updatePurchaseProducState(@PathVariable Long purchaseProductSeq
                                            , @RequestBody PurchaseProductStateRequestVo purchaseProductStateRequestVo) {
 
         PurchaseProductStateDto purchaseProductStateDto = PurchaseProductStateDto.builder()
@@ -24,8 +24,17 @@ public class PurchaseProductController {
 
         purchaseProductService.updatePurchaseProductState(purchaseProductSeq, purchaseProductStateDto);
 
+        if (purchaseProductStateRequestVo.getPurchaseProductState() == 5) {
+            return new BaseResponse<>("cancelSuccess", "");
+        }else if (purchaseProductStateRequestVo.getPurchaseProductState() >8 ) {
+            return new BaseResponse<>("updateFail", "상태변경 숫자 확인");
+        }
+        return new BaseResponse<>("updateSuccess", "");
 
     }
 
 
+
 }
+
+
