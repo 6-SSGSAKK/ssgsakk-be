@@ -168,13 +168,14 @@ public class LikesController {
 
     @Operation(summary = "특정 폴더의 찜 상품 목록 조회", description = "특정 폴더의 찜 상품 목록 조회")
     @GetMapping("/user/product")
-    public BaseResponse<List<UserProductLikesResponseVo>> userProductLikes(@RequestHeader("Authorization") String accessToken
-            , @RequestParam(value = "folder-seq", required = false) Long folderSeq) {
+    public BaseResponse<List<UserProductLikesResponseVo>> userProductLikes(@RequestHeader("Authorization") String accessToken)
+//            , @RequestParam(value = "folder-seq", required = false) Long folderSeq)
+    {
         String uuid = getUuid(accessToken);
 
         List<UserProductLikesResponseVo> userProductLikesList = likesService.userProductLikes(UserProductLikesDto.builder()
                 .uuid(uuid)
-                .folderSeq(folderSeq)
+//                .folderSeq(folderSeq)
                 .build());
         return new BaseResponse<>("User Product Likes List", userProductLikesList);
     }
@@ -182,13 +183,14 @@ public class LikesController {
 
     @Operation(summary = "찜 카테고리 목록 조회", description = "찜 카테고리 목록 조회")
     @GetMapping("/user/category")
-    public BaseResponse<List<UserCategoryLikesResponseVo>> userCategoryLikes(@RequestHeader("Authorization") String accessToken
-            , @RequestParam(value = "folder-seq", required = false) Long folderSeq) {
+    public BaseResponse<List<UserCategoryLikesResponseVo>> userCategoryLikes(@RequestHeader("Authorization") String accessToken)
+//            , @RequestParam(value = "folder-seq", required = false) Long folderSeq)
+    {
         String uuid = getUuid(accessToken);
 
         List<UserCategoryLikesResponseVo> userCategoryLikesList = likesService.userCategoryLikes(UserCategoryLikesDto.builder()
                 .uuid(uuid)
-                .folderSeq(folderSeq)
+//                .folderSeq(folderSeq)
                 .build());
         return new BaseResponse<>("User Category Likes List", userCategoryLikesList);
     }
