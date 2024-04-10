@@ -494,12 +494,12 @@ public class LikesServiceImpl implements LikesService {
 
     @Transactional
     @Override
-    public void deleteProduct(DeleteProductDto deleteProductDto) {
+    public void deleteProduct(DeleteLikeProductDto deleteLikeProductDto) {
         try {
-            for (Long likeProductSeq : deleteProductDto.getProductSeqs()) {
+            for (Long likeProductSeq : deleteLikeProductDto.getLikeProductList()) {
                 LikeProduct likeProduct = likeProductRepository.findByLikeProductSeq(likeProductSeq).orElseThrow(
                         () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
-                likedConnectRepository.deleteByLikeProduct(likeProduct);
+//                likedConnectRepository.deleteByLikeProduct(likeProduct);      // 폴더 폐기했기 때문에 connect 테이블은 필요가 없음.
                 likeProductRepository.deleteByLikeProductSeq(likeProductSeq);
             }
         } catch (Exception e) {

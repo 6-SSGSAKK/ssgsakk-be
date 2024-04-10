@@ -8,13 +8,13 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class DeleteProductDto {
+public class DeleteLikeProductDto {
     private String uuid;
-    private List<Long> productSeqs;
+    private List<Long> likeProductList;
 
     @Builder
-    public DeleteProductDto(String uuid, List<Long> productSeqs) {
+    public DeleteLikeProductDto(String uuid, List<Long> likeProductList) {
         this.uuid = uuid;
-        this.productSeqs = productSeqs;
+        this.likeProductList = likeProductList;
     }
 }

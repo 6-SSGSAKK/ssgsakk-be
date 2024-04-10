@@ -4,7 +4,6 @@ import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
-import com.ssgsakk.ssgdotcom.likes.domain.LikedConnect;
 import com.ssgsakk.ssgdotcom.likes.dto.*;
 import com.ssgsakk.ssgdotcom.likes.vo.*;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
@@ -209,17 +208,29 @@ public class LikesController {
     @Operation(summary = "전체 찜에서 상품 삭제", description = "전체 찜에서 상품 삭제")
     @DeleteMapping("/folder-delete/product")
     public BaseResponse<Void> deleteProduct(@RequestHeader("Authorization") String accessToken
-            , @RequestBody DeleteProductRequestVo deleteProductRequestVo) {
+            , @RequestBody DeleteLikeProductRequestVo deleteLikeProductRequestVo) {
         String uuid = getUuid(accessToken);
-
-        likesService.deleteProduct(DeleteProductDto.builder()
+        likesService.deleteProduct(DeleteLikeProductDto.builder()
                 .uuid(uuid)
-                .productSeqs(deleteProductRequestVo.getProductSeqs())
+                .likeProductList(deleteLikeProductRequestVo.getLikeProductSeqList())
                 .build());
 
         return new BaseResponse<>("Delete Product from likes Success", null);
     }
 
+//    @Operation(summary = "전체 찜에서 상품 삭제", description = "전체 찜에서 상품 삭제")
+//    @DeleteMapping("/folder-delete/product")
+//    public BaseResponse<Void> deleteProduct(@RequestHeader("Authorization") String accessToken
+//            , @RequestBody DeleteProductRequestVo deleteProductRequestVo) {
+//        String uuid = getUuid(accessToken);
+//
+//        likesService.deleteProduct(DeleteProductDto.builder()
+//                .uuid(uuid)
+//                .productSeqs(deleteProductRequestVo.getProductSeqs())
+//                .build());
+//
+//        return new BaseResponse<>("Delete Product from likes Success", null);
+//    }
 
     // JWT에서 UUID 추출 메서드
     public String getUuid(String jwt) {
