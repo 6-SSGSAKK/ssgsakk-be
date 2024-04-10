@@ -32,4 +32,6 @@ public interface LikeCategoryRepository extends JpaRepository<LikeCategory, Long
     void changeCategoryState(User user, Category category, int i);
 
     void deleteByLikeCategorySeq(Long likeCategorySeq);
+
+    List<LikeCategory> findByUserAndCategoryState(User user, int categoryState);
 }

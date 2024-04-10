@@ -31,4 +31,6 @@ public interface LikeProductRepository extends JpaRepository<LikeProduct, Long> 
     void changeLikeState(@Param("user")User user, @Param("product") Product product, int i);
 
     void deleteByLikeProductSeq(Long likeProductSeq);
+
+    List<LikeProduct> findByUserAndLikeState(User user, int likeState);
 }
