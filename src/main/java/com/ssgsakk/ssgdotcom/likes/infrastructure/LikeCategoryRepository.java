@@ -30,4 +30,6 @@ public interface LikeCategoryRepository extends JpaRepository<LikeCategory, Long
     @Modifying
     @Query("UPDATE LikeCategory lc SET lc.categoryState = :i WHERE lc.user = :user AND lc.category = :category")
     void changeCategoryState(User user, Category category, int i);
+
+    void deleteByLikeCategorySeq(Long likeCategorySeq);
 }

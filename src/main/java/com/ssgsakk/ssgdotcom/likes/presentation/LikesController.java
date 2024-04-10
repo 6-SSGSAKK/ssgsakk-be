@@ -4,7 +4,6 @@ import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.likes.application.LikesService;
-import com.ssgsakk.ssgdotcom.likes.domain.LikedConnect;
 import com.ssgsakk.ssgdotcom.likes.dto.*;
 import com.ssgsakk.ssgdotcom.likes.vo.*;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
@@ -26,7 +25,7 @@ public class LikesController {
     @Operation(summary = "상품 찜 확인", description = "상품 찜 확인")
     @GetMapping("/check/product-seq/{productSeq}")
     public BaseResponse<CheckProductLikesResponseVo> checkProductLikes(@RequestHeader("Authorization") String accessToken
-            , @PathVariable("productSeq") Long productSeq){
+            , @PathVariable("productSeq") Long productSeq) {
         String uuid = getUuid(accessToken);
 
 
@@ -105,19 +104,6 @@ public class LikesController {
 
         return new BaseResponse<>("Select All Folders Success", selectAllFoldersResponseVos);
     }
-
-//    @Operation(summary = "전체 찜 폴더의 썸네일 조회", description = "전체 찜 폴더의 썸네일 조회")
-//    @PostMapping("/user/folder/thumbnail")
-//    public BaseResponse<?> selectAllFoldersThumbNail(@RequestHeader("Authorization") String accessToken
-//    , @RequestBody List<SelectAllFoldersThumbNailRequestVo> selectAllFoldersThumbNailRequestVos) {
-//        String uuid = getUuid(accessToken);
-//
-//        List<SelectAllFoldersResponseVo> selectAllFoldersResponseVos = likesService.selectAllFolders(SelectAllFoldersDto.builder()
-//                .uuid(uuid)
-//                .build());
-//
-//        return new BaseResponse<>("Select All Folders Success", selectAllFoldersResponseVos);
-//    }
 
     @Operation(summary = "찜 폴더 생성", description = "찜 폴더 생성")
     @GetMapping("/folder/add")
@@ -219,6 +205,32 @@ public class LikesController {
         return new BaseResponse<>("Delete Product Or Category Likes In a Specific Folder Success", null);
     }
 
+    @Operation(summary = "전체 찜에서 상품 삭제", description = "전체 찜에서 상품 삭제")
+    @DeleteMapping("/folder-delete/product")
+    public BaseResponse<Void> deleteProduct(@RequestHeader("Authorization") String accessToken
+            , @RequestBody DeleteLikeProductRequestVo deleteLikeProductRequestVo) {
+        String uuid = getUuid(accessToken);
+        likesService.deleteProduct(DeleteLikeProductDto.builder()
+                .uuid(uuid)
+                .likeProductList(deleteLikeProductRequestVo.getLikeProductSeqList())
+                .build());
+
+        return new BaseResponse<>("Delete Product from likes Success", null);
+    }
+
+    @Operation(summary = "전체 찜에서 카테고리 삭제", description = "전체 찜에서 카테고리 삭제")
+    @DeleteMapping("/folder-delete/category")
+    public BaseResponse<Void> deleteCategory(@RequestHeader("Authorization") String accessToken
+            , @RequestBody DeleteLikeCategoryRequestVo deleteLikeCategoryRequestVo) {
+        String uuid = getUuid(accessToken);
+
+        likesService.deleteCategory(DeleteLikeCategoryDto.builder()
+                .uuid(uuid)
+                .likeCategoryList(deleteLikeCategoryRequestVo.getLikeCategorySeqList())
+                .build());
+
+        return new BaseResponse<>("Delete Category from likes Success", null);
+    }
 
     // JWT에서 UUID 추출 메서드
     public String getUuid(String jwt) {

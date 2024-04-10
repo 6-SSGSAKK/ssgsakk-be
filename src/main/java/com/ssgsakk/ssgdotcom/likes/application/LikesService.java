@@ -1,6 +1,5 @@
 package com.ssgsakk.ssgdotcom.likes.application;
 
-import com.ssgsakk.ssgdotcom.likes.domain.LikedConnect;
 import com.ssgsakk.ssgdotcom.likes.dto.*;
 import com.ssgsakk.ssgdotcom.likes.vo.*;
 
@@ -30,4 +29,8 @@ public interface LikesService {
     CheckProductLikesResponseVo checkProductLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto);
 
     CheckCategoryLikesResponseVo checkCategoryLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto);
+
+    void deleteProduct(DeleteLikeProductDto deleteLikeProductDto);
+
+    void deleteCategory(DeleteLikeCategoryDto deleteLikeCategoryDto);
 }
