@@ -30,4 +30,6 @@ public interface LikesService {
     CheckProductLikesResponseVo checkProductLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto);
 
     CheckCategoryLikesResponseVo checkCategoryLikes(CheckProductOrCategoryLikesDto checkProductOrCategoryLikesDto);
+
+    void deleteProduct(DeleteProductDto deleteProductDto);
 }
