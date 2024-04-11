@@ -12,7 +12,7 @@ import java.util.List;
 public class ReviewInfoDto {
     private String reviewParagraph;
     private Short reviewScore;
-    private List<ReviewContentsVo> reviewContentsVoList;
+    private List<ReviewContentsVo> reviewContentsList;
     private String purchaseProductOption;
     private String userId;
     private LocalDateTime reviewDate;

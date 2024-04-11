@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 
 @Service
@@ -30,12 +30,8 @@ public class ContentsServiceImpl implements ContentsService {
 
     @Override
     @Transactional
-    public List<ReviewContentsVo> reviewContentsList(Long ReviewSeq) {
-        List<ReviewContents> reviewContents =  reviewContentsRepository.findByReview_ReviewSeq(ReviewSeq);
-        return reviewContents.stream().map(reviewContents1 -> ReviewContentsVo.builder()
-                .contentUrl(reviewContents1.getContents().getContentUrl())
-                .priority(reviewContents1.getPriority())
-                .build()).collect(Collectors.toList());
+    public List<ReviewContents> reviewContentsList(Long ReviewSeq) {
+        return reviewContentsRepository.findByReview_ReviewSeq(ReviewSeq);
     }
 
     @Override

@@ -8,4 +8,5 @@ import lombok.Getter;
 public class ReviewContentsVo {
     private Integer priority;
     private String contentUrl;
+    private String contentsDescription;
 }
