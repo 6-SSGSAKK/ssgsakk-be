@@ -55,14 +55,12 @@ public class CategoryRepositoryImp extends QuerydslRepositorySupport {
     //categorySeq를 받아서 부모카테고리 정보 조회
     public List<Tuple> findParentCategory(Long categorySeq) {
 
-         List<Tuple> tuples = jpaQueryFactory
+        return  jpaQueryFactory
                 .select(qCategory.parentCategorySeq.categorySeq,
                         qCategory.parentCategorySeq.categoryName,qCategory.parentCategorySeq.level)
                 .from(qCategory)
                 .where(qCategory.categorySeq.eq(categorySeq))
                 .fetch();
-         return tuples;
-
 
     }
 

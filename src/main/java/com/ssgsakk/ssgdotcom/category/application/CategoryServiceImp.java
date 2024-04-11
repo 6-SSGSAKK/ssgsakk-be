@@ -1,5 +1,4 @@
 package com.ssgsakk.ssgdotcom.category.application;
-import com.querydsl.core.Tuple;
 import com.ssgsakk.ssgdotcom.category.domain.Category;
 import com.ssgsakk.ssgdotcom.category.domain.QCategory;
 import com.ssgsakk.ssgdotcom.category.dto.CategoryCustomDto;
@@ -11,19 +10,16 @@ import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepositoryImp;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class CategoryServiceImp implements CategoryService{
 
     private final CategoryRepository categoryRepository;
@@ -110,20 +106,16 @@ public class CategoryServiceImp implements CategoryService{
     }
 
     @Override
-    public List<ParentCategoryResponseDto> findParentCategory(Long categorySeq){
-
+    public List<ParentCategoryResponseDto> findParentCategory(Long categorySeq){   //부모카테고리 정보조회
+        //Tuple -> DTO
         List<com.querydsl.core.Tuple> tuples = categoryRepositoryImp.findParentCategory(categorySeq);
         List<ParentCategoryResponseDto> customDto = tuples.stream()
                 .map(this::toParentCategoryDto)
                 .toList();
-        log.info("customDto = {}", customDto);
-        log.info("tuples = {}", tuples);
-        log.info("categorySeq = {}", tuples.get(0).get(QCategory.category));
-
         return customDto;
     }
 
-    private ParentCategoryResponseDto toParentCategoryDto(com.querydsl.core.Tuple tuple){
+    private ParentCategoryResponseDto toParentCategoryDto(com.querydsl.core.Tuple tuple){ //부모카테고리 정보 리스트<tuple> -> List<DTO> 메소드
 
         String categoryName = tuple.get(QCategory.category.parentCategorySeq.categoryName);
         Long parentCategorySeq = tuple.get(QCategory.category.parentCategorySeq.categorySeq);
@@ -138,9 +130,4 @@ public class CategoryServiceImp implements CategoryService{
 }
 
 
-//        List<Tuple> findParent = categoryRepositoryImp.findParentCategory(categorySeq);
-//        return findParent.stream()
-//                .map(findParent ->{
-//                    Category category =
-//                })
 

@@ -10,13 +10,13 @@ import lombok.ToString;
 @ToString
 public class ParentCategoryResponseDto {
     private String categoryName;
-    private Long parentCategorySeq;
+    private Long categorySeq;
     private Integer level;
 
     @Builder
-    public ParentCategoryResponseDto(String categoryName, Long parentCategorySeq, Integer level) {
+    public ParentCategoryResponseDto(String categoryName, Long categorySeq, Integer level) {
         this.categoryName = categoryName;
-        this.parentCategorySeq = parentCategorySeq;
+        this.categorySeq = categorySeq;
         this.level = level;
     }
 }

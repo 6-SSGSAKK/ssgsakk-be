@@ -92,16 +92,10 @@ public class CategoryController {
     }
 
 
-    @GetMapping("/find/parentCategories/{categorySeq}")
+    @GetMapping("/find/parentCategories/{categorySeq}") // 부모카테고리 정보조회 컨트롤러
     public BaseResponse<List<ParentCategoryResponseDto>> findParentCategory(@PathVariable Long categorySeq) {
 
         List<ParentCategoryResponseDto> findParent = categoryService.findParentCategory(categorySeq);
-
-        ParentCategoryResponseDto test = findParent.get(0);
-        log.info("findParent: {}",test.getCategoryName() );
-        log.info("findParent: {}",test.getParentCategorySeq() );
-        log.info("findParent: {}",test.getLevel() );
-
         if (findParent != null){
             return new BaseResponse<>("부모조회성공",findParent);
         }else {
