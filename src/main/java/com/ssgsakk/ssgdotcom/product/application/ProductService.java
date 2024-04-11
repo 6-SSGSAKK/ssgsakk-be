@@ -2,6 +2,7 @@ package com.ssgsakk.ssgdotcom.product.application;
 
 
 import com.ssgsakk.ssgdotcom.product.dto.*;
+import com.ssgsakk.ssgdotcom.review.domain.Review;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,5 +19,6 @@ public interface ProductService {
     List<SearchProductDto> productEvent(Long eventSeq);
 
     List<SearchProductDto> productBest(ProductFilterDto productFilterDto);
+
 
 }

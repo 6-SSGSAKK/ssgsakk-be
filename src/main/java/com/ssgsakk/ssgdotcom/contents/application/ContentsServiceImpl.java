@@ -6,6 +6,7 @@ import com.ssgsakk.ssgdotcom.contents.domain.ReviewContents;
 import com.ssgsakk.ssgdotcom.contents.infrastructure.ContentsRepository;
 import com.ssgsakk.ssgdotcom.contents.infrastructure.ProductContentsRepository;
 import com.ssgsakk.ssgdotcom.contents.infrastructure.ReviewContentsRepository;
+import com.ssgsakk.ssgdotcom.review.domain.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,17 +29,20 @@ public class ContentsServiceImpl implements ContentsService {
 
     @Override
     @Transactional
-    public List<ReviewContents> reviewContentsList(Long ReviewSeq) {
-        return reviewContentsRepository.findByReview_ReviewSeq(ReviewSeq);
+    public List<String> reviewContentsList(Long ReviewSeq) {
+        List<ReviewContents> reviewContents =  reviewContentsRepository.findByReview_ReviewSeq(ReviewSeq);
+        List<String> contentsurl = reviewContents.stream().map(ReviewContents::getContents)
+                .map(Contents::getContentUrl).toList();
+        return contentsurl;
     }
 
     @Override
     @Transactional
-    public void createReviewContents(List<String> contentUrl) {
+    public void createReviewContents(Review review, List<String> contentUrl) {
         for (String url : contentUrl) {
             Contents contents = Contents.builder().contentUrl(url).build();
             contentsRepository.save(contents);
-            ReviewContents reviewContents = ReviewContents.builder().contents(contents).build();
+            ReviewContents reviewContents = ReviewContents.builder().review(review).contents(contents).build();
             reviewContentsRepository.save(reviewContents);
         }
     }

@@ -13,7 +13,7 @@ import java.util.List;
 public class ReviewInfoResponseVo {
     private String reviewParagraph;
     private Short reviewScore;
-    private List<ReviewContents> contentsUrl;
+    private List<String> contentsUrl;
     private String purchaseProductOption;
     private String userId;
     private LocalDateTime reviewDate;

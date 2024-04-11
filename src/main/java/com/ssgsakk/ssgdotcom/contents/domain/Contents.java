@@ -17,7 +17,7 @@ public class Contents {
     @Column(nullable = false)
     private String contentUrl;
 
-    @Column()
+    @Column(nullable = true)
     private String contentDescription;
 
     @Builder
