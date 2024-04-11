@@ -1,24 +1,29 @@
 package com.ssgsakk.ssgdotcom.category.application;
+import com.querydsl.core.Tuple;
 import com.ssgsakk.ssgdotcom.category.domain.Category;
 import com.ssgsakk.ssgdotcom.category.domain.QCategory;
 import com.ssgsakk.ssgdotcom.category.dto.CategoryCustomDto;
 import com.ssgsakk.ssgdotcom.category.dto.CategoryDto;
+import com.ssgsakk.ssgdotcom.category.dto.ParentCategoryResponseDto;
 import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDto;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepository;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepositoryImp;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class CategoryServiceImp implements CategoryService{
 
     private final CategoryRepository categoryRepository;
@@ -77,6 +82,8 @@ public class CategoryServiceImp implements CategoryService{
         return new CategoryCustomDto(categoryName, categorySeq, level);
     }
 
+
+
     @Override
     public List<CategoryCustomDto> getBigCategory() { //대카테고리조회
         List<com.querydsl.core.Tuple> tuples = categoryRepositoryImp.getBigCategory();
@@ -102,5 +109,38 @@ public class CategoryServiceImp implements CategoryService{
         return customDto;
     }
 
+    @Override
+    public List<ParentCategoryResponseDto> findParentCategory(Long categorySeq){
+
+        List<com.querydsl.core.Tuple> tuples = categoryRepositoryImp.findParentCategory(categorySeq);
+        List<ParentCategoryResponseDto> customDto = tuples.stream()
+                .map(this::toParentCategoryDto)
+                .toList();
+        log.info("customDto = {}", customDto);
+        log.info("tuples = {}", tuples);
+        log.info("categorySeq = {}", tuples.get(0).get(QCategory.category));
+
+        return customDto;
+    }
+
+    private ParentCategoryResponseDto toParentCategoryDto(com.querydsl.core.Tuple tuple){
+
+        String categoryName = tuple.get(QCategory.category.parentCategorySeq.categoryName);
+        Long parentCategorySeq = tuple.get(QCategory.category.parentCategorySeq.categorySeq);
+        Integer level = tuple.get(QCategory.category.parentCategorySeq.level);
+        return new ParentCategoryResponseDto(categoryName, parentCategorySeq, level);
+    }
+
+
+
+
+
 }
+
+
+//        List<Tuple> findParent = categoryRepositoryImp.findParentCategory(categorySeq);
+//        return findParent.stream()
+//                .map(findParent ->{
+//                    Category category =
+//                })
 

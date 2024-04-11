@@ -9,7 +9,7 @@ import lombok.Setter;
 @Builder
 public class UpdateCategoryRequestVo {
     private String categoryName;
-    private int level;
+    private Integer level;
     private Long parentCategorySeq;
 
 }

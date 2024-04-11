@@ -7,10 +7,10 @@ public class CategoryCustomDto {
 
     private String categoryName;
     private Long CategorySeq;
-    private int level;
+    private Integer level;
 
     @Builder
-    public CategoryCustomDto(String categoryName, Long CategorySeq, int level) {
+    public CategoryCustomDto(String categoryName, Long CategorySeq, Integer level) {
         this.categoryName = categoryName;
         this.CategorySeq = CategorySeq;
         this.level = level;
