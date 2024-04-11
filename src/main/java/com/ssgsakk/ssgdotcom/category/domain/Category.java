@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
-//@ToString
 @Getter
 @Entity
 @NoArgsConstructor
@@ -20,7 +19,7 @@ public class Category extends BaseTimeEntity {
 
 
     @Column(nullable = false, length = 1)
-    private int level; //카테고리 depth
+    private Integer level; //카테고리 depth
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parentCategorySeq")
@@ -32,7 +31,7 @@ public class Category extends BaseTimeEntity {
     private List<Category> child = new ArrayList<>(); //참조된 내역을 저장하는 리스트
 
     @Builder
-    public Category(Long categorySeq, String categoryName, int level,Category parentCategorySeq){
+    public Category(Long categorySeq, String categoryName, Integer level,Category parentCategorySeq){
         this.categorySeq = categorySeq;
         this.categoryName = categoryName;
         this.level = level;

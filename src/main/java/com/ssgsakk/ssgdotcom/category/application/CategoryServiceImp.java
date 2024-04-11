@@ -3,6 +3,7 @@ import com.ssgsakk.ssgdotcom.category.domain.Category;
 import com.ssgsakk.ssgdotcom.category.domain.QCategory;
 import com.ssgsakk.ssgdotcom.category.dto.CategoryCustomDto;
 import com.ssgsakk.ssgdotcom.category.dto.CategoryDto;
+import com.ssgsakk.ssgdotcom.category.dto.ParentCategoryResponseDto;
 import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDto;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepository;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepositoryImp;
@@ -77,6 +78,8 @@ public class CategoryServiceImp implements CategoryService{
         return new CategoryCustomDto(categoryName, categorySeq, level);
     }
 
+
+
     @Override
     public List<CategoryCustomDto> getBigCategory() { //대카테고리조회
         List<com.querydsl.core.Tuple> tuples = categoryRepositoryImp.getBigCategory();
@@ -102,5 +105,29 @@ public class CategoryServiceImp implements CategoryService{
         return customDto;
     }
 
+    @Override
+    public List<ParentCategoryResponseDto> findParentCategory(Long categorySeq){   //부모카테고리 정보조회
+        //Tuple -> DTO
+        List<com.querydsl.core.Tuple> tuples = categoryRepositoryImp.findParentCategory(categorySeq);
+        List<ParentCategoryResponseDto> customDto = tuples.stream()
+                .map(this::toParentCategoryDto)
+                .toList();
+        return customDto;
+    }
+
+    private ParentCategoryResponseDto toParentCategoryDto(com.querydsl.core.Tuple tuple){ //부모카테고리 정보 리스트<tuple> -> List<DTO> 메소드
+
+        String categoryName = tuple.get(QCategory.category.parentCategorySeq.categoryName);
+        Long parentCategorySeq = tuple.get(QCategory.category.parentCategorySeq.categorySeq);
+        Integer level = tuple.get(QCategory.category.parentCategorySeq.level);
+        return new ParentCategoryResponseDto(categoryName, parentCategorySeq, level);
+    }
+
+
+
+
+
 }
+
+
 
