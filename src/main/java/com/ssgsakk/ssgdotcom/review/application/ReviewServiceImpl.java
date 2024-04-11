@@ -124,12 +124,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     private static Review getEntity(ReviewDto reviewDto, String userId) {
+        String maskedUserId = userId.substring(0, 3) + "****";
         return Review.builder()
                 .purchaseProductSeq(reviewDto.getPurchaseProductSeq())
                 .productSeq(reviewDto.getProductSeq())
                 .reviewParagraph(reviewDto.getReviewParagraph())
                 .reviewScore(reviewDto.getReviewScore())
-                .userId(userId)
+                .userId(maskedUserId)
                 .purchaseProductOption(reviewDto.getPurchaseProductOption())
                 .build();
     }
