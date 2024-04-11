@@ -24,7 +24,7 @@ public class Product {
     @Column(nullable = false, length = 15)
     private Integer productPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendor_seq")
     private Vendor vendor;
 
@@ -35,20 +35,17 @@ public class Product {
     @ColumnDefault("0")
     private Integer discountPercent;
 
-    @Column(nullable = false, length = 15)
-    @ColumnDefault("0")
+    @Column(nullable = false, length = 15, columnDefinition = "double precision default 0.0")
     private Double averageRating;
 
-    @Column(nullable = false, length = 7)
-    @ColumnDefault("0")
+    @Column(nullable = false, length = 7, columnDefinition = "integer default 0")
     private Integer reviewCount;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(length = 10)
     private DeliveryType deliveryType;
 
-    @Column(nullable = false, length = 10)
-    @ColumnDefault("0")
+    @Column(nullable = false, length = 10, columnDefinition = "integer default 0")
     private Integer soldCount;
 
 

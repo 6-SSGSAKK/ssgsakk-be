@@ -15,8 +15,8 @@ public interface ReviewService {
 
     List<ReviewListDto> getReviewList(Long productSeq);
 
-    List<ReviewWriteDto> getWritableReviewList(String uuid);
+    List<ReviewWritableDto> getWritableReviewList(String uuid);
 
-    List<ReviewWriteDto> getWrittenReviewList(String uuid);
+    List<ReviewWrittenDto> getWrittenReviewList(String uuid);
 
 }
