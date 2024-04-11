@@ -9,7 +9,7 @@ import java.util.List;
 public interface ContentsService {
     List<ProductContents> productContentsList(Long ProductSeq);
 
-    List<String> reviewContentsList(Long ReviewSeq);
+    List<ReviewContentsVo> reviewContentsList(Long ReviewSeq);
 
     void createReviewContents(Review review, List<ReviewContentsVo> reviewContentsVoList);
 

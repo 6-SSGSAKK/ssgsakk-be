@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.review.vo;
 
+import com.ssgsakk.ssgdotcom.contents.vo.ReviewContentsVo;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,5 +11,5 @@ import java.util.List;
 public class UpdateReviewRequestVo {
     private String reviewParagraph;
     private Short reviewScore;
-    private List<String> contentsUrl;
+    private List<ReviewContentsVo> reviewContentsVoList;
 }
