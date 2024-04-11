@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.review.vo;
 
+import com.ssgsakk.ssgdotcom.contents.vo.ReviewContentsVo;
 import com.ssgsakk.ssgdotcom.review.dto.ReviewInfoDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.util.List;
 public class ReviewInfoResponseVo {
     private String reviewParagraph;
     private Short reviewScore;
-    private List<String> contentsUrl;
+    private List<ReviewContentsVo> reviewContentsVoList;
     private String purchaseProductOption;
     private String userId;
     private LocalDateTime reviewDate;
@@ -21,7 +22,7 @@ public class ReviewInfoResponseVo {
         return ReviewInfoResponseVo.builder()
                 .reviewParagraph(reviewInfoDto.getReviewParagraph())
                 .reviewScore(reviewInfoDto.getReviewScore())
-                .contentsUrl(reviewInfoDto.getContentsUrl())
+                .reviewContentsVoList(reviewInfoDto.getReviewContentsVoList())
                 .purchaseProductOption(reviewInfoDto.getPurchaseProductOption())
                 .userId(reviewInfoDto.getUserId())
                 .reviewDate(reviewInfoDto.getReviewDate())
