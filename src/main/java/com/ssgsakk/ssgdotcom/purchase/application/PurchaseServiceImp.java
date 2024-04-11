@@ -9,7 +9,6 @@ import com.ssgsakk.ssgdotcom.purchase.infrastructure.PurchaseRepositoryImp;
 import com.ssgsakk.ssgdotcom.purchaseproduct.application.PurchaseProductService;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
@@ -155,5 +154,8 @@ public class PurchaseServiceImp implements PurchaseService {
         return memberPurchaseSeqListDto;
 
     }
+
+
+
 
 }

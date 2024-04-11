@@ -26,4 +26,6 @@ public class PurchaseRepositoryImp extends QuerydslRepositorySupport {
                 .where(qPurchase.purchaseuuid.eq(uuid)) //인자값으로 받은 uuid랑 비교
                 .fetch();
     }
+
+
 }
