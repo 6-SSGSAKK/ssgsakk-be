@@ -4,8 +4,14 @@ import com.querydsl.core.Tuple;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.contents.application.ContentsService;
-import com.ssgsakk.ssgdotcom.member.application.AuthService;
-import com.ssgsakk.ssgdotcom.member.dto.UserInforDto;
+import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
+import com.ssgsakk.ssgdotcom.contents.domain.ReviewContents;
+
+import com.ssgsakk.ssgdotcom.contents.infrastructure.ReviewContentsRepository;
+import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
+import com.ssgsakk.ssgdotcom.contents.vo.ReviewContentsVo;
+import com.ssgsakk.ssgdotcom.member.domain.User;
+import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
@@ -15,6 +21,7 @@ import com.ssgsakk.ssgdotcom.review.dto.*;
 import com.ssgsakk.ssgdotcom.review.infrastructure.ReviewRepository;
 import com.ssgsakk.ssgdotcom.review.infrastructure.ReviewRepositoryImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,24 +29,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final ContentsService contentsService;
-    private final AuthService authService;
+    private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final ReviewRepositoryImpl reviewRepositoryImpl;
-
+    private final ReviewContentsRepository reviewContentsRepository;
     @Override
     @Transactional
     public void createReview(ReviewDto reviewDto, String uuid) {
-        UserInforDto userInforDto = authService.userInfor(uuid);
-        Review review = getEntity(reviewDto, userInforDto.getUserId());
+        User user = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_USER));
+        Review review = getEntity(reviewDto, user.getUserId());
         reviewRepository.save(review);
         contentsService.createReviewContents(review, reviewDto.getReviewContentsVoList());
-        updateReviewCount(reviewDto.getProductSeq());
+        updateReviewCount(reviewDto);
     }
 
     @Override
@@ -57,7 +65,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = reviewRepository.findById(reviewSeq)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_REVIEW));
         reviewRepository.deleteById(reviewSeq);
-        decreaseReviewCount(review.getProductSeq());
+        decreaseReviewCount(review);
         contentsService.deleteReviewContents(reviewSeq);
     }
 
@@ -66,13 +74,15 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewInfoDto getReviewInfo(Long reviewSeq) {
         Review review = reviewRepository.findById(reviewSeq)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_REVIEW));
+        List<ReviewContents> reviewContents = contentsService.reviewContentsList(reviewSeq);
+        List<ReviewContentsVo> contentVo = getReviewContentsVo(reviewContents);
 
         return ReviewInfoDto.builder()
                 .reviewParagraph(review.getReviewParagraph())
                 .reviewScore(review.getReviewScore())
                 .userId(review.getUserId())
                 .reviewDate(review.getCreatedDate())
-                .reviewContentsVoList(contentsService.reviewContentsList(reviewSeq))
+                .reviewContentsList(contentVo)
                 .purchaseProductOption(review.getPurchaseProductOption())
                 .build();
     }
@@ -125,14 +135,19 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     private List<ReviewListDto> getReviewListDto(List<Review> reviewList) {
+        if (reviewList.isEmpty()) {
+            return List.of();
+        }
+
         return reviewList.stream()
-                .map(Review -> ReviewListDto.builder()
+                .map(Review ->
+                        ReviewListDto.builder()
                         .reviewSeq(Review.getReviewSeq())
                         .reviewParagraph(Review.getReviewParagraph())
                         .reviewScore(Review.getReviewScore())
                         .userId(Review.getUserId())
                         .reviewDate(Review.getCreatedDate())
-                        .reviewContentsVoList(contentsService.reviewContentsList(Review.getReviewSeq()))
+                        .reviewContentsList(getReviewContentsVo(contentsService.reviewContentsList(Review.getReviewSeq())))
                         .purchaseProductOption(Review.getPurchaseProductOption())
                         .build())
                 .collect(Collectors.toList());
@@ -161,13 +176,13 @@ public class ReviewServiceImpl implements ReviewService {
                 .reviewScore(updateReviewDto.getReviewScore())
                 .build();
     }
-    private void updateReviewCount(Long productId) {
-        Product product = productRepository.findByProductSeq(productId)
+    private void updateReviewCount(ReviewDto reviewDto) {
+        Product product = productRepository.findByProductSeq(reviewDto.getProductSeq())
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
-        Double updateAverageRating = (product.getAverageRating() * product.getReviewCount() + 1)
-                / product.getAverageRating();
+        Double updateAverageRating = product.getAverageRating() == 0 ? reviewDto.getReviewScore():
+                (product.getAverageRating() * product.getReviewCount() + 1) / product.getAverageRating();
         Product updateProduct = Product.builder()
-                .productSeq(productId)
+                .productSeq(reviewDto.getProductSeq())
                 .averageRating(updateAverageRating)
                 .soldCount(product.getSoldCount())
                 .productPrice(product.getProductPrice())
@@ -181,13 +196,13 @@ public class ReviewServiceImpl implements ReviewService {
         productRepository.save(updateProduct);
     }
 
-    private void decreaseReviewCount(Long productId) {
-        Product product = productRepository.findByProductSeq(productId)
+    private void decreaseReviewCount(Review review) {
+        Product product = productRepository.findByProductSeq(review.getProductSeq())
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
-        Double updateAverageRating = (product.getAverageRating() * product.getReviewCount() - 1)
-                / product.getAverageRating();
+        Double updateAverageRating = product.getReviewCount() == 1 ? 0:
+                (product.getAverageRating() * product.getReviewCount() - 1) / product.getAverageRating();
         Product updateProduct = Product.builder()
-                .productSeq(productId)
+                .productSeq(review.getProductSeq())
                 .averageRating(updateAverageRating)
                 .soldCount(product.getSoldCount())
                 .productPrice(product.getProductPrice())
@@ -199,5 +214,15 @@ public class ReviewServiceImpl implements ReviewService {
                 .reviewCount(product.getReviewCount() - 1)
                 .build();
         productRepository.save(updateProduct);
+    }
+
+    private static List<ReviewContentsVo> getReviewContentsVo(List<ReviewContents> contents) {
+        return contents.stream()
+                .map(reviewContent -> ReviewContentsVo.builder()
+                        .contentUrl(reviewContent.getContents().getContentUrl())
+                        .contentsDescription(reviewContent.getContents().getContentDescription())
+                        .priority(reviewContent.getPriority())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

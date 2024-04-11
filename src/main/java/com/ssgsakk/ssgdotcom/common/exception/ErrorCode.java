@@ -32,6 +32,8 @@ public enum ErrorCode {
     DUPLICATE_ID(406, "ERROR-AUTH-019",  "이미 가입된 ID 입니다."),
     DUPLICATE_MOBILE_NUM(406, "ERROR-AUTH-020",  "이미 존재하는 전화번호 입니다."),
 
+    // User
+    CANNOT_FOUND_USER(404,"ERROR-USER-001","사용자를 찾을 수 없습니다."),
 
     // Category
     CANNOT_FOUND_CATEGORY(404,"ERROR-CATEGORY-001","카테고리를 찾을 수 없습니다."),
