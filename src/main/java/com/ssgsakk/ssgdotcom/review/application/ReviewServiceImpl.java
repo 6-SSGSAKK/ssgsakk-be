@@ -5,17 +5,20 @@ import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.contents.application.ContentsService;
 import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.dto.UserInforDto;
+import com.ssgsakk.ssgdotcom.product.domain.Product;
+import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
 import com.ssgsakk.ssgdotcom.review.domain.Review;
-import com.ssgsakk.ssgdotcom.review.dto.ReviewDto;
-import com.ssgsakk.ssgdotcom.review.dto.ReviewInfoDto;
-import com.ssgsakk.ssgdotcom.review.dto.ReviewListDto;
-import com.ssgsakk.ssgdotcom.review.dto.UpdateReviewDto;
+import com.ssgsakk.ssgdotcom.review.dto.*;
+
 import com.ssgsakk.ssgdotcom.review.infrastructure.ReviewRepository;
+import com.ssgsakk.ssgdotcom.review.infrastructure.ReviewRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -23,14 +26,17 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final ContentsService contentsService;
     private final AuthService authService;
+    private final ProductRepository productRepository;
+    private final ReviewRepositoryImpl reviewRepositoryImpl;
 
     @Override
     @Transactional
     public void createReview(ReviewDto reviewDto, String uuid) {
         UserInforDto userInforDto = authService.userInfor(uuid);
-        reviewRepository.save(getEntity(reviewDto, userInforDto.getUserId()));
-        contentsService.createReviewContents(reviewDto.getContentsUrl());
-        //productRepository.increaseReviewCount(productId);
+        Review review = getEntity(reviewDto, userInforDto.getUserId());
+        reviewRepository.save(review);
+        contentsService.createReviewContents(review, reviewDto.getReviewContentsVoList());
+        updateReviewCount(reviewDto.getProductSeq());
     }
 
     @Override
@@ -38,15 +44,17 @@ public class ReviewServiceImpl implements ReviewService {
     public void updateReview(Long reviewSeq, UpdateReviewDto updateReviewDto, String uuid) {
         Review reviewToUpdate = reviewRepository.findById(updateReviewDto.getReviewSeq())
                 .orElseThrow(() -> new IllegalArgumentException("Review not found"));
-        Review updatedReview = updateEntity(updateReviewDto);
+        Review updatedReview = updateEntity(reviewToUpdate, updateReviewDto);
         reviewRepository.save(updatedReview);
     }
 
     @Override
     @Transactional
     public void deleteReview(Long reviewSeq) {
+        Review review = reviewRepository.findById(reviewSeq)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_REVIEW));
         reviewRepository.deleteById(reviewSeq);
-        //productRepository.decreaseReviewCount(productId);
+        decreaseReviewCount(review.getProductSeq());
         contentsService.deleteReviewContents(reviewSeq);
     }
 
@@ -65,25 +73,96 @@ public class ReviewServiceImpl implements ReviewService {
                 .purchaseProductOption(review.getPurchaseProductOption())
                 .build();
     }
+
     @Override
     @Transactional
-    public Optional<ReviewListDto> getReviewList(Long productId) {
-        return Optional.empty();
+    public List<ReviewListDto> getReviewList(Long productSeq) {
+        List<Review> reviewList = reviewRepository.findAllByProductSeq(productSeq);
+        
+        return getReviewListDto(reviewList);
     }
+
+    @Override
+    @Transactional
+    public List<ReviewWriteDto> getWritableReviewList(String uuid) {
+        List<Long> reviewList = reviewRepositoryImpl.getWritableReviewProductSeq(uuid);
+        return reviewList.stream()
+                .map(reviewSeq -> ReviewWriteDto.builder()
+                        .reviewSeq(reviewSeq)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public List<ReviewWriteDto> getWrittenReviewList(String uuid) {
+        List<Long> reviewList = reviewRepositoryImpl.getWrittenReviewProductSeq(uuid);
+        return reviewList.stream()
+                .map(reviewSeq -> ReviewWriteDto.builder()
+                        .reviewSeq(reviewSeq)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+//    @Override
+//    public List<String> getThreeContentsUrl(Long productSeq) {
+//        return contentsService.getThreeContentsUrl(productSeq);
+//    }
+
+    private List<ReviewListDto> getReviewListDto(List<Review> reviewList) {
+        return reviewList.stream()
+                .map(Review -> ReviewListDto.builder()
+                        .reviewSeq(Review.getReviewSeq())
+                        .reviewParagraph(Review.getReviewParagraph())
+                        .reviewScore(Review.getReviewScore())
+                        .userId(Review.getUserId())
+                        .reviewDate(Review.getCreatedDate())
+                        .contentsUrl(contentsService.reviewContentsList(Review.getReviewSeq()))
+                        .purchaseProductOption(Review.getPurchaseProductOption())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     private static Review getEntity(ReviewDto reviewDto, String userId) {
+        // 리뷰 작성시 실제 구매했는지 확인해야함
+        String maskedUserId = userId.substring(0, 3) + "****";
         return Review.builder()
                 .purchaseProductSeq(reviewDto.getPurchaseProductSeq())
                 .productSeq(reviewDto.getProductSeq())
                 .reviewParagraph(reviewDto.getReviewParagraph())
                 .reviewScore(reviewDto.getReviewScore())
-                .userId(userId)
+                .userId(maskedUserId)
+                .purchaseProductOption(reviewDto.getPurchaseProductOption())
                 .build();
     }
-    private static Review updateEntity(UpdateReviewDto updateReviewDto) {
+    private static Review updateEntity(Review reviewUpdate, UpdateReviewDto updateReviewDto) {
         return Review.builder()
+                .purchaseProductSeq(reviewUpdate.getPurchaseProductSeq())
+                .productSeq(reviewUpdate.getProductSeq())
+                .userId(reviewUpdate.getUserId())
+                .purchaseProductOption(reviewUpdate.getPurchaseProductOption())
                 .reviewSeq(updateReviewDto.getReviewSeq())
                 .reviewParagraph(updateReviewDto.getReviewParagraph())
                 .reviewScore(updateReviewDto.getReviewScore())
                 .build();
+    }
+    private void updateReviewCount(Long productId) {
+        Product product = productRepository.findByProductSeq(productId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+        Product updateProduct = Product.builder()
+                .productSeq(productId)
+                .reviewCount(product.getReviewCount() + 1)
+                .build();
+        productRepository.save(updateProduct);
+    }
+
+    private void decreaseReviewCount(Long productId) {
+        Product product = productRepository.findByProductSeq(productId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+        Product updateProduct = Product.builder()
+                .productSeq(productId)
+                .reviewCount(product.getReviewCount() - 1)
+                .build();
+        productRepository.save(updateProduct);
     }
 }

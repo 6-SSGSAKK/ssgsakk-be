@@ -6,6 +6,8 @@ import com.ssgsakk.ssgdotcom.contents.domain.ReviewContents;
 import com.ssgsakk.ssgdotcom.contents.infrastructure.ContentsRepository;
 import com.ssgsakk.ssgdotcom.contents.infrastructure.ProductContentsRepository;
 import com.ssgsakk.ssgdotcom.contents.infrastructure.ReviewContentsRepository;
+import com.ssgsakk.ssgdotcom.contents.vo.ReviewContentsVo;
+import com.ssgsakk.ssgdotcom.review.domain.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,17 +30,25 @@ public class ContentsServiceImpl implements ContentsService {
 
     @Override
     @Transactional
-    public List<ReviewContents> reviewContentsList(Long ReviewSeq) {
-        return reviewContentsRepository.findByReview_ReviewSeq(ReviewSeq);
+    public List<String> reviewContentsList(Long ReviewSeq) {
+        List<ReviewContents> reviewContents =  reviewContentsRepository.findByReview_ReviewSeq(ReviewSeq);
+        return reviewContents.stream().map(ReviewContents::getContents)
+                .map(Contents::getContentUrl).toList();
     }
 
     @Override
     @Transactional
-    public void createReviewContents(List<String> contentUrl) {
-        for (String url : contentUrl) {
-            Contents contents = Contents.builder().contentUrl(url).build();
+    public void createReviewContents(Review review, List<ReviewContentsVo> reviewContentsVoList) {
+        for (ReviewContentsVo reviewContentsVo : reviewContentsVoList) {
+            Contents contents = Contents.builder()
+                    .contentUrl(reviewContentsVo.getContentUrl())
+                    .build();
             contentsRepository.save(contents);
-            ReviewContents reviewContents = ReviewContents.builder().contents(contents).build();
+            ReviewContents reviewContents = ReviewContents.builder()
+                    .review(review)
+                    .contents(contents)
+                    .priority(reviewContentsVo.getPriority())
+                    .build();
             reviewContentsRepository.save(reviewContents);
         }
     }

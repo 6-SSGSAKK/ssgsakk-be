@@ -15,9 +15,10 @@ import com.ssgsakk.ssgdotcom.product.dto.ProductListInfoDto;
 import com.ssgsakk.ssgdotcom.product.dto.SearchProductDto;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepositoryImpl;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImp implements ProductService{
@@ -161,4 +161,5 @@ public class ProductServiceImp implements ProductService{
                         .build())
                 .collect(Collectors.toList());
     }
+
 }

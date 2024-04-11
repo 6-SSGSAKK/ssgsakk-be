@@ -1,6 +1,5 @@
 package com.ssgsakk.ssgdotcom.review.dto;
 
-import com.ssgsakk.ssgdotcom.contents.domain.ReviewContents;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,7 +11,7 @@ import java.util.List;
 public class ReviewInfoDto {
     private String reviewParagraph;
     private Short reviewScore;
-    private List<ReviewContents> contentsUrl;
+    private List<String> contentsUrl;
     private String purchaseProductOption;
     private String userId;
     private LocalDateTime reviewDate;

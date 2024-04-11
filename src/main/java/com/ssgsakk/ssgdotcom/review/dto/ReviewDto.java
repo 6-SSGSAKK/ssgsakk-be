@@ -1,6 +1,7 @@
 package com.ssgsakk.ssgdotcom.review.dto;
 
 
+import com.ssgsakk.ssgdotcom.contents.vo.ReviewContentsVo;
 import com.ssgsakk.ssgdotcom.review.vo.ReviewRequestVo;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,14 +17,14 @@ public class ReviewDto {
     private Long productSeq;
     private String reviewParagraph;
     private Short reviewScore;
-    private List<String> contentsUrl;
+    private List<ReviewContentsVo> reviewContentsVoList;
     private String purchaseProductOption;
 
     public static ReviewDto VoToDto(ReviewRequestVo reviewRequestVo) {
         return ReviewDto.builder()
                 .reviewParagraph(reviewRequestVo.getReviewParagraph())
                 .reviewScore(reviewRequestVo.getReviewScore())
-                .contentsUrl(reviewRequestVo.getContentsUrl())
+                .reviewContentsVoList(reviewRequestVo.getReviewContentsVoList())
                 .productSeq(reviewRequestVo.getProductSeq())
                 .purchaseProductSeq(reviewRequestVo.getPurchaseProductSeq())
                 .purchaseProductOption(reviewRequestVo.getPurchaseProductOption())

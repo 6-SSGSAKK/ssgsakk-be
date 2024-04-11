@@ -6,14 +6,14 @@ import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.review.application.ReviewService;
 import com.ssgsakk.ssgdotcom.review.dto.ReviewDto;
 import com.ssgsakk.ssgdotcom.review.dto.UpdateReviewDto;
-import com.ssgsakk.ssgdotcom.review.vo.ReviewInfoResponseVo;
-import com.ssgsakk.ssgdotcom.review.vo.ReviewRequestVo;
-import com.ssgsakk.ssgdotcom.review.vo.UpdateReviewRequestVo;
+import com.ssgsakk.ssgdotcom.review.vo.*;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
@@ -24,7 +24,7 @@ public class ReviewController {
     @PutMapping()
     @Operation(summary = "리뷰 작성", description = "리뷰를 작성합니다.", tags = {"Review"})
     public BaseResponse<?> createReview(@RequestHeader("Authorization") String accessToken,
-                                        ReviewRequestVo reviewRequestVo) {
+                                        @RequestBody ReviewRequestVo reviewRequestVo) {
         reviewService.createReview(ReviewDto.VoToDto(reviewRequestVo), getUuid(accessToken));
         return new BaseResponse<>("createReview Success","");
     }
@@ -32,7 +32,7 @@ public class ReviewController {
     @PutMapping("/{reviewSeq}")
     @Operation(summary = "리뷰 수정", description = "리뷰를 수정합니다.", tags = {"Review"})
     public BaseResponse<?> updateReview(@PathVariable Long reviewSeq,@RequestHeader("Authorization") String accessToken,
-                                        UpdateReviewRequestVo updateReviewRequestVo) {
+                                        @RequestBody UpdateReviewRequestVo updateReviewRequestVo) {
         reviewService.updateReview(reviewSeq, UpdateReviewDto.VoToDto(reviewSeq, updateReviewRequestVo), getUuid(accessToken));
         return new BaseResponse<>("updateReview Success","");
     }
@@ -50,6 +50,28 @@ public class ReviewController {
         return new BaseResponse<>("getReview Success",
                 ReviewInfoResponseVo.DtoToVo(reviewService.getReviewInfo(reviewSeq)));
     }
+
+    @GetMapping("/products/{productSeq}")
+    @Operation(summary = "상품의 리뷰 조회", description = "상품의 리뷰를 조회합니다.", tags = {"Review"})
+    public BaseResponse<List<ReviewListResponseVo>> getReviews(@PathVariable Long productSeq) {
+        return new BaseResponse<>("getReviews Success",
+                 ReviewListResponseVo.DtoListToVoList(reviewService.getReviewList(productSeq)));
+    }
+
+    @GetMapping("/writable")
+    @Operation(summary = "사용자의 작성 가능 리뷰 조회", description = "사용자의 작성 가능 리뷰를 조회합니다.", tags = {"Review"})
+    public BaseResponse<ReviewWriteListResponseVo> getWritableReviews(@RequestHeader("Authorization") String accessToken) {
+        return new BaseResponse<>("getWritableReviews Success",
+                 ReviewWriteListResponseVo.DtoListToVoList(reviewService.getWritableReviewList(getUuid(accessToken))));
+    }
+
+    @GetMapping("/written")
+    @Operation(summary = "사용자의 작성한 리뷰 조회 ", description = "사용자의 작성한 리뷰 조회", tags = {"Review"})
+    public BaseResponse<ReviewWriteListResponseVo> getWrittenReviews(@RequestHeader("Authorization") String accessToken) {
+        return new BaseResponse<>("getWrittenReviews Success",
+                ReviewWriteListResponseVo.DtoListToVoList(reviewService.getWrittenReviewList(getUuid(accessToken))));
+    }
+
     // JWT에서 UUID 추출 메서드
     public String getUuid(String jwt) {
         String uuid;
