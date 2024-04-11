@@ -196,6 +196,7 @@ public class LikesServiceImpl implements LikesService {
                 for (LikeCategory likeCategory : likeCategories) {
                     Category category = likeCategory.getCategory();
                     UserCategoryLikesResponseVo categoryLikesResponseVo = UserCategoryLikesResponseVo.builder()
+                            .likeCategorySeq(likeCategory.getLikeCategorySeq())
                             .categorySeq(category.getCategorySeq())
                             .categoryName(category.getCategoryName())
                             .build();

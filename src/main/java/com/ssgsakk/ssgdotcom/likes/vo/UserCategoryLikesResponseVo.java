@@ -9,11 +9,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UserCategoryLikesResponseVo {
+    private Long likeCategorySeq;
     private Long categorySeq;
     private String categoryName;
 
     @Builder
-    public UserCategoryLikesResponseVo(Long categorySeq, String categoryName) {
+    public UserCategoryLikesResponseVo(Long likeCategorySeq, Long categorySeq, String categoryName) {
+        this.likeCategorySeq = likeCategorySeq;
         this.categorySeq = categorySeq;
         this.categoryName = categoryName;
     }

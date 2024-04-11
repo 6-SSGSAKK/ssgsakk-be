@@ -1,14 +1,12 @@
 package com.ssgsakk.ssgdotcom.purchase.infrastructure;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssgsakk.ssgdotcom.purchase.domain.Purchase;
 import com.ssgsakk.ssgdotcom.purchase.domain.QPurchase;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class PurchaseRepositoryImp extends QuerydslRepositorySupport {

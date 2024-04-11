@@ -18,4 +18,5 @@ public interface PurchaseService {
 
     @Transactional
     List<MemberPurchaseSeqListDto> checkMemberPurchase(String uuid);
+
 }
