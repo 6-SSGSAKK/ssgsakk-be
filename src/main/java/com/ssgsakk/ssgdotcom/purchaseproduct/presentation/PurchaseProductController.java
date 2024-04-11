@@ -2,9 +2,14 @@ package com.ssgsakk.ssgdotcom.purchaseproduct.presentation;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.purchaseproduct.Vo.PurchaseProductStateRequestVo;
 import com.ssgsakk.ssgdotcom.purchaseproduct.application.PurchaseProductService;
+import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductListDto;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductStateDto;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/purchaseproduct")
@@ -30,6 +35,19 @@ public class PurchaseProductController {
             return new BaseResponse<>("updateFail", "상태변경 숫자 확인");
         }
         return new BaseResponse<>("updateSuccess", "");
+
+    }
+
+    @GetMapping("/member-purchase-detail/{purchaseSeq}") //회원 주문상품상세내역 조회
+    public BaseResponse<List<PurchaseProductListDto>> memberPurchaseDetail(@PathVariable Long purchaseSeq) {
+
+        List<PurchaseProductListDto> purchaseList = purchaseProductService.memberPurchaseProductDetail(purchaseSeq);
+
+        if (purchaseList != null) {
+            return new BaseResponse<>("주문상세내역 조회 성공", purchaseList);
+        }else {
+            return new BaseResponse<>("주문상세내역 조회 실패",null);
+        }
 
     }
 

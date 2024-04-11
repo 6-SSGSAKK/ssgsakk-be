@@ -2,13 +2,13 @@ package com.ssgsakk.ssgdotcom.purchaseproduct.application;
 import com.ssgsakk.ssgdotcom.purchase.domain.Purchase;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductDto;
+import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductListDto;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductStateDto;
 import com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure.PurchaseProductRepository;
 import com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure.PurchaseProductRepositoryImp;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,9 +86,16 @@ public class PurchaseProductServiceImp implements PurchaseProductService {
 
 
     @Transactional
-    @Override
+    @Override //주문상품 상태 수정 메소드
     public void updatePurchaseProductState(Long purchaseProductSeq, PurchaseProductStateDto purchaseProductStateDto) {
         purchaseProductRepositoryImp.updateProductState(purchaseProductSeq, purchaseProductStateDto);
+    }
+
+    @Transactional
+    @Override //회원주문상품 상세 조회 메소드
+    public List<PurchaseProductListDto> memberPurchaseProductDetail(Long purchaseSeq){
+        List<PurchaseProductListDto> PurchaseProductListDto = purchaseProductRepositoryImp.memberPurchaseProductDetail(purchaseSeq);
+        return PurchaseProductListDto;
     }
 
 

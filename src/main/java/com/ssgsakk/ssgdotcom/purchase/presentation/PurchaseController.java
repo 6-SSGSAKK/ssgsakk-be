@@ -5,10 +5,11 @@ import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.purchase.application.PurchaseService;
 import com.ssgsakk.ssgdotcom.purchase.dto.MemberPurchaseSeqListDto;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseCodeDto;
-import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseListDto;
 import com.ssgsakk.ssgdotcom.purchase.vo.CreateMemberPurchaseRequestVo;
 import com.ssgsakk.ssgdotcom.purchase.vo.CreateNonMemberPurchaseRequestVo;
 import com.ssgsakk.ssgdotcom.purchase.vo.PurchaseCodeResponseVo;
+import com.ssgsakk.ssgdotcom.purchaseproduct.domain.QPurchaseProduct;
+import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductListDto;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -77,18 +78,6 @@ public class PurchaseController {
         }
     }
 
-    @GetMapping("/member-purchase-detail/{purchaseSeq}") //회원 주문 상세내역 조회
-    public BaseResponse<List<PurchaseListDto>> memberPurchaseDetail(@PathVariable Long purchaseSeq) {
-
-        List<PurchaseListDto> purchaseList = purchaseService.memberPurchaseList(purchaseSeq);
-
-        if (purchaseList != null) {
-            return new BaseResponse<>("주문상세내역 조회 성공", purchaseList);
-        }else {
-            return new BaseResponse<>("주문상세내역 조회 실패",null);
-        }
-
-    }
 
 
 
