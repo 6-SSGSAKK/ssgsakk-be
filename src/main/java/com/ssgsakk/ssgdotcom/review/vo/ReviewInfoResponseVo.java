@@ -1,6 +1,5 @@
 package com.ssgsakk.ssgdotcom.review.vo;
 
-import com.ssgsakk.ssgdotcom.contents.domain.ReviewContents;
 import com.ssgsakk.ssgdotcom.review.dto.ReviewInfoDto;
 import lombok.Builder;
 import lombok.Getter;

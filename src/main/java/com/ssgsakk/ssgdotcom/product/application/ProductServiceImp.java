@@ -15,12 +15,10 @@ import com.ssgsakk.ssgdotcom.product.dto.ProductListInfoDto;
 import com.ssgsakk.ssgdotcom.product.dto.SearchProductDto;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepositoryImpl;
-import com.ssgsakk.ssgdotcom.review.domain.Review;
-import com.ssgsakk.ssgdotcom.review.dto.ReviewListDto;
-import com.ssgsakk.ssgdotcom.review.infrastructure.ReviewRepository;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,7 +35,6 @@ public class ProductServiceImp implements ProductService{
     private final EventProductRepository eventProductRepository;
     private final EventRepository eventRepository;
     private final ContentsService contentsService;
-    private final ReviewRepository reviewRepository;
     // 상품 상세 정보 조회
     @Override
     @Transactional

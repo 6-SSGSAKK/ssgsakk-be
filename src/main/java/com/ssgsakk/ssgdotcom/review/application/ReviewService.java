@@ -3,7 +3,6 @@ package com.ssgsakk.ssgdotcom.review.application;
 import com.ssgsakk.ssgdotcom.review.dto.*;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ReviewService {
     void updateReview(Long reviewSeq,UpdateReviewDto updateReviewDto, String uuid);

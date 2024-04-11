@@ -1,7 +1,7 @@
 package com.ssgsakk.ssgdotcom.review.infrastructure;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssgsakk.ssgdotcom.purchase.domain.QPurchase;
+
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.QPurchaseProduct;
 import com.ssgsakk.ssgdotcom.review.domain.QReview;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -13,7 +13,6 @@ import java.util.List;
 public class ReviewRepositoryImpl extends QuerydslRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
     private final QPurchaseProduct qPurchaseProduct = QPurchaseProduct.purchaseProduct;
-    private final QPurchase qPurchase = QPurchase.purchase;
     private final QReview qReview = QReview.review;
 
     public ReviewRepositoryImpl(JPAQueryFactory jpaQueryFactory) {

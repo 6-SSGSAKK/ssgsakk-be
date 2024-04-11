@@ -1,10 +1,8 @@
 package com.ssgsakk.ssgdotcom.review.dto;
 
-import com.ssgsakk.ssgdotcom.review.domain.Review;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

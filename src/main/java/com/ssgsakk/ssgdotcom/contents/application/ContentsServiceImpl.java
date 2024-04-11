@@ -31,9 +31,8 @@ public class ContentsServiceImpl implements ContentsService {
     @Transactional
     public List<String> reviewContentsList(Long ReviewSeq) {
         List<ReviewContents> reviewContents =  reviewContentsRepository.findByReview_ReviewSeq(ReviewSeq);
-        List<String> contentsurl = reviewContents.stream().map(ReviewContents::getContents)
+        return reviewContents.stream().map(ReviewContents::getContents)
                 .map(Contents::getContentUrl).toList();
-        return contentsurl;
     }
 
     @Override
