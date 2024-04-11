@@ -60,16 +60,16 @@ public class ReviewController {
 
     @GetMapping("/writable")
     @Operation(summary = "사용자의 작성 가능 리뷰 조회", description = "사용자의 작성 가능 리뷰를 조회합니다.", tags = {"Review"})
-    public BaseResponse<ReviewWriteListResponseVo> getWritableReviews(@RequestHeader("Authorization") String accessToken) {
+    public BaseResponse<List<ReviewWritableResponseVo>> getWritableReviews(@RequestHeader("Authorization") String accessToken) {
         return new BaseResponse<>("getWritableReviews Success",
-                 ReviewWriteListResponseVo.DtoListToVoList(reviewService.getWritableReviewList(getUuid(accessToken))));
+                 ReviewWritableResponseVo.DtoListToVoList(reviewService.getWritableReviewList(getUuid(accessToken))));
     }
 
     @GetMapping("/written")
     @Operation(summary = "사용자의 작성한 리뷰 조회 ", description = "사용자의 작성한 리뷰 조회", tags = {"Review"})
-    public BaseResponse<ReviewWriteListResponseVo> getWrittenReviews(@RequestHeader("Authorization") String accessToken) {
+    public BaseResponse<List<ReviewWrittenResponseVo>> getWrittenReviews(@RequestHeader("Authorization") String accessToken) {
         return new BaseResponse<>("getWrittenReviews Success",
-                ReviewWriteListResponseVo.DtoListToVoList(reviewService.getWrittenReviewList(getUuid(accessToken))));
+                ReviewWrittenResponseVo.DtoListToVoList(reviewService.getWrittenReviewList(getUuid(accessToken))));
     }
 
     // JWT에서 UUID 추출 메서드

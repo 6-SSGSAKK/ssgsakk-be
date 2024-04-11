@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.review.application;
 
+import com.querydsl.core.Tuple;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.contents.application.ContentsService;
@@ -7,6 +8,7 @@ import com.ssgsakk.ssgdotcom.member.application.AuthService;
 import com.ssgsakk.ssgdotcom.member.dto.UserInforDto;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
 import com.ssgsakk.ssgdotcom.product.infrastructure.ProductRepository;
+import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.review.domain.Review;
 import com.ssgsakk.ssgdotcom.review.dto.*;
 
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -84,23 +87,40 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public List<ReviewWriteDto> getWritableReviewList(String uuid) {
-        List<Long> reviewList = reviewRepositoryImpl.getWritableReviewProductSeq(uuid);
-        return reviewList.stream()
-                .map(reviewSeq -> ReviewWriteDto.builder()
-                        .reviewSeq(reviewSeq)
+    public List<ReviewWritableDto> getWritableReviewList(String uuid) {
+        List<PurchaseProduct> purchaseProductList = reviewRepositoryImpl.getWritableReviewProductSeq(uuid);
+        return purchaseProductList.stream()
+                .map(purchaseProduct -> ReviewWritableDto.builder()
+                        .purchaseProductSeq(purchaseProduct.getPurchaseProductSeq())
+                        .purchaseProductOption(purchaseProduct.getPurchaseProductOptionName())
+                        .purchaseCode(purchaseProduct.getPurchaseSeq().getPurchaseCode())
+                        .purchaseDate(purchaseProduct.getPurchaseSeq().getCreatedDate())
+                        .productSeq(purchaseProduct.getProductSeq())
+                        .purchaseProductName(purchaseProduct.getPurchaseProductName())
                         .build())
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public List<ReviewWriteDto> getWrittenReviewList(String uuid) {
-        List<Long> reviewList = reviewRepositoryImpl.getWrittenReviewProductSeq(uuid);
-        return reviewList.stream()
-                .map(reviewSeq -> ReviewWriteDto.builder()
-                        .reviewSeq(reviewSeq)
-                        .build())
+    public List<ReviewWrittenDto> getWrittenReviewList(String uuid) {
+        List<Tuple> reviewProductList = reviewRepositoryImpl.getWrittenReviewProductSeq(uuid);
+        return reviewProductList.stream()
+                .map(reviewProduct -> {
+                    PurchaseProduct purchaseProduct = reviewProduct.get(0, PurchaseProduct.class);
+                    Review review = reviewProduct.get(1, Review.class);
+                    return ReviewWrittenDto.builder()
+                            .purchaseSeq(Objects.requireNonNull(purchaseProduct).getPurchaseProductSeq())
+                            .purchaseProductSeq(purchaseProduct.getPurchaseProductSeq())
+                            .purchaseCode(purchaseProduct.getPurchaseSeq().getPurchaseCode())
+                            .purchaseDate(purchaseProduct.getPurchaseSeq().getCreatedDate())
+                            .productSeq(purchaseProduct.getProductSeq())
+                            .purchaseProductName(purchaseProduct.getPurchaseProductName())
+                            .reviewScore(Objects.requireNonNull(review).getReviewScore())
+                            .reviewParagraph(review.getReviewParagraph())
+                            .reviewDate(review.getCreatedDate())
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
@@ -144,8 +164,18 @@ public class ReviewServiceImpl implements ReviewService {
     private void updateReviewCount(Long productId) {
         Product product = productRepository.findByProductSeq(productId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+        Double updateAverageRating = (product.getAverageRating() * product.getReviewCount() + 1)
+                / product.getAverageRating();
         Product updateProduct = Product.builder()
                 .productSeq(productId)
+                .averageRating(updateAverageRating)
+                .soldCount(product.getSoldCount())
+                .productPrice(product.getProductPrice())
+                .productName(product.getProductName())
+                .vendor(product.getVendor())
+                .deliveryType(product.getDeliveryType())
+                .discountPercent(product.getDiscountPercent())
+                .productDescription(product.getProductDescription())
                 .reviewCount(product.getReviewCount() + 1)
                 .build();
         productRepository.save(updateProduct);
@@ -154,8 +184,18 @@ public class ReviewServiceImpl implements ReviewService {
     private void decreaseReviewCount(Long productId) {
         Product product = productRepository.findByProductSeq(productId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
+        Double updateAverageRating = (product.getAverageRating() * product.getReviewCount() - 1)
+                / product.getAverageRating();
         Product updateProduct = Product.builder()
                 .productSeq(productId)
+                .averageRating(updateAverageRating)
+                .soldCount(product.getSoldCount())
+                .productPrice(product.getProductPrice())
+                .productName(product.getProductName())
+                .vendor(product.getVendor())
+                .deliveryType(product.getDeliveryType())
+                .discountPercent(product.getDiscountPercent())
+                .productDescription(product.getProductDescription())
                 .reviewCount(product.getReviewCount() - 1)
                 .build();
         productRepository.save(updateProduct);

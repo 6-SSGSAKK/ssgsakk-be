@@ -1,7 +1,9 @@
 package com.ssgsakk.ssgdotcom.review.infrastructure;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.QPurchaseProduct;
 import com.ssgsakk.ssgdotcom.review.domain.QReview;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -20,17 +22,17 @@ public class ReviewRepositoryImpl extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public List<Long> getWritableReviewProductSeq(String uuid){
+    public List<PurchaseProduct> getWritableReviewProductSeq(String uuid){
         return jpaQueryFactory
-                .select(qPurchaseProduct.purchaseProductSeq)
+                .select(qPurchaseProduct)
                 .from(qPurchaseProduct)
                 .where(qPurchaseProduct.purchaseSeq.purchaseuuid.eq(uuid), qPurchaseProduct.productState.eq(8))
                 .fetch();
     }
 
-    public List<Long> getWrittenReviewProductSeq(String uuid){
+    public List<Tuple> getWrittenReviewProductSeq(String uuid){
         return jpaQueryFactory
-                .select(qPurchaseProduct.purchaseProductSeq)
+                .select(qPurchaseProduct, qReview)
                 .from(qPurchaseProduct)
                 .join(qReview)
                 .where(qPurchaseProduct.purchaseSeq.purchaseuuid.eq(uuid), qPurchaseProduct.productState.eq(8),
