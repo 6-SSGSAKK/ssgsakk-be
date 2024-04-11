@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.review.dto;
 
+import com.ssgsakk.ssgdotcom.contents.vo.ReviewContentsVo;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,7 +13,7 @@ public class ReviewListDto {
     private Long reviewSeq;
     private String reviewParagraph;
     private Short reviewScore;
-    private List<String> contentsUrl;
+    private List<ReviewContentsVo> reviewContentsVoList;
     private String purchaseProductOption;
     private String userId;
     private LocalDateTime reviewDate;

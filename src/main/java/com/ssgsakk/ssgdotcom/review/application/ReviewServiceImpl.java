@@ -69,7 +69,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .reviewScore(review.getReviewScore())
                 .userId(review.getUserId())
                 .reviewDate(review.getCreatedDate())
-                .contentsUrl(contentsService.reviewContentsList(reviewSeq))
+                .reviewContentsVoList(contentsService.reviewContentsList(reviewSeq))
                 .purchaseProductOption(review.getPurchaseProductOption())
                 .build();
     }
@@ -104,11 +104,6 @@ public class ReviewServiceImpl implements ReviewService {
                 .collect(Collectors.toList());
     }
 
-//    @Override
-//    public List<String> getThreeContentsUrl(Long productSeq) {
-//        return contentsService.getThreeContentsUrl(productSeq);
-//    }
-
     private List<ReviewListDto> getReviewListDto(List<Review> reviewList) {
         return reviewList.stream()
                 .map(Review -> ReviewListDto.builder()
@@ -117,7 +112,7 @@ public class ReviewServiceImpl implements ReviewService {
                         .reviewScore(Review.getReviewScore())
                         .userId(Review.getUserId())
                         .reviewDate(Review.getCreatedDate())
-                        .contentsUrl(contentsService.reviewContentsList(Review.getReviewSeq()))
+                        .reviewContentsVoList(contentsService.reviewContentsList(Review.getReviewSeq()))
                         .purchaseProductOption(Review.getPurchaseProductOption())
                         .build())
                 .collect(Collectors.toList());

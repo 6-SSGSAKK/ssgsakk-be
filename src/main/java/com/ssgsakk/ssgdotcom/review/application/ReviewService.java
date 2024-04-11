@@ -19,5 +19,4 @@ public interface ReviewService {
 
     List<ReviewWriteDto> getWrittenReviewList(String uuid);
 
-    //List<String> getThreeContentsUrl(Long productSeq);
 }
