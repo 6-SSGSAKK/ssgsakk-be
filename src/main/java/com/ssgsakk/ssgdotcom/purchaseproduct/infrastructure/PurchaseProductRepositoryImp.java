@@ -1,21 +1,25 @@
 package com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssgsakk.ssgdotcom.purchase.domain.QPurchase;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.QPurchaseProduct;
+import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductListDto;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductStateDto;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.ssgsakk.ssgdotcom.option.domain.QOptionAndStock.optionAndStock;
 
 @Repository
-@Slf4j
 public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
     private final QPurchaseProduct qPurchaseProduct = QPurchaseProduct.purchaseProduct;
 
+    private final QPurchase qPurchase = QPurchase.purchase;
 
     public PurchaseProductRepositoryImp(JPAQueryFactory jpaQueryFactory) {
         super(PurchaseProduct.class);
@@ -84,6 +88,84 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
                 .where(optionAndStock.productSeq.eq(productSeq))
                 .execute();
     }
+    @Transactional //회원주문상품 상세 조회 쿼리
+    public List<PurchaseProductListDto> memberPurchaseProductDetail(Long purchaseSeq) {
+
+        List<PurchaseProduct> result = jpaQueryFactory.selectFrom(qPurchaseProduct)
+                .where(qPurchaseProduct.purchaseSeq.purchaseSeq.eq(purchaseSeq))
+                .fetch();
+        return result.stream().map(this::convertToDto).collect(Collectors.toList());
+
+    }
+
+    //조회한 result  PurchaseProductListDto로 변환
+    private PurchaseProductListDto convertToDto(PurchaseProduct purchaseProduct){
+        return new PurchaseProductListDto(purchaseProduct.getPurchaseProductSeq(),purchaseProduct.getPurchaseSeq(),
+                purchaseProduct.getProductSeq(),purchaseProduct.getPurchaseProductName(),
+                purchaseProduct.getPurchaseProductVendor(),purchaseProduct.getProductOptionSeq(),
+                purchaseProduct.getPurchaseProductCount(), purchaseProduct.getPurchaseProductOptionName(),
+                purchaseProduct.getPurchaseProductPrice(),purchaseProduct.getPurchaseProductDiscountPrice(),
+                purchaseProduct.getProductThumbnail(),purchaseProduct.getDeliveryType(),purchaseProduct.getProductState());
+
+
+    }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

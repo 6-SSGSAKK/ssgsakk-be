@@ -27,5 +27,4 @@ public class PurchaseRepositoryImp extends QuerydslRepositorySupport {
                 .fetch();
     }
 
-
 }

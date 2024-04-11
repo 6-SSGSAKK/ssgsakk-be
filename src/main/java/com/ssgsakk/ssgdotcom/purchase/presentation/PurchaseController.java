@@ -8,6 +8,8 @@ import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseCodeDto;
 import com.ssgsakk.ssgdotcom.purchase.vo.CreateMemberPurchaseRequestVo;
 import com.ssgsakk.ssgdotcom.purchase.vo.CreateNonMemberPurchaseRequestVo;
 import com.ssgsakk.ssgdotcom.purchase.vo.PurchaseCodeResponseVo;
+import com.ssgsakk.ssgdotcom.purchaseproduct.domain.QPurchaseProduct;
+import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductListDto;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -75,10 +77,6 @@ public class PurchaseController {
             return new BaseResponse<>("주문번호 조회 실패",null);
         }
     }
-
-
-
-
 
 
 }
