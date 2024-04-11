@@ -6,6 +6,7 @@ import com.ssgsakk.ssgdotcom.contents.domain.ReviewContents;
 import com.ssgsakk.ssgdotcom.contents.infrastructure.ContentsRepository;
 import com.ssgsakk.ssgdotcom.contents.infrastructure.ProductContentsRepository;
 import com.ssgsakk.ssgdotcom.contents.infrastructure.ReviewContentsRepository;
+import com.ssgsakk.ssgdotcom.contents.vo.ReviewContentsVo;
 import com.ssgsakk.ssgdotcom.review.domain.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,11 +38,17 @@ public class ContentsServiceImpl implements ContentsService {
 
     @Override
     @Transactional
-    public void createReviewContents(Review review, List<String> contentUrl) {
-        for (String url : contentUrl) {
-            Contents contents = Contents.builder().contentUrl(url).build();
+    public void createReviewContents(Review review, List<ReviewContentsVo> reviewContentsVoList) {
+        for (ReviewContentsVo reviewContentsVo : reviewContentsVoList) {
+            Contents contents = Contents.builder()
+                    .contentUrl(reviewContentsVo.getContentUrl())
+                    .build();
             contentsRepository.save(contents);
-            ReviewContents reviewContents = ReviewContents.builder().review(review).contents(contents).build();
+            ReviewContents reviewContents = ReviewContents.builder()
+                    .review(review)
+                    .contents(contents)
+                    .priority(reviewContentsVo.getPriority())
+                    .build();
             reviewContentsRepository.save(reviewContents);
         }
     }

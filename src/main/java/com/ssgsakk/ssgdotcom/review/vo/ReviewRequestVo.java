@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.review.vo;
 
+import com.ssgsakk.ssgdotcom.contents.vo.ReviewContentsVo;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,6 +13,6 @@ public class ReviewRequestVo {
     private Long productSeq;
     private String reviewParagraph;
     private Short reviewScore;
-    private List<String> contentsUrl;
+    private List<ReviewContentsVo> reviewContentsVoList;
     private String purchaseProductOption;
 }

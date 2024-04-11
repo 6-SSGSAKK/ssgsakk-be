@@ -35,7 +35,7 @@ public class ReviewServiceImpl implements ReviewService {
         UserInforDto userInforDto = authService.userInfor(uuid);
         Review review = getEntity(reviewDto, userInforDto.getUserId());
         reviewRepository.save(review);
-        contentsService.createReviewContents(review, reviewDto.getContentsUrl());
+        contentsService.createReviewContents(review, reviewDto.getReviewContentsVoList());
         updateReviewCount(reviewDto.getProductSeq());
     }
 
@@ -124,6 +124,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     private static Review getEntity(ReviewDto reviewDto, String userId) {
+        // 리뷰 작성시 실제 구매했는지 확인해야함
         String maskedUserId = userId.substring(0, 3) + "****";
         return Review.builder()
                 .purchaseProductSeq(reviewDto.getPurchaseProductSeq())
