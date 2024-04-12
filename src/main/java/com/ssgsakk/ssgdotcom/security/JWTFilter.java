@@ -2,17 +2,21 @@ package com.ssgsakk.ssgdotcom.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
+import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,14 +25,13 @@ import java.io.IOException;
 @Slf4j
 @Component
 @Getter
+@RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
 
+    private final MemberRepository memberRepository;
 //    public String uuid;
     // JWT 검증을 위해 사용
     private final JWTUtil jwtUtil;
-    public JWTFilter(JWTUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -62,11 +65,18 @@ public class JWTFilter extends OncePerRequestFilter {
         // 토큰에서 uuid 추출
         try {
             String uuid = jwtUtil.getUuid(token);
-            // 스프링 시큐리티 인증 토큰 생성
-            Authentication authToken = new UsernamePasswordAuthenticationToken(uuid, null);
 
-            // 세션에 사용자 등록
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = memberRepository.findByUuid(uuid).get();
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+
             filterChain.doFilter(request,response);
         } catch (Exception e) {
             jwtExceptionHandler(response, ErrorCode.TOKEN_NOT_VALID);
