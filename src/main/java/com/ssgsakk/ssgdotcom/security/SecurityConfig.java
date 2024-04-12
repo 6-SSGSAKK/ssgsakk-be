@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.security;
 
+import com.ssgsakk.ssgdotcom.config.CorsConfig;
 import com.ssgsakk.ssgdotcom.member.application.CustomOAuth2UserService;
 import com.ssgsakk.ssgdotcom.oauth2.CustomSuccessHandler;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ public class SecurityConfig {
     private final CustomSuccessHandler customSuccessHandler;
 //    private final JWTUtil jwtUtil;
     private final JWTFilter jwtFilter;
+    private final CorsConfig corsConfig;
 
 
     @Bean
@@ -44,7 +46,9 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
-
+        // cors
+        http
+                .addFilter(corsConfig.corsFilter());
 
 
         // JWTFilter 등록
@@ -69,31 +73,31 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(
 
-                                "/api/**"
-//                                "/api/v1/auth/signin"
-//                                , "/api/v1/auth/signup"
-//                                , "/api/v1/auth/mail-send"
-//                                , "/api/v1/auth/mail-check"
-//                                , "/api/v1/auth/id-duplicate-check"
-//                                , "/api/v1/category/search/{categorySeq}"
-//                                , "/api/v1/category/big-categories"
-//                                , "/api/v1/category/mid-by-big"
-//                                , "/api/v1/category/small-by-mid"
-//                                , "/api/v1/contents/{productseq}"
-//                                , "/api/v1/events"
-//                                , "/api/v1/optionstock/{productId}"
-//                                , "/api/v1/products/search"
-//                                , "/api/v1/products/filter"
-//                                , "/api/v1/products/{id}"
-//                                , "/api/v1/products/productsListCard/{id}"
-//                                , "/api/v1/products/event/{id}"
-//                                , "/api/v1/products/best"
-//                                , "/api/v1/likes/check/product-seq/{productSeq}"
-//                                , "/api/v1/reviews/{reviewSeq}"
-//                                , "/api/v1/reviews/products/{productSeq}"
-//                                , "/api/v1/purchase/non-member-check/{purchaseCode}"
-//                                , "/api/v1/purchase/non-member-purchase"
-//                                , "/api/v1/purchaseproduct/update/purchaseProductState/{purchaseProductSeq}"
+//                                "/api/**"
+                                "/api/v1/auth/signin"
+                                , "/api/v1/auth/signup"
+                                , "/api/v1/auth/mail-send"
+                                , "/api/v1/auth/mail-check"
+                                , "/api/v1/auth/id-duplicate-check"
+                                , "/api/v1/category/search/{categorySeq}"
+                                , "/api/v1/category/big-categories"
+                                , "/api/v1/category/mid-by-big"
+                                , "/api/v1/category/small-by-mid"
+                                , "/api/v1/contents/{productseq}"
+                                , "/api/v1/events"
+                                , "/api/v1/optionstock/{productId}"
+                                , "/api/v1/products/search"
+                                , "/api/v1/products/filter"
+                                , "/api/v1/products/{id}"
+                                , "/api/v1/products/productsListCard/{id}"
+                                , "/api/v1/products/event/{id}"
+                                , "/api/v1/products/best"
+                                , "/api/v1/likes/check/product-seq/{productSeq}"
+                                , "/api/v1/reviews/{reviewSeq}"
+                                , "/api/v1/reviews/products/{productSeq}"
+                                , "/api/v1/purchase/non-member-check/{purchaseCode}"
+                                , "/api/v1/purchase/non-member-purchase"
+                                , "/api/v1/purchaseproduct/update/purchaseProductState/{purchaseProductSeq}"
 
                                 , "/error"
 
