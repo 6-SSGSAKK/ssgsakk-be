@@ -87,7 +87,13 @@ public class SecurityConfig {
                                 , "/api/v1/products/event/{id}"
                                 , "/api/v1/products/best"
                                 , "/api/v1/likes/check/product-seq/{productSeq}"
-                                 ,"/error"
+                                , "/api/v1/reviews/{reviewSeq}"
+                                , "/api/v1/reviews/products/{productSeq}"
+                                , "/api/v1/purchase/non-member-check/{purchaseCode}"
+                                , "/api/v1/purchase/non-member-purchase"
+                                , "/api/v1/purchaseproduct/update/purchaseProductState/{purchaseProductSeq}"
+
+                                , "/error"
 
                                 , "/swagger-ui/**"
                                 , "/swagger-resources/**"
