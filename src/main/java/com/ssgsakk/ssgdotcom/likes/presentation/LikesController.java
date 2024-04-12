@@ -10,6 +10,7 @@ import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class LikesController {
     @Operation(summary = "상품 찜 확인", description = "상품 찜 확인")
     @GetMapping("/check/product-seq/{productSeq}")
     public BaseResponse<CheckProductLikesResponseVo> checkProductLikes(@RequestHeader("Authorization") String accessToken
-            , @PathVariable("productSeq") Long productSeq) {
+            , @PathVariable("productSeq") Long productSeq, Authentication authentication) {
         String uuid = getUuid(accessToken);
 
 
@@ -42,7 +43,6 @@ public class LikesController {
     public BaseResponse<CheckCategoryLikesResponseVo> checkCategoryLikes(@RequestHeader("Authorization") String accessToken
             , @PathVariable("categorySeq") Long categorySeq) {
         String uuid = getUuid(accessToken);
-
 
         CheckCategoryLikesResponseVo checkCategoryLikesResponseVo = likesService.checkCategoryLikes(CheckProductOrCategoryLikesDto.builder()
                 .uuid(uuid)
