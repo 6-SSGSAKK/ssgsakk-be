@@ -5,11 +5,7 @@ import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import com.ssgsakk.ssgdotcom.purchase.application.PurchaseService;
 import com.ssgsakk.ssgdotcom.purchase.dto.MemberPurchaseSeqListDto;
 import com.ssgsakk.ssgdotcom.purchase.dto.PurchaseCodeDto;
-import com.ssgsakk.ssgdotcom.purchase.vo.CreateMemberPurchaseRequestVo;
-import com.ssgsakk.ssgdotcom.purchase.vo.CreateNonMemberPurchaseRequestVo;
-import com.ssgsakk.ssgdotcom.purchase.vo.PurchaseCodeResponseVo;
-import com.ssgsakk.ssgdotcom.purchaseproduct.domain.QPurchaseProduct;
-import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductListDto;
+import com.ssgsakk.ssgdotcom.purchase.vo.*;
 import com.ssgsakk.ssgdotcom.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -77,6 +73,21 @@ public class PurchaseController {
             return new BaseResponse<>("주문번호 조회 실패",null);
         }
     }
+
+    @GetMapping("/non-member-purchase-check/{purchaseCode}") //비회원 주문코드를 받아서 주문번호리턴
+    public BaseResponse<List<NonMemberPurchaseResponseVo>> nonmemberPurchaseCheck (@PathVariable String purchaseCode) {
+
+      List<NonMemberPurchaseResponseVo> nonMemberPurchaseReponseVo = purchaseService.checkNonMemberPurchase(purchaseCode);
+
+      if (nonMemberPurchaseReponseVo != null) {
+          return new BaseResponse<>("비회원주문정보",nonMemberPurchaseReponseVo);
+      }else {
+          return new BaseResponse<>("비회원 주문정보 실패",null);
+      }
+
+    }
+
+
 
 
 }
