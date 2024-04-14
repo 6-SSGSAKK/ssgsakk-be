@@ -42,7 +42,7 @@ public class ShippingAddress extends BaseTimeEntity {
     public ShippingAddress(long shippingAddressSeq, String uuid, String addressNickname, String receiverName, String receiverMobileNum, String zipCode, String roadAddress, String jibunAddress, String detailAddress, int defaultAddressCheck) {
         this.shippingAddressSeq = shippingAddressSeq;
         this.uuid = uuid;
-        this.addressNickname = addressNickname;
+        this.addressNickname = addressNickname == null ? "자택" : addressNickname;
         this.receiverName = receiverName;
         this.receiverMobileNum = receiverMobileNum;
         this.zipCode = zipCode;
