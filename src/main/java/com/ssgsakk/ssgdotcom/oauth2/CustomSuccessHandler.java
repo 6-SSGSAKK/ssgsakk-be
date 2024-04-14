@@ -68,7 +68,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
                 // 적절한 HTTP 상태 코드 설정
                 response.setStatus(HttpServletResponse.SC_ACCEPTED);
-                response.sendRedirect("http://localhost:3000/login/social" + "?token=" + "Bearer " + token + "&state=1&userName=" + URLEncoder.encode(user.getName(), "UTF-8") + "&userEmail=" + customUserDetails.getEmail());
+//                response.sendRedirect("http://localhost:3000/login/social" + "?token=" + "Bearer " + token + "&state=1&userName=" + URLEncoder.encode(user.getName(), "UTF-8") + "&userEmail=" + customUserDetails.getEmail());
+                response.sendRedirect("https://ssgssak.shop/login/social" + "?token=" + "Bearer " + token + "&state=1&userName=" + URLEncoder.encode(user.getName(), "UTF-8") + "&userEmail=" + customUserDetails.getEmail());
 
             }
             // 동일 이메일이 없는 경우
@@ -76,7 +77,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
                 // 적절한 HTTP 상태 코드 설정
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                response.sendRedirect("http://localhost:3000/login/social" + "?state=2&userEmail=" + customUserDetails.getEmail() + "&oAuthId=" + oauthId);
+//                response.sendRedirect("http://localhost:3000/login/social" + "?state=2&userEmail=" + customUserDetails.getEmail() + "&oAuthId=" + oauthId);
+                response.sendRedirect("https://ssgssak.shop/login/social" + "?state=2&userEmail=" + customUserDetails.getEmail() + "&oAuthId=" + oauthId);
             }
         }
     }
