@@ -48,7 +48,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
             // 적절한 HTTP 상태 코드 설정
             response.setStatus(HttpServletResponse.SC_OK);
-            response.sendRedirect("http://localhost:3000/login/social?token=" + "Bearer " + token + "&state=0&userName=" + URLEncoder.encode(user.getName(), "UTF-8") + "&userEmail=" + customUserDetails.getEmail());
+//            response.sendRedirect("http://localhost:3000/login/social?token=" + "Bearer " + token + "&state=0&userName=" + URLEncoder.encode(user.getName(), "UTF-8") + "&userEmail=" + customUserDetails.getEmail());
+            response.sendRedirect("https://ssgssak.shop/login/social?token=" + "Bearer " + token + "&state=0&userName=" + URLEncoder.encode(user.getName(), "UTF-8") + "&userEmail=" + customUserDetails.getEmail());
 
         }
         // oauthId가 없는 사람들 중, user 테이블에 동일 이메일이 있는 지 확인
