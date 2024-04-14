@@ -20,21 +20,21 @@ public class ShippingAddress extends BaseTimeEntity {
     @Column(nullable = false)
     private String uuid;
 
-    @Column(length = 50)
+    @Column(nullable = true, length = 50)
     private String addressNickname;
-    @Column(length = 50)
+    @Column(nullable = true, length = 50)
     private String receiverName;
-    @Column(length = 50)
+    @Column(nullable = true, length = 50)
     private String receiverMobileNum;
-    @Column(length = 50)
+    @Column(nullable = false, length = 50)
     private String zipCode;
-    @Column(length = 50)
+    @Column(nullable = false, length = 50)
     private String roadAddress;
-    @Column(length = 50)
+    @Column(nullable = false, length = 50)
     private String jibunAddress;
-    @Column(length = 50)
+    @Column(nullable = false, length = 50)
     private String detailAddress;
-    @Column(length = 50)
+    @Column(nullable = false, length = 5)
     private int defaultAddressCheck;        // 1이 기본 배송지, 0은 기타 배송지
 
 
