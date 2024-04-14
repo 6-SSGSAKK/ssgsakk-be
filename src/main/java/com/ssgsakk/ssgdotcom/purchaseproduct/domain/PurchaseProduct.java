@@ -20,7 +20,7 @@ public class PurchaseProduct {
     @Column(length = 50)
     private Long productSeq; //상품ID
 
-    @Column(length = 50)
+    @Column(length = 255)
     private String purchaseProductName; //주문상품명
 
     @Column(length = 50)
@@ -32,7 +32,7 @@ public class PurchaseProduct {
     @Column(length = 50)
     private Integer purchaseProductCount;// 주문상품수량
 
-    @Column(length = 50)
+    @Column(length = 255)
     private String purchaseProductOptionName;//주문상품옵션사항
 
     @Column(length = 50)
@@ -41,7 +41,7 @@ public class PurchaseProduct {
     @Column(length = 50)
     private Integer purchaseProductDiscountPrice; //주문상품할인액
 
-    @Column(length = 50)
+    @Column(length = 255)
     private String productThumbnail; //주문상품이미지
 
     @Column(length = 10)
