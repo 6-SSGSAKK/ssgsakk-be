@@ -102,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
             // 배송지 저장
             ShippingAddress shippingAddress = ShippingAddress.builder()
                     .uuid(uuidToStr)
-                    .addressNickname("자택")
+                    .addressNickname("HOME")
                     .detailAddress(signUpDto.getDetailAddress())
                     .jibunAddress(signUpDto.getJibunAddress())
                     .roadAddress(signUpDto.getRoadAddress())
@@ -110,6 +110,7 @@ public class AuthServiceImpl implements AuthService {
                     .defaultAddressCheck(1)     // 기본 배송지로 지정
                     .build();
 
+//            log.info("shipping Address >>> {} ", shippingAddress.toString());
             ShippingAddress savedShippingAddress = shippingAddressRepository.save(shippingAddress);
 
             // 저장 여부 확인
