@@ -14,5 +14,5 @@ public class ReviewRequestVo {
     private String reviewParagraph;
     private Short reviewScore;
     private List<ReviewContentsVo> reviewContentsVoList;
-    private String purchaseProductOption;
+    private String purchaseProductOption; //
 }
