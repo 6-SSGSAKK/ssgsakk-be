@@ -1,4 +1,3 @@
-
 package com.ssgsakk.ssgdotcom.contents.domain;
 
 import com.ssgsakk.ssgdotcom.review.domain.Review;

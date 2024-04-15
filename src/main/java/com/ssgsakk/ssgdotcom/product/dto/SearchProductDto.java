@@ -5,7 +5,6 @@ import lombok.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Builder
 @Getter
 public class SearchProductDto {

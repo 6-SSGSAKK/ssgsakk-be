@@ -6,12 +6,11 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 
 
 @Entity
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Getter
 public class OptionAndStock extends BaseCreateTimeEntity {
     @Id

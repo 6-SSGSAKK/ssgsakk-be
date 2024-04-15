@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OptionAndStockServiceImpl implements OptionAndStockService {
     private final OptionAndStockRepository optionAndStockRepository;
+
+    // 옵션이 몇개있는지 출력
     @Override
     public OptionDto getOptionList(Long productSeq) {
         List<OptionAndStock> options = optionAndStockRepository.findByProductSeq(productSeq);
@@ -58,6 +60,8 @@ public class OptionAndStockServiceImpl implements OptionAndStockService {
             default -> builder.options(stocks).build();
         };
     }
+
+    // 상품이 가진 옵션의 개수 따라서 다르게 출력
     public List<StockDto> getStocks(Long productSeq, Integer depthLevel) {
         List<OptionAndStock> options = optionAndStockRepository.findByProductSeq(productSeq);
         if (options.isEmpty()) {
