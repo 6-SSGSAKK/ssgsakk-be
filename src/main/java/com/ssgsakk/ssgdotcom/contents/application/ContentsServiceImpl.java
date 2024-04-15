@@ -54,6 +54,9 @@ public class ContentsServiceImpl implements ContentsService {
     @Override
     @Transactional
     public void deleteReviewContents(Long reviewSeq) {
+        List<ReviewContents> reviewContentsList = reviewContentsRepository.findByReview_ReviewSeq(reviewSeq);
+        Contents contents = reviewContentsList.get(0).getContents();
+        contentsRepository.delete(contents);
         reviewContentsRepository.deleteById(reviewSeq);
     }
 }
