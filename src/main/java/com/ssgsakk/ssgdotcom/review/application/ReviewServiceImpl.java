@@ -38,6 +38,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final ReviewRepositoryImpl reviewRepositoryImpl;
+
+    // 리뷰 작성
     @Override
     @Transactional
     public void createReview(ReviewDto reviewDto, String uuid) {
@@ -50,6 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
         updateReviewCount(reviewDto);
     }
 
+    // 리뷰 수정
     @Override
     @Transactional
     public void updateReview(Long reviewSeq, UpdateReviewDto updateReviewDto, String uuid) {
@@ -58,7 +61,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review updatedReview = updateEntity(reviewToUpdate, updateReviewDto);
         reviewRepository.save(updatedReview);
     }
-
+    // 리뷰 삭제
     @Override
     @Transactional
     public void deleteReview(Long reviewSeq) {
@@ -69,6 +72,7 @@ public class ReviewServiceImpl implements ReviewService {
         contentsService.deleteReviewContents(reviewSeq);
     }
 
+    // 리뷰 상세 정보
     @Override
     @Transactional
     public ReviewInfoDto getReviewInfo(Long reviewSeq) {
@@ -80,6 +84,7 @@ public class ReviewServiceImpl implements ReviewService {
         return getReviewInfoDto(review, contentVo);
     }
 
+    // 상품 리뷰 리스트
     @Override
     @Transactional
     public List<ReviewListDto> getReviewList(Long productSeq) {
@@ -88,6 +93,7 @@ public class ReviewServiceImpl implements ReviewService {
         return getReviewListDto(reviewList);
     }
 
+    // 작성 가능한 리뷰 리스트
     @Override
     @Transactional
     public List<ReviewWritableDto> getWritableReviewList(String uuid) {
@@ -95,6 +101,7 @@ public class ReviewServiceImpl implements ReviewService {
         return getReviewWritableDtoList(purchaseProductList);
     }
 
+    // 작성한 리뷰 리스트
     @Override
     @Transactional
     public List<ReviewWrittenDto> getWrittenReviewList(String uuid) {

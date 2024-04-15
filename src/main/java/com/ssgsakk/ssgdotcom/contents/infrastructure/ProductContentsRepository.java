@@ -1,7 +1,6 @@
 package com.ssgsakk.ssgdotcom.contents.infrastructure;
 
 import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
-import com.ssgsakk.ssgdotcom.likes.domain.LikeFolder;
 import com.ssgsakk.ssgdotcom.product.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 

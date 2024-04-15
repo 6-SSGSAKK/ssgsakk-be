@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class OptionAndStockController {
     private final OptionAndStockService optionAndStockService;
 
+    // 옵션 정보 가져오기
     @GetMapping("/{productId}")
     public BaseResponse<?> getOptionList(@PathVariable("productId") Long productId) {
         OptionDto optionDto = optionAndStockService.getOptionList(productId);

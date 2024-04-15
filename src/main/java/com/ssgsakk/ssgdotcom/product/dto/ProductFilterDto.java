@@ -1,6 +1,5 @@
 package com.ssgsakk.ssgdotcom.product.dto;
 
-
 import com.ssgsakk.ssgdotcom.common.util.DeliveryType;
 import lombok.*;
 

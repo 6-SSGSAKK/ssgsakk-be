@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Getter
 public class Size {
     @Id
