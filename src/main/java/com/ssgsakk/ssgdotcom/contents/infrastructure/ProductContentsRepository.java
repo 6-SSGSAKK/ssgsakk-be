@@ -13,5 +13,4 @@ public interface ProductContentsRepository extends JpaRepository<ProductContents
 
     Optional<ProductContents> findByProductAndPriority(Product product, Integer priority);
 
-    Optional<ProductContents> findByProduct(Product product);
 }
