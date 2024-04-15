@@ -45,7 +45,6 @@ public class ReviewServiceImpl implements ReviewService {
     public void createReview(ReviewDto reviewDto, String uuid) {
         User user = memberRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_USER));
-
         Review review = getEntity(reviewDto, user.getUserId());
         reviewRepository.save(review);
         contentsService.createReviewContents(review, reviewDto.getReviewContentsVoList());
@@ -155,6 +154,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     private ReviewWrittenDto getReviewWrittenDto(PurchaseProduct purchaseProduct, Review review) {
         return ReviewWrittenDto.builder()
+                .reviewSeq(review.getReviewSeq())
+                .purchaseProductOption(purchaseProduct.getPurchaseProductOptionName())
                 .purchaseSeq(Objects.requireNonNull(purchaseProduct).getPurchaseProductSeq())
                 .purchaseProductSeq(purchaseProduct.getPurchaseProductSeq())
                 .purchaseCode(purchaseProduct.getPurchaseSeq().getPurchaseCode())
