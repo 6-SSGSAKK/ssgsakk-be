@@ -4,7 +4,9 @@ import com.querydsl.core.Tuple;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import com.ssgsakk.ssgdotcom.contents.application.ContentsService;
+import com.ssgsakk.ssgdotcom.contents.domain.ProductContents;
 import com.ssgsakk.ssgdotcom.contents.domain.ReviewContents;
+import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
 import com.ssgsakk.ssgdotcom.contents.vo.ReviewContentsVo;
 import com.ssgsakk.ssgdotcom.member.domain.User;
 import com.ssgsakk.ssgdotcom.member.infrastructure.MemberRepository;
@@ -24,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.ssgsakk.ssgdotcom.product.application.ProductServiceImp.getProductContentsVo;
 
 
 @Service
@@ -123,7 +127,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .build();
     }
 
-    private static List<ReviewWritableDto> getReviewWritableDtoList(List<PurchaseProduct> purchaseProductList) {
+    private List<ReviewWritableDto> getReviewWritableDtoList(List<PurchaseProduct> purchaseProductList) {
         return purchaseProductList.stream()
                 .map(purchaseProduct -> ReviewWritableDto.builder()
                         .purchaseProductSeq(purchaseProduct.getPurchaseProductSeq())
@@ -132,11 +136,17 @@ public class ReviewServiceImpl implements ReviewService {
                         .purchaseDate(purchaseProduct.getPurchaseSeq().getCreatedDate())
                         .productSeq(purchaseProduct.getProductSeq())
                         .purchaseProductName(purchaseProduct.getPurchaseProductName())
+                        .productContentsVo(getProductContents(purchaseProduct.getProductSeq()))
                         .build())
                 .collect(Collectors.toList());
     }
 
-    private static ReviewWrittenDto getReviewWrittenDto(PurchaseProduct purchaseProduct, Review review) {
+    private ProductContentsVo getProductContents(Long productSeq) {
+        List<ProductContents> contents = contentsService.productContentsList(productSeq);
+        return getProductContentsVo(contents);
+    }
+
+    private ReviewWrittenDto getReviewWrittenDto(PurchaseProduct purchaseProduct, Review review) {
         return ReviewWrittenDto.builder()
                 .purchaseSeq(Objects.requireNonNull(purchaseProduct).getPurchaseProductSeq())
                 .purchaseProductSeq(purchaseProduct.getPurchaseProductSeq())
@@ -147,6 +157,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .reviewScore(Objects.requireNonNull(review).getReviewScore())
                 .reviewParagraph(review.getReviewParagraph())
                 .reviewDate(review.getCreatedDate())
+                .productContentsVo(getProductContents(purchaseProduct.getProductSeq()))
                 .build();
     }
 
