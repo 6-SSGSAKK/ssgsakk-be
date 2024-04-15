@@ -34,7 +34,7 @@ public class ReviewRepositoryImpl extends QuerydslRepositorySupport {
         return jpaQueryFactory
                 .select(qPurchaseProduct, qReview)
                 .from(qPurchaseProduct)
-                .join(qReview)
+                .join(qReview).on(qReview.productSeq.eq(qPurchaseProduct.productSeq))
                 .where(qPurchaseProduct.purchaseSeq.purchaseuuid.eq(uuid), qPurchaseProduct.productState.eq(8),
                         qReview.productSeq.eq(qPurchaseProduct.productSeq))
                 .fetch();
