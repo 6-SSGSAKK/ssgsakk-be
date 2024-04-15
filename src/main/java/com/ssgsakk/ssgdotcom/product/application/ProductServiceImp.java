@@ -121,7 +121,7 @@ public class ProductServiceImp implements ProductService{
         }
         return contentVos;
     }
-    private static ProductContentsVo getProductContentsVo(List<ProductContents> contents) {
+    public static ProductContentsVo getProductContentsVo(List<ProductContents> contents) {
         ProductContentsVo contentVo = null;
         if (contents != null) {
             for (ProductContents content : contents) {

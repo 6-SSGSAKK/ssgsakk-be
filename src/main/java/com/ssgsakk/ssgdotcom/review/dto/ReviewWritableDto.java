@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.review.dto;
 
+import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,5 +16,6 @@ public class ReviewWritableDto {
     private Long productSeq;
     private String purchaseProductName;
     private String purchaseProductOption;
+    private ProductContentsVo productContentsVo;
 
 }
