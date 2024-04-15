@@ -66,9 +66,8 @@ public class ReviewServiceImpl implements ReviewService {
     public void deleteReview(Long reviewSeq) {
         Review review = reviewRepository.findById(reviewSeq)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_REVIEW));
-        contentsService.deleteReviewContents(reviewSeq);
-        reviewRepository.deleteById(reviewSeq);
         decreaseReviewCount(review);
+        contentsService.deleteReviewContents(reviewSeq);
     }
 
     // 리뷰 상세 정보
