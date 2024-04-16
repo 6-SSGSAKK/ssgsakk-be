@@ -42,7 +42,7 @@ public class MailSendService {
 
                 // SSGSSAK 이미지 업로드
                 "<img src='https://ssgsakk-bucket.s3.ap-northeast-2.amazonaws.com/LOGO.png' max-height='500px'/>" +
-                        "<h1>SSGSAKK SHOP 방문해주셔서 감사합니다.</h1>" +
+                        "<h1>SSGSSAK SHOP 방문해주셔서 감사합니다.</h1>" +
                         "<br>" +
                         "아래 인증 번호를 SSGSSAK.SHOP 회원가입 페이지에 입력해주세요. " +
                         "<br>" +
