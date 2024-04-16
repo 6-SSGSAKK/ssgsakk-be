@@ -234,87 +234,8 @@ public class LikesServiceImpl implements LikesService {
     @Override
     @Transactional
     public List<UserProductLikesResponseVo> userProductLikes(UserProductLikesDto userProductLikesDto) {
-//        try {
-//            User user = memberRepository.findByUuid(userProductLikesDto.getUuid()).orElseThrow(
-//                    () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
-//
-//            // 전체 조회
-//            if (userProductLikesDto.getFolderSeq() == null) {
-//                List<LikeProduct> likeProducts = likeProductRepository.findByUser(user);
-//                List<UserProductLikesResponseVo> responseVos = new ArrayList<>();
-//                for (LikeProduct likeProduct : likeProducts) {
-//                    Product product = likeProduct.getProduct();
-//                    ProductContents productContents = productContentsRepository.findByProduct(product).orElseThrow(
-//                            () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
-//
-//
-//                    if (productContents.getPriority() == 1) {
-//                        Contents contents = productContents.getContents();
-//                    }
-//                    List<ContentsUrl> contentsUrls = new ArrayList<>();
-//                    ContentsUrl contentsUrl = ContentsUrl.builder()
-//                            .priority(productContents.getPriority())
-//                            .contentUrl(productContents.getContents().getContentUrl())
-//                            .contentDescription(productContents.getContents().getContentDescription())
-//                            .build();
-//                    contentsUrls.add(contentsUrl);
-//
-//                    responseVos.add(UserProductLikesResponseVo.builder()
-//                            .likeProductSeq(likeProduct.getLikeProductSeq())
-//                            .productSeq(product.getProductSeq())
-//                            .productName(product.getProductName())
-//                            .productPrice(product.getProductPrice())
-//                            .discountPercent(product.getDiscountPercent())
-//                            .vendor(product.getVendor().getVendorName())
-//                            .deliveryType(product.getDeliveryType().name())
-//                            .contents(contentsUrls)
-//                            .build());
-//                }
-//                return responseVos;
-//            }
-//            // 특정 folder 조회
-//            else {
-//                LikeFolder folder = likeFolderRepository.findByLikeFolderSeq(userProductLikesDto.getFolderSeq()).orElseThrow(
-//                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_FOLDER));
-//
-//                List<UserProductLikesResponseVo> responseVos = new ArrayList<>();
-//                List<LikedConnect> likedConnects = likedConnectRepository.findByLikeFolder(folder);
-//                for (LikedConnect likedConnect : likedConnects) {
-//                    Product product = likedConnect.getLikeProduct().getProduct();
-//                    ProductContents productContents = productContentsRepository.findByProduct(product).orElseThrow(
-//                            () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
-//                    Contents contents = productContents.getContents();
-//
-//                    List<ContentsUrl> contentsUrls = new ArrayList<>();
-//                    ContentsUrl contentsUrl = ContentsUrl.builder()
-//                            .priority(productContents.getPriority())
-//                            .contentUrl(productContents.getContents().getContentUrl())
-//                            .contentDescription(productContents.getContents().getContentDescription())
-//                            .build();
-//                    contentsUrls.add(contentsUrl);
-//
-//                    responseVos.add(UserProductLikesResponseVo.builder()
-//                            .likeProductSeq(likedConnect.getLikeProduct().getLikeProductSeq())
-//                            .productSeq(product.getProductSeq())
-//                            .productName(product.getProductName())
-//                            .productPrice(product.getProductPrice())
-//                            .discountPercent(product.getDiscountPercent())
-//                            .vendor(product.getVendor().getVendorName())
-//                            .deliveryType(product.getDeliveryType().name())
-//                            .contents(contentsUrls)
-//                            .build());
-//                }
-//                return responseVos;
-//            }
-//
-//        } catch (Exception e) {
-//            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
-//        }
-
 
         try {
-            // 전체 조회
-//            if (userProductLikesDto.getFolderSeq() == null) {
             User user = memberRepository.findByUuid(userProductLikesDto.getUuid()).orElseThrow(
                     () -> new BusinessException(ErrorCode.NO_EXIST_MEMBERS));
             List<LikeProduct> products = likeProductRepository.findByUserAndLikeState(user, 1);
@@ -351,51 +272,6 @@ public class LikesServiceImpl implements LikesService {
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
-
-//
-//            // 특정 폴더 상품 조회
-//            LikeFolder folder = likeFolderRepository.findByLikeFolderSeq(userProductLikesDto.getFolderSeq()).orElseThrow(
-//                    () -> new BusinessException(ErrorCode.CANNOT_FOUND_FOLDER));
-//
-//            List<LikedConnect> likedConnects = likedConnectRepository.findByLikeFolder(folder);
-//            List<LikeProduct> products = new ArrayList<>();
-//            for (LikedConnect likedConnect : likedConnects) {
-//                products.add(likedConnect.getLikeProduct());
-//            }
-//
-//            List<UserProductLikesResponseVo> responseVos = new ArrayList<>();
-//
-//            for (LikeProduct likeProduct : products) {
-//                Product product = likeProduct.getProduct();
-//                List<ContentsUrl> contentsUrls = new ArrayList<>();
-//
-//                // ProductContents 획득
-//                ProductContents productContents = productContentsRepository.findByProductAndPriority(product, 1).orElseThrow(
-//                        () -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
-//
-//                ContentsUrl contentsUrl = ContentsUrl.builder()
-//                        .priority(productContents.getPriority())
-//                        .contentUrl(productContents.getContents().getContentUrl())
-//                        .contentDescription(productContents.getContents().getContentDescription())
-//                        .build();
-//
-//                contentsUrls.add(contentsUrl);
-//
-//                UserProductLikesResponseVo productLikesResponseVo = UserProductLikesResponseVo.builder()
-//                        .productName(product.getProductName())
-//                        .productPrice(product.getProductPrice())
-//                        .discountPercent(product.getDiscountPercent())
-//                        .vendor(product.getVendor().getVendorName())
-//                        .deliveryType(product.getDeliveryType().name())
-//                        .contents(contentsUrls)
-//                        .build();
-//                responseVos.add(productLikesResponseVo);
-//            }
-//            return responseVos;
-//
-//        } catch (Exception e) {
-//            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
-//        }
     }
 
     @Override
