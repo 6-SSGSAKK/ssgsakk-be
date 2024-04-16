@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.review.vo;
 
+import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
 import com.ssgsakk.ssgdotcom.review.dto.ReviewWritableDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class ReviewWritableResponseVo {
     private Long productSeq;
     private String purchaseProductName;
     private String purchaseProductOption;
+    private ProductContentsVo productContentsVo;
 
     public static List<ReviewWritableResponseVo> DtoListToVoList(List<ReviewWritableDto> reviewWritableDtoList) {
         return reviewWritableDtoList.stream().map(reviewWritableDto -> ReviewWritableResponseVo.builder()
@@ -28,6 +30,7 @@ public class ReviewWritableResponseVo {
                 .productSeq(reviewWritableDto.getProductSeq())
                 .purchaseProductName(reviewWritableDto.getPurchaseProductName())
                 .purchaseProductOption(reviewWritableDto.getPurchaseProductOption())
+                .productContentsVo(reviewWritableDto.getProductContentsVo())
                 .build())
                 .collect(Collectors.toList());
     }

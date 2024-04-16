@@ -1,4 +1,3 @@
-
 package com.ssgsakk.ssgdotcom.contents.domain;
 
 import com.ssgsakk.ssgdotcom.review.domain.Review;
@@ -17,11 +16,11 @@ public class ReviewContents {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewContentsSeq;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "review_seq")
     private Review review;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "contents_seq")
     private Contents contents;
 

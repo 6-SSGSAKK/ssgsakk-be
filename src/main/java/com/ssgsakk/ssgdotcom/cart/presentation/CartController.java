@@ -24,6 +24,8 @@ import java.util.List;
 public class CartController {
     private final CartService cartService;
     private final JWTUtil jwtUtil;
+
+    //장바구니 추가
     @PostMapping("/add")
     public BaseResponse<?> addCart(@RequestBody CartRequestVo cartRequestVo,
                                    @RequestHeader("Authorization") String accessToken) {
@@ -32,6 +34,7 @@ public class CartController {
         return new BaseResponse<>("add cart success", response);
     }
 
+    // 장바구니 정보
     @GetMapping("/list")
     public BaseResponse<List<CartResponseVo>> getCartItems(@RequestHeader("Authorization") String accessToken) {
         List<CartDto> cartItemList = cartService.getCartList(getUuid(accessToken));
@@ -39,6 +42,7 @@ public class CartController {
         return new BaseResponse<>("get cart items success", cartResponseVoList);
     }
 
+    // 장바구니 품목 정보
     @GetMapping("/{cartId}")
     public BaseResponse<CartInfoResponseVo> getCart(@RequestHeader("Authorization") String accessToken,
                                                     @PathVariable("cartId") Long cartId) {
@@ -46,6 +50,7 @@ public class CartController {
         return new BaseResponse<>("get cart success",
                 CartInfoResponseVo.InfoDtoToVo(cartService.getCart(cartId, getUuid(accessToken))));
     }
+    // 장바구니 품목 수량 변경
 
     @PutMapping("/{cartId}/quantity")
     public BaseResponse<?> updateQuantity(@RequestHeader("Authorization") String accessToken,
@@ -55,6 +60,7 @@ public class CartController {
         return new BaseResponse<>("update quantity success","");
     }
 
+    // 장바구니 옵션 수정
     @PutMapping("/{cartId}/option")
     public BaseResponse<?> updateOption(@RequestHeader("Authorization") String accessToken,
                                         @PathVariable("cartId") Long cartId,
@@ -63,6 +69,7 @@ public class CartController {
         return new BaseResponse<>("update option success","");
     }
 
+    // 장바구니 고정
     @PutMapping("/{cartId}/pin")
     public BaseResponse<?> updateCartPin(@RequestHeader("Authorization") String accessToken,
                                          @PathVariable("cartId") Long cartId,
@@ -71,6 +78,7 @@ public class CartController {
         return new BaseResponse<>("update pin success","");
     }
 
+    // 장바구니 체크박스 선택
     @PutMapping("/{cartId}/checkbox")
     public BaseResponse<?> updateCheckbox(@RequestHeader("Authorization") String accessToken,
                                           @PathVariable("cartId") Long cartId,
@@ -79,17 +87,21 @@ public class CartController {
         return new BaseResponse<>("update checkbox success","");
     }
 
+    // 장바구니 모든 체크박스 선택
     @PutMapping("/allcheck")
     public BaseResponse<?> updateAllCheck(@RequestHeader("Authorization") String accessToken,
                                           @RequestParam Integer checkbox) {
         cartService.updateAllCheck(checkbox, getUuid(accessToken));
         return new BaseResponse<>("update all check success","");
     }
+
+    // 장바구니 담긴 품목 개수
     @GetMapping("count")
     public BaseResponse<?> getCartCount(@RequestHeader("Authorization") String accessToken) {
         return new BaseResponse<>("get count success", cartService.getCartCount(getUuid(accessToken)));
     }
 
+    // 장바구니 삭제
     @DeleteMapping("/{cartId}")
     public BaseResponse<?> deleteCart(@RequestHeader("Authorization") String accessToken,
                                       @PathVariable("cartId") Long cartId) {

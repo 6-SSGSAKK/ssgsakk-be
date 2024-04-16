@@ -18,18 +18,6 @@ public class OptionAndStockImpl extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-//    public List<Long> getOption(ProductFilterDto productFilterDto) {
-//        return jpaQueryFactory
-//                .select(qProductList.product.productSeq)
-//                .from(qProductList)
-//                .where(eqDeliveryType(productFilterDto.getDeliveryType())
-//                        ,eqPriceRange(productFilterDto.getMinPrice()
-//                                ,productFilterDto.getMaxPrice())
-//                        ,eqCategory(productFilterDto.getCategorySeq())
-//                        ,eqKeywordSearch(productFilterDto.getKeyword()))
-//                .fetch();
-//    }
-
     private BooleanExpression eqSize(Long sizeSeq) {
         if(sizeSeq == null) {
             return null;

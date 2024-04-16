@@ -20,4 +20,11 @@ public class ProductDto {
     private Double averageRating;
     private Integer reviewCount;
     private List<ProductContentsVo> contentsUrl;
+
+    public Double getAverageRating() {
+        if (this.averageRating != null) {
+            return Math.round(this.averageRating * 10.0) / 10.0;
+        }
+        return null;
+    }
 }

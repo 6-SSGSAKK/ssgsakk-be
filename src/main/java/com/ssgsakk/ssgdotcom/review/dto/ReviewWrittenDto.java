@@ -1,5 +1,6 @@
 package com.ssgsakk.ssgdotcom.review.dto;
 
+import com.ssgsakk.ssgdotcom.contents.vo.ProductContentsVo;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,4 +20,5 @@ public class ReviewWrittenDto {
     private Short reviewScore;
     private String reviewParagraph;
     private LocalDateTime reviewDate;
+    private ProductContentsVo productContentsVo;
 }
