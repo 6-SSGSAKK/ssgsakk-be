@@ -1,15 +1,13 @@
 package com.ssgsakk.ssgdotcom.payment.domain;
+//todo
+// 추후 개발 예정
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 @Getter
-@DynamicInsert
 @Entity
 @NoArgsConstructor
-//@EntityListeners(AuditingEntityListener.class)
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
