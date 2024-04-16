@@ -56,4 +56,10 @@ public class ContentsServiceImpl implements ContentsService {
     public void deleteReviewContents(Long reviewSeq) {
         reviewContentsRepository.deleteByReview_ReviewSeq(reviewSeq);
     }
+
+    @Override
+    @Transactional
+    public boolean checkReviewContents(Long reviewSeq) {
+        return !reviewContentsRepository.findByReview_ReviewSeq(reviewSeq).isEmpty();
+    }
 }
