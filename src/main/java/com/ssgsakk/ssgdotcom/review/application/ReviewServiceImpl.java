@@ -230,7 +230,7 @@ public class ReviewServiceImpl implements ReviewService {
     private void decreaseReviewCount(Review review) {
         Product product = productRepository.findByProductSeq(review.getProductSeq())
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
-        Double updateAverageRating =  product.getReviewCount() == 1 ? 0:
+        Double updateAverageRating =  product.getReviewCount() == 1 ? 0.0:
                 (product.getAverageRating() * product.getReviewCount() - review.getReviewScore())
                         / (product.getReviewCount() - 1);
         Product updateProduct = Product.builder()
