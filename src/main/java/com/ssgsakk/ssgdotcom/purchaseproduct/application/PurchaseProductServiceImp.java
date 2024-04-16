@@ -46,9 +46,10 @@ public class PurchaseProductServiceImp implements PurchaseProductService {
             productseq = purchaseProductDto.getProductSeq();
             purchaseProductCount = purchaseProductDto.getPurchaseProductCount();
         }
+
         purchaseProductRepository.saveAll(purchaseProductList); //저장
-        purchaseProductRepositoryImp.decreaseProductStock(productseq, purchaseProductCount);
-        purchaseProductRepositoryImp.increaseProductSoldCount(productseq);
+        purchaseProductRepositoryImp.decreaseProductStock(productseq, purchaseProductCount); //주문접수 주문한 상품 수량만큼 재고 감소
+        purchaseProductRepositoryImp.increaseProductSoldCount(productseq);//주문한 상품번호 ProductSoldCount 증가
 
 
     }

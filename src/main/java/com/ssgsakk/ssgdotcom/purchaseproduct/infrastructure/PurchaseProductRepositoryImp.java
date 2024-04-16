@@ -1,5 +1,4 @@
 package com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure;
-import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssgsakk.ssgdotcom.product.domain.QProduct;
@@ -63,7 +62,7 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
 
     }
 
-    @Transactional //if주문상태5(주문상태) purchaseProductSeq 별 productSeq,PurchaseProductCount 값 추출
+    @Transactional //if주문상태5  purchaseProductSeq 별 productSeq,PurchaseProductCount 값 추출
     public void createproductSeqAndPurchaseProductCount(Long purchaseProductSeq){
 
         PurchaseProduct purchaseProduct = jpaQueryFactory
@@ -72,8 +71,6 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
                 .from(qPurchaseProduct)
                 .where(qPurchaseProduct.purchaseProductSeq.eq(purchaseProductSeq))
                 .fetchOne();
-
-
 
         Long productSeq = purchaseProduct.getProductSeq(); //PathVariable로 받은 purchaseProductSeq 에 해당하는 productSeq
         Integer purchaseProductCount = purchaseProduct.getPurchaseProductCount();
@@ -90,9 +87,10 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
                 .set(optionAndStock.stock, optionAndStock.stock.add(purchaseProductCount))
                 .where(optionAndStock.productSeq.eq(productSeq))
                 .execute();
+
     }
 
-    @Transactional //주문할시 SoldCount +1 증가
+    @Transactional //주문시 SoldCount +1 증가
     public void increaseProductSoldCount(Long productSeq){
 
         jpaQueryFactory.update(qProduct)
@@ -115,13 +113,13 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
 
     //조회한 result  PurchaseProductListDto로 변환
     private PurchaseProductListDto convertToDto(PurchaseProduct purchaseProduct){
+
         return new PurchaseProductListDto(purchaseProduct.getPurchaseProductSeq(),purchaseProduct.getPurchaseSeq(),
                 purchaseProduct.getProductSeq(),purchaseProduct.getPurchaseProductName(),
                 purchaseProduct.getPurchaseProductVendor(),purchaseProduct.getProductOptionSeq(),
                 purchaseProduct.getPurchaseProductCount(), purchaseProduct.getPurchaseProductOptionName(),
                 purchaseProduct.getPurchaseProductPrice(),purchaseProduct.getPurchaseProductDiscountPrice(),
                 purchaseProduct.getProductThumbnail(),purchaseProduct.getDeliveryType(),purchaseProduct.getProductState());
-
 
     }
 
