@@ -48,6 +48,7 @@ public class PurchaseProductServiceImp implements PurchaseProductService {
         }
         purchaseProductRepository.saveAll(purchaseProductList); //저장
         purchaseProductRepositoryImp.decreaseProductStock(productseq, purchaseProductCount);
+        purchaseProductRepositoryImp.increaseProductSoldCount(productseq);
 
 
     }

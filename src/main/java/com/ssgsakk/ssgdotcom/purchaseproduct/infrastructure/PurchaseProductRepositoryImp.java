@@ -1,6 +1,8 @@
 package com.ssgsakk.ssgdotcom.purchaseproduct.infrastructure;
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssgsakk.ssgdotcom.product.domain.QProduct;
 import com.ssgsakk.ssgdotcom.purchase.domain.QPurchase;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.PurchaseProduct;
 import com.ssgsakk.ssgdotcom.purchaseproduct.domain.QPurchaseProduct;
@@ -21,6 +23,7 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
 
     private final QPurchase qPurchase = QPurchase.purchase;
 
+    private final QProduct qProduct = QProduct.product;
     public PurchaseProductRepositoryImp(JPAQueryFactory jpaQueryFactory) {
         super(PurchaseProduct.class);
         this.jpaQueryFactory = jpaQueryFactory;
@@ -51,7 +54,7 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
             throw new RuntimeException("존재하지 않는 상태번호");
 
         } else if (purchaseProductStateDto.getPurchaseProductState() == 5) {
-            crateproductSeqAndPurchaseProductCount(purchaseProductSeq);
+            createproductSeqAndPurchaseProductCount(purchaseProductSeq);
         }
 
         if (purchaseProductStateDto.getPurchaseProductState() < 0){
@@ -61,7 +64,7 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
     }
 
     @Transactional //if주문상태5(주문상태) purchaseProductSeq 별 productSeq,PurchaseProductCount 값 추출
-    public void crateproductSeqAndPurchaseProductCount(Long purchaseProductSeq){
+    public void createproductSeqAndPurchaseProductCount(Long purchaseProductSeq){
 
         PurchaseProduct purchaseProduct = jpaQueryFactory
                 .select(Projections.fields(PurchaseProduct.class, qPurchaseProduct.productSeq,
@@ -88,6 +91,18 @@ public class PurchaseProductRepositoryImp extends QuerydslRepositorySupport {
                 .where(optionAndStock.productSeq.eq(productSeq))
                 .execute();
     }
+
+    @Transactional //주문할시 SoldCount +1 증가
+    public void increaseProductSoldCount(Long productSeq){
+
+        jpaQueryFactory.update(qProduct)
+                .set(qProduct.soldCount, qProduct.soldCount.add(+1))
+                .where(qProduct.productSeq.eq(productSeq))
+                .execute();
+
+    }
+
+
     @Transactional //회원주문상품 상세 조회 쿼리
     public List<PurchaseProductListDto> memberPurchaseProductDetail(Long purchaseSeq) {
 
