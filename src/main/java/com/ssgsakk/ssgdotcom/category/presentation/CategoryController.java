@@ -4,31 +4,28 @@ import com.ssgsakk.ssgdotcom.category.dto.CategoryCustomDto;
 import com.ssgsakk.ssgdotcom.category.dto.CategoryDto;
 import com.ssgsakk.ssgdotcom.category.dto.ParentCategoryResponseDto;
 import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDto;
+import com.ssgsakk.ssgdotcom.category.mapper.CategoryMapper;
 import com.ssgsakk.ssgdotcom.category.vo.CreateCategoryRequestVo;
 import com.ssgsakk.ssgdotcom.category.vo.UpdateCategoryRequestVo;
 import com.ssgsakk.ssgdotcom.common.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/category")
 @RequiredArgsConstructor
-@Slf4j
 public class CategoryController {
 
     private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
 
-    @PostMapping() //카테고리 생성, categoryName,parentCategorySeq,level 생성가능.
+    @PostMapping("create") //카테고리 생성, categoryName,parentCategorySeq,level 생성가능.
     public void createCategory(@RequestBody CreateCategoryRequestVo createCategoryRequestVo) {
 
-        categoryService.createCategory(CategoryDto.builder()
-                .categoryName(createCategoryRequestVo.getCategoryName())
-                .parentCategorySeq(createCategoryRequestVo.getParentCategorySeq())
-                .level(createCategoryRequestVo.getLevel())
-                .build());
+        CategoryDto categoryDto = categoryMapper.mapToCategoryDto(createCategoryRequestVo);
+        categoryService.createCategory(categoryDto);
 
     }
     @PutMapping("update/{categorySeq}") // categorySeq를 기준으로 수정가능, 수정 가능한 값 categoryName,level,parentCategorySeq

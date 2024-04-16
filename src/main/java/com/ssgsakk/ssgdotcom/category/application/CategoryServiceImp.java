@@ -7,9 +7,11 @@ import com.ssgsakk.ssgdotcom.category.dto.ParentCategoryResponseDto;
 import com.ssgsakk.ssgdotcom.category.dto.UpdateCategoryDto;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepository;
 import com.ssgsakk.ssgdotcom.category.infrastructure.CategoryRepositoryImp;
+import com.ssgsakk.ssgdotcom.category.mapper.CategoryMapper;
 import com.ssgsakk.ssgdotcom.common.exception.BusinessException;
 import com.ssgsakk.ssgdotcom.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
@@ -20,21 +22,20 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class CategoryServiceImp implements CategoryService{
 
     private final CategoryRepository categoryRepository;
     private final CategoryRepositoryImp categoryRepositoryImp;
+    private final CategoryMapper categoryMapper;
 
     @Override
     public void createCategory(CategoryDto categoryDTO) { //카테고리생성
-        Category category = Category.builder()
-                .categoryName(categoryDTO.getCategoryName())
-                .level(categoryDTO.getLevel())
-                .parentCategorySeq(categoryDTO.getParentCategorySeq() == null ? null : categoryRepository.
-                        findById(categoryDTO.getParentCategorySeq()).get())
-                .build();
 
-        categoryRepository.save(category);
+        categoryMapper.mapToCategory(categoryDTO);
+        log.info("{}",categoryDTO);
+        categoryRepository.save(categoryMapper.mapToCategory(categoryDTO));
+
     }
 
 
