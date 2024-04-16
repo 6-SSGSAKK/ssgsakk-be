@@ -8,4 +8,5 @@ import java.util.List;
 public interface ReviewContentsRepository extends JpaRepository<ReviewContents, Long> {
 
     List<ReviewContents> findByReview_ReviewSeq(Long reviewSeq);
+    void deleteByReview_ReviewSeq(Long reviewSeq);
 }

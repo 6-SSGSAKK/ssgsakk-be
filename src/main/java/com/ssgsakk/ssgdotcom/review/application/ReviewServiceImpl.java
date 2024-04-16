@@ -67,7 +67,12 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = reviewRepository.findById(reviewSeq)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_REVIEW));
         decreaseReviewCount(review);
-        contentsService.deleteReviewContents(reviewSeq);
+        if (contentsService.checkReviewContents(reviewSeq)) {
+            contentsService.deleteReviewContents(reviewSeq);
+        }
+        else {
+            reviewRepository.delete(review);
+        }
     }
 
     // 리뷰 상세 정보
@@ -230,7 +235,7 @@ public class ReviewServiceImpl implements ReviewService {
     private void decreaseReviewCount(Review review) {
         Product product = productRepository.findByProductSeq(review.getProductSeq())
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANNOT_FOUND_PRODUCT));
-        Double updateAverageRating =  product.getReviewCount() == 1 ? 0:
+        Double updateAverageRating =  product.getReviewCount() == 1 ? 0.0:
                 (product.getAverageRating() * product.getReviewCount() - review.getReviewScore())
                         / (product.getReviewCount() - 1);
         Product updateProduct = Product.builder()

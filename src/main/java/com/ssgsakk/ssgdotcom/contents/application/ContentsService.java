@@ -15,4 +15,6 @@ public interface ContentsService {
     void createReviewContents(Review review, List<ReviewContentsVo> reviewContentsVoList);
 
     void deleteReviewContents(Long reviewSeq);
+
+    boolean checkReviewContents(Long reviewSeq);
 }
