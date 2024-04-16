@@ -23,6 +23,4 @@ public interface LikedConnectRepository extends JpaRepository<LikedConnect, Long
 
     void deleteByLikeProduct(LikeProduct likeProduct);
 
-//    @Query("SELECT new com.ssgsakk.ssgdotcom.likes.vo.SelectAllFoldersResponseVo(lc.likeFolder.likeFolderSeq, lc.likeFolder.likeFolderName) FROM LikedConnect lc WHERE lc.likeProduct.user.uuid = :uuid")
-//    List<SelectAllFoldersResponseVo> selectAllFolders(@Param("uuid") String uuid);
 }
