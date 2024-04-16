@@ -4,8 +4,6 @@ import com.ssgsakk.ssgdotcom.purchaseproduct.Vo.PurchaseProductStateRequestVo;
 import com.ssgsakk.ssgdotcom.purchaseproduct.application.PurchaseProductService;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductListDto;
 import com.ssgsakk.ssgdotcom.purchaseproduct.dto.PurchaseProductStateDto;
-import lombok.Builder;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
